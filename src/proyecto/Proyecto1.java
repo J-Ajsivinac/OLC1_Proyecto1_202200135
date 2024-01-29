@@ -1,4 +1,4 @@
-package proyecto.pkg1;
+package proyecto;
 
 
 public class Proyecto1 {
