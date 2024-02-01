@@ -8,13 +8,14 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.function.Function;
-import javax.swing.JTextPane;
 
 public class Principal extends javax.swing.JFrame {
-    
-    JTextPane editor;
-    
+
+    int indexFilePJ = -1;
+
     public Principal() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -32,7 +33,7 @@ public class Principal extends javax.swing.JFrame {
             }
 
         });
-        
+
         FlatSVGIcon.ColorFilter greenF = new FlatSVGIcon.ColorFilter(new Function<Color, Color>() {
             @Override
             public Color apply(Color t) {
@@ -50,14 +51,14 @@ public class Principal extends javax.swing.JFrame {
         lblDown.setIcon(SVGDown);
         lblDown2.setIcon(SVGDown);
         btnPlay.setIcon(SVGPlay);
-        
+
         btnHome.setCursor(new Cursor(Cursor.HAND_CURSOR) {
         });
 
     }
 
-    public void pressHome(){
-        GlassPanePopup.showPopup(new MFile(), new DefaultOption(){
+    public void pressHome() {
+        GlassPanePopup.showPopup(new MFile(), new DefaultOption() {
             @Override
             public float opacity() {
                 return 0;
@@ -69,9 +70,9 @@ public class Principal extends javax.swing.JFrame {
             }
         });
     }
-    
-    public void pressReport(){
-        GlassPanePopup.showPopup(new MReport(), new DefaultOption(){
+
+    public void pressReport() {
+        GlassPanePopup.showPopup(new MReport(), new DefaultOption() {
             @Override
             public float opacity() {
                 return 0;
@@ -83,6 +84,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -97,8 +99,6 @@ public class Principal extends javax.swing.JFrame {
         lblDown2 = new javax.swing.JLabel();
         lblReport = new javax.swing.JLabel();
         panelRound1 = new Components.PanelRound();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
         panelRound2 = new Components.PanelRound();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextPane2 = new javax.swing.JTextPane();
@@ -203,25 +203,15 @@ public class Principal extends javax.swing.JFrame {
         panelRound1.setRoundTopLeft(10);
         panelRound1.setRoundTopRight(10);
 
-        jTextPane1.setBackground(new java.awt.Color(51, 51, 51));
-        jTextPane1.setBorder(null);
-        jScrollPane1.setViewportView(jTextPane1);
-
         javax.swing.GroupLayout panelRound1Layout = new javax.swing.GroupLayout(panelRound1);
         panelRound1.setLayout(panelRound1Layout);
         panelRound1Layout.setHorizontalGroup(
             panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 724, Short.MAX_VALUE)
         );
         panelRound1Layout.setVerticalGroup(
             panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelRound1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+            .addGap(0, 620, Short.MAX_VALUE)
         );
 
         panelRound2.setBackground(new java.awt.Color(51, 51, 51));
@@ -372,9 +362,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPane2;
     private javax.swing.JLabel lblDown;
     private javax.swing.JLabel lblDown2;
@@ -384,4 +372,5 @@ public class Principal extends javax.swing.JFrame {
     private Components.PanelRound panelRound1;
     private Components.PanelRound panelRound2;
     // End of variables declaration//GEN-END:variables
+
 }

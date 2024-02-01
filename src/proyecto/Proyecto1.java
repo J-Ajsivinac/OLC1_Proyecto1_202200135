@@ -1,5 +1,6 @@
 package proyecto;
 
+import Components.tabs.CodeEditor;
 import Interface.Principal;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Font;
@@ -18,8 +19,10 @@ public class Proyecto1 {
             //System.out.println(ex);
         }
         UIManager.put("defaultFont", new Font("Montserrat", 0, 13));
-        Principal p = new Principal();
-        p.setVisible(true);
+        //Principal p = new Principal();
+        //p.setVisible(true);
+        CodeEditor c = new CodeEditor();
+        c.setVisible(true);
     }
 
 }
