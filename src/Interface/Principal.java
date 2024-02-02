@@ -1,19 +1,37 @@
 package Interface;
 
-import Components.MFile;
 import Components.MReport;
 import Components.glasspanel.DefaultOption;
 import Components.glasspanel.GlassPanePopup;
+import Components.tabs.ButtonTabComponent;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.function.Function;
+import javax.swing.JFileChooser;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.StyledDocument;
 
 public class Principal extends javax.swing.JFrame {
 
+    private JFileChooser fileChooser;
+    private JTextPane textPane;
+    private ArrayList<String> rutes = new ArrayList<>();
     int indexFilePJ = -1;
 
     public Principal() {
@@ -25,6 +43,9 @@ public class Principal extends javax.swing.JFrame {
         FlatSVGIcon SVGHome = new FlatSVGIcon("img/HomeF.svg", 22, 22);
         FlatSVGIcon SVGDown = new FlatSVGIcon("img/d.svg", 15, 15);
         FlatSVGIcon SVGPlay = new FlatSVGIcon("img/play2.svg", 24, 24);
+        FlatSVGIcon SVGAdd = new FlatSVGIcon("img/add1.svg", 24, 24);
+        FlatSVGIcon SVGOpen = new FlatSVGIcon("img/open.svg", 24, 24);
+        FlatSVGIcon SVGSave = new FlatSVGIcon("img/save.svg", 24, 24);
 
         FlatSVGIcon.ColorFilter whiteF = new FlatSVGIcon.ColorFilter(new Function<Color, Color>() {
             @Override
@@ -45,30 +66,19 @@ public class Principal extends javax.swing.JFrame {
         SVGHome.setColorFilter(whiteF);
         SVGDown.setColorFilter(whiteF);
         SVGPlay.setColorFilter(greenF);
+        SVGAdd.setColorFilter(whiteF);
+        SVGOpen.setColorFilter(whiteF);
+        SVGSave.setColorFilter(whiteF);
 
         lblReport.setIcon(SVGFile);
-        lblHome.setIcon(SVGHome);
-        lblDown.setIcon(SVGDown);
         lblDown2.setIcon(SVGDown);
         btnPlay.setIcon(SVGPlay);
+        btnNew.setIcon(SVGAdd);
+        btnOpen.setIcon(SVGOpen);
+        btnSave.setIcon(SVGSave);
 
-        btnHome.setCursor(new Cursor(Cursor.HAND_CURSOR) {
-        });
+        fileChooser = new JFileChooser();
 
-    }
-
-    public void pressHome() {
-        GlassPanePopup.showPopup(new MFile(), new DefaultOption() {
-            @Override
-            public float opacity() {
-                return 0;
-            }
-
-            @Override
-            public String getLayout(Component parent, float animate) {
-                return "pos 0.018al " + 0.15f + "al";
-            }
-        });
     }
 
     public void pressReport() {
@@ -85,67 +95,86 @@ public class Principal extends javax.swing.JFrame {
         });
     }
 
+    private JTextPane getTextPaneAt(int index) {
+        JScrollPane scrollPane = (JScrollPane) tabbedPane.getComponentAt(index);
+        return (JTextPane) scrollPane.getViewport().getView();
+    }
+
+    private void saveCurrentTabContentAs() {
+        int selectedIndex = tabbedPane.getSelectedIndex();
+        if (selectedIndex != -1) {
+            JTextPane textPane = getTextPaneAt(selectedIndex);
+            String content = textPane.getText();
+
+            JFileChooser fileChooser = new JFileChooser();
+            int returnVal = fileChooser.showSaveDialog(this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                try {
+                    FileWriter fileWriter = new FileWriter(selectedFile);
+                    fileWriter.write(content);
+                    fileWriter.close();
+                    tabbedPane.setTitleAt(selectedIndex, selectedFile.getName()); // Update tab title
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void saveCurrentTabContent() {
+        int selectedIndex = tabbedPane.getSelectedIndex();
+        if (selectedIndex != -1 && tabbedPane.getTabCount() > 0 && rutes.size() > 0) {
+//            System.out.println(tabbedPane.getTitleAt(selectedIndex));
+            String filename = rutes.get(selectedIndex);
+            JTextPane textPane = (JTextPane) (((JScrollPane) tabbedPane.getComponentAt(selectedIndex)).getViewport()).getComponent(0);
+            if (filename.contains("\\") || filename.contains("/")) {
+                File f = new File(filename);
+                if (f.exists()) {
+                    try {
+                        DataOutputStream d = new DataOutputStream(new FileOutputStream(filename));
+                        String line = textPane.getText();
+                        d.writeBytes(line);
+                        d.close();
+
+                    } catch (Exception ex) {
+                        System.out.println("File not found");
+                    }
+                    textPane.requestFocus();
+                }
+            }
+
+        } else {
+            saveCurrentTabContentAs();
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        btnHome = new Components.PanelRound();
-        lblHome = new javax.swing.JLabel();
-        lblDown = new javax.swing.JLabel();
         btnPlay = new Components.ButtonRound();
         btnReport = new Components.PanelRound();
         lblHome1 = new javax.swing.JLabel();
         lblDown2 = new javax.swing.JLabel();
         lblReport = new javax.swing.JLabel();
-        panelRound1 = new Components.PanelRound();
+        panelCode = new Components.PanelRound();
+        tabbedPane = new javax.swing.JTabbedPane();
         panelRound2 = new Components.PanelRound();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextPane2 = new javax.swing.JTextPane();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        btnNew = new Components.ButtonRound();
+        btnOpen = new Components.ButtonRound();
+        btnSave = new Components.ButtonRound();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DataForge");
 
         jPanel1.setPreferredSize(new java.awt.Dimension(1100, 670));
-
-        btnHome.setBackground(new java.awt.Color(51, 51, 51));
-        btnHome.setRoundBottomLeft(10);
-        btnHome.setRoundBottomRight(10);
-        btnHome.setRoundTopLeft(10);
-        btnHome.setRoundTopRight(10);
-        btnHome.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnHomeMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btnHomeMousePressed(evt);
-            }
-        });
-
-        lblDown.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-
-        javax.swing.GroupLayout btnHomeLayout = new javax.swing.GroupLayout(btnHome);
-        btnHome.setLayout(btnHomeLayout);
-        btnHomeLayout.setHorizontalGroup(
-            btnHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btnHomeLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(lblHome, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblDown, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        btnHomeLayout.setVerticalGroup(
-            btnHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnHomeLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(btnHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblHome, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                    .addComponent(lblDown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
 
         btnPlay.setBackground(new java.awt.Color(68, 174, 110));
         btnPlay.setBorder(null);
@@ -197,21 +226,29 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        panelRound1.setBackground(new java.awt.Color(51, 51, 51));
-        panelRound1.setRoundBottomLeft(10);
-        panelRound1.setRoundBottomRight(10);
-        panelRound1.setRoundTopLeft(10);
-        panelRound1.setRoundTopRight(10);
+        panelCode.setBackground(new java.awt.Color(51, 51, 51));
+        panelCode.setRoundBottomLeft(10);
+        panelCode.setRoundBottomRight(10);
+        panelCode.setRoundTopLeft(10);
+        panelCode.setRoundTopRight(10);
 
-        javax.swing.GroupLayout panelRound1Layout = new javax.swing.GroupLayout(panelRound1);
-        panelRound1.setLayout(panelRound1Layout);
-        panelRound1Layout.setHorizontalGroup(
-            panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 724, Short.MAX_VALUE)
+        tabbedPane.setBackground(new java.awt.Color(51, 51, 51));
+
+        javax.swing.GroupLayout panelCodeLayout = new javax.swing.GroupLayout(panelCode);
+        panelCode.setLayout(panelCodeLayout);
+        panelCodeLayout.setHorizontalGroup(
+            panelCodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCodeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
+                .addContainerGap())
         );
-        panelRound1Layout.setVerticalGroup(
-            panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 620, Short.MAX_VALUE)
+        panelCodeLayout.setVerticalGroup(
+            panelCodeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCodeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         panelRound2.setBackground(new java.awt.Color(51, 51, 51));
@@ -239,16 +276,55 @@ public class Principal extends javax.swing.JFrame {
         panelRound2Layout.setVerticalGroup(
             panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound2Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2)
                 .addContainerGap())
         );
 
         jLabel1.setFont(new java.awt.Font("Montserrat", 2, 15)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Joab Ajsivinac - 202200135");
+
+        btnNew.setBackground(new java.awt.Color(51, 51, 51));
+        btnNew.setBorder(null);
+        btnNew.setBorderColor(new java.awt.Color(51, 51, 51));
+        btnNew.setColor(new java.awt.Color(51, 51, 51));
+        btnNew.setColorClick(new java.awt.Color(102, 102, 102));
+        btnNew.setColorOver(new java.awt.Color(102, 102, 102));
+        btnNew.setRadius(10);
+        btnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
+
+        btnOpen.setBackground(new java.awt.Color(51, 51, 51));
+        btnOpen.setBorder(null);
+        btnOpen.setBorderColor(new java.awt.Color(51, 51, 51));
+        btnOpen.setColor(new java.awt.Color(51, 51, 51));
+        btnOpen.setColorClick(new java.awt.Color(102, 102, 102));
+        btnOpen.setColorOver(new java.awt.Color(102, 102, 102));
+        btnOpen.setRadius(10);
+        btnOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenActionPerformed(evt);
+            }
+        });
+
+        btnSave.setBackground(new java.awt.Color(51, 51, 51));
+        btnSave.setBorder(null);
+        btnSave.setBorderColor(new java.awt.Color(51, 51, 51));
+        btnSave.setColor(new java.awt.Color(51, 51, 51));
+        btnSave.setColorClick(new java.awt.Color(102, 102, 102));
+        btnSave.setColorOver(new java.awt.Color(102, 102, 102));
+        btnSave.setRadius(10);
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -258,15 +334,19 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(420, 420, 420)
+                        .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnOpen, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(327, 327, 327)
                         .addComponent(btnPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(panelRound1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
+                            .addComponent(jLabel1)
+                            .addComponent(panelCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(panelRound2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(24, 24, 24))
@@ -275,15 +355,16 @@ public class Principal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnPlay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnNew, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnOpen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelRound1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelRound2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelRound2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
@@ -303,16 +384,6 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHomeMouseClicked
-        // TODO add your handling code here:
-        pressHome();
-    }//GEN-LAST:event_btnHomeMouseClicked
-
-    private void btnHomeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHomeMousePressed
-        // TODO add your handling code here:
-        pressHome();
-    }//GEN-LAST:event_btnHomeMousePressed
-
     private void btnReportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReportMouseClicked
         // TODO add your handling code here:
         pressReport();
@@ -322,6 +393,57 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         pressReport();
     }//GEN-LAST:event_btnReportMousePressed
+
+    private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
+        // TODO add your handling code here:
+        int returnVal = fileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            textPane = new JTextPane();
+            JScrollPane scrollPane = new JScrollPane(textPane);
+
+            // Crear un ButtonTabComponent para la nueva pestaña
+            ButtonTabComponent tabComponent = new ButtonTabComponent(tabbedPane);
+
+            // Agregar la pestaña con el componente personalizado
+            tabbedPane.addTab(selectedFile.getName(), scrollPane);
+            int index = tabbedPane.indexOfComponent(scrollPane);
+            tabbedPane.setTabComponentAt(index, tabComponent);
+            rutes.add(index, selectedFile.getAbsolutePath());
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
+                StyledDocument doc = textPane.getStyledDocument();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    doc.insertString(doc.getLength(), line + "\n", null);
+                }
+                reader.close();
+
+                // Apply syntax highlighting based on file extension
+                String fileName = selectedFile.getName();
+
+            } catch (IOException | BadLocationException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnOpenActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        saveCurrentTabContent();
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+        // TODO add your handling code here:
+        textPane = new JTextPane();
+        JScrollPane scrollPane = new JScrollPane(textPane);
+
+        String untitledFileName = "Untitled";
+        ButtonTabComponent tabComponent = new ButtonTabComponent(tabbedPane);
+        tabbedPane.addTab(untitledFileName, scrollPane);
+        int index = tabbedPane.indexOfComponent(scrollPane);
+        tabbedPane.setTabComponentAt(index, tabComponent);
+    }//GEN-LAST:event_btnNewActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -356,21 +478,22 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private Components.PanelRound btnHome;
+    private Components.ButtonRound btnNew;
+    private Components.ButtonRound btnOpen;
     private Components.ButtonRound btnPlay;
     private Components.PanelRound btnReport;
+    private Components.ButtonRound btnSave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextPane jTextPane2;
-    private javax.swing.JLabel lblDown;
     private javax.swing.JLabel lblDown2;
-    private javax.swing.JLabel lblHome;
     private javax.swing.JLabel lblHome1;
     private javax.swing.JLabel lblReport;
-    private Components.PanelRound panelRound1;
+    private Components.PanelRound panelCode;
     private Components.PanelRound panelRound2;
+    private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
 
 }
