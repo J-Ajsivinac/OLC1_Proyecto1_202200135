@@ -38,5 +38,7 @@ public class Proyecto1 {
         String entrada = "var=10";
         Reader sr = new StringReader(entrada);
     }
+    
+
 
 }

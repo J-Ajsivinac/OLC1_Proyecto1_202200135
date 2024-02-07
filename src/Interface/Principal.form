@@ -117,6 +117,9 @@
             </Property>
             <Property name="radius" type="int" value="10"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPlayActionPerformed"/>
+          </Events>
         </Component>
         <Container class="Components.PanelRound" name="btnReport">
           <Properties>

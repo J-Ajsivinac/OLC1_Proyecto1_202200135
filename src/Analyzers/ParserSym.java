@@ -44,6 +44,7 @@ public class ParserSym {
     public static final int TK_HISTOGRAM = 37;
     public static final int TK_END = 38;
     public static final int TK_CONSOLE = 39;
+    public static final int TK_EQUAL = 40;
 
     public static final String[] terminalNames = new String[]{
         "EOF",
@@ -87,5 +88,7 @@ public class ParserSym {
         "TK_VALUES",
         "TK_HISTOGRAM",
         "TK_END",
-        "TK_CONSOLE"};
+        "TK_CONSOLE",
+        "TK_EQUAL"
+    };
 }

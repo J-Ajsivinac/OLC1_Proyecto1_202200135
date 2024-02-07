@@ -1,5 +1,8 @@
 package Analyzers;
 import java_cup.runtime.*;
+import Errores.Errores;
+import java.util.ArrayList;
+
 
 %%
 %public
@@ -15,11 +18,11 @@ import java_cup.runtime.*;
 UNUSED=[ \r\t]+
 CONTENT = ([^\n\"\\]|\\.)
 ID = (\_)*[a-zA-Z][a-zA-Z0-9\_]*
-ID_ARRAY "@"{ID}
-STRING = \"({CONTENT}*)\"
-DOUBLE = [0-9]+\.[0-9]+
-COMMENT = “!”([^\r\n]*)?
-COMMENTS = ”<!”(\n)*?”!>”
+ID_ARRAY = "@"{ID}
+STRING = [\"][^\"\n]+[\"]
+DOUBLE = [0-9]+(\.[0-9])*
+COMMENT = [!]([^\r\n]*)?
+COMMENTS = [<!](\n)*?[!>]
 
 %{
 	StringBuffer string = new StringBuffer();
@@ -30,6 +33,11 @@ COMMENTS = ”<!”(\n)*?”!>”
 	private Symbol symbol(int type, Object value){
 		return new Symbol(type, yyline, yycolumn, value);
 	}
+
+
+    public static ArrayList<token> lexemas = new ArrayList<token>();
+    public static ArrayList<Errores> erroreslexicos = new ArrayList<Errores>();
+
 %}
 
 
@@ -38,17 +46,16 @@ COMMENTS = ”<!”(\n)*?”!>”
 	return symbol(ParserSym.EOF);
 %eofval} 
 %%
-
+<YYINITIAL> "programa" {return symbol(ParserSym.TK_PROGRAMA, yytext());}
+<YYINITIAL> "end" {return symbol(ParserSym.TK_END, yytext());}
 <YYINITIAL> "var" {return symbol(ParserSym.TK_VAR, yytext());}
 <YYINITIAL> ":" {return symbol(ParserSym.TK_COLON, yytext());}
 <YYINITIAL> "double" {return symbol(ParserSym.TK_DOUBLE, yytext());}
 <YYINITIAL> "[" {return symbol(ParserSym.TK_LBRACKET, yytext());}
 <YYINITIAL> "]" {return symbol(ParserSym.TK_RBRACKET, yytext());}
-<YYINITIAL> {ID|ID_ARRAY} {return symbol(ParserSym.TK_ID, yytext());}
+<YYINITIAL> "=" {return symbol(ParserSym.TK_EQUAL, yytext());}
 <YYINITIAL> "-" {return symbol(ParserSym.TK_MINUS, yytext());} 
 <YYINITIAL> "<" {return symbol(ParserSym.TK_LT, yytext());}
-<YYINITIAL> {STRING} {return symbol(ParserSym.TK_STRING, yytext());}
-<YYINITIAL> {DOUBLE} {return symbol(ParserSym.TK_DOUBLE, yytext());}
 <YYINITIAL> ";" {return symbol(ParserSym.TK_SEMICOLON, yytext());}
 <YYINITIAL> "arr" {return symbol(ParserSym.TK_ARR, yytext());}
 <YYINITIAL> "," {return symbol(ParserSym.TK_COMMA, yytext());}
@@ -76,7 +83,14 @@ COMMENTS = ”<!”(\n)*?”!>”
 <YYINITIAL> "label" {return symbol(ParserSym.TK_LABEL, yytext());}
 <YYINITIAL> "values" {return symbol(ParserSym.TK_VALUES, yytext());}
 <YYINITIAL> "histogram" {return symbol(ParserSym.TK_HISTOGRAM, yytext());}
-<YYINITIAL> "end" {return symbol(ParserSym.TK_END, yytext());}
+<YYINITIAL> ({ID}|{ID_ARRAY}) {return symbol(ParserSym.TK_ID, yytext());}
+<YYINITIAL> {STRING} {return symbol(ParserSym.TK_STRING, yytext());}
+<YYINITIAL> {DOUBLE} {return symbol(ParserSym.TK_DOUBLE, yytext());}
 \n                      {yychar = 1;}
 {UNUSED}                {}
 {COMMENT}              {}
+{COMMENTS}              {}
+<YYINITIAL> . 
+{
+erroreslexicos.add(new Errores(0,"El caracter : '"+yytext(), Integer.toString(yyline), Integer.toString(yychar)));
+}

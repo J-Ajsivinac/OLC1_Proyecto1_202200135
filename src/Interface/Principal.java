@@ -1,5 +1,7 @@
 package Interface;
 
+import Analyzers.ParserSym;
+import Analyzers.Scanner;
 import Components.MReport;
 import Components.glasspanel.DefaultOption;
 import Components.glasspanel.GlassPanePopup;
@@ -18,8 +20,10 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.function.Function;
+import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -98,6 +102,23 @@ public class Principal extends javax.swing.JFrame {
     private JTextPane getTextPaneAt(int index) {
         JScrollPane scrollPane = (JScrollPane) tabbedPane.getComponentAt(index);
         return (JTextPane) scrollPane.getViewport().getView();
+    }
+
+    public void print() {
+        try {
+            int selectedIndex = tabbedPane.getSelectedIndex();
+            JTextPane textPaneTemp = getTextPaneAt(selectedIndex);
+            String text = textPaneTemp.getText();
+            Scanner scan = new Scanner(new StringReader(text));
+            Symbol symbol = scan.next_token();
+            while (symbol.sym != ParserSym.EOF) {
+                System.out.println("Token: " + symbol.sym + ", Value: " + symbol.value);
+                symbol = scan.next_token();
+            }
+            System.out.println(Scanner.erroreslexicos.size());
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     private void saveCurrentTabContentAs() {
@@ -183,6 +204,11 @@ public class Principal extends javax.swing.JFrame {
         btnPlay.setColorClick(new java.awt.Color(60, 158, 99));
         btnPlay.setColorOver(new java.awt.Color(60, 146, 94));
         btnPlay.setRadius(10);
+        btnPlay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlayActionPerformed(evt);
+            }
+        });
 
         btnReport.setBackground(new java.awt.Color(51, 51, 51));
         btnReport.setRoundBottomLeft(10);
@@ -444,6 +470,11 @@ public class Principal extends javax.swing.JFrame {
         int index = tabbedPane.indexOfComponent(scrollPane);
         tabbedPane.setTabComponentAt(index, tabComponent);
     }//GEN-LAST:event_btnNewActionPerformed
+
+    private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
+        // TODO add your handling code here:
+        print();
+    }//GEN-LAST:event_btnPlayActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
