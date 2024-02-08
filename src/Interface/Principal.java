@@ -1,5 +1,6 @@
 package Interface;
 
+import Analyzers.Parser;
 import Analyzers.ParserSym;
 import Analyzers.Scanner;
 import Components.MReport;
@@ -28,8 +29,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
+import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import javax.swing.text.TabSet;
+import javax.swing.text.TabStop;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -110,12 +117,8 @@ public class Principal extends javax.swing.JFrame {
             JTextPane textPaneTemp = getTextPaneAt(selectedIndex);
             String text = textPaneTemp.getText();
             Scanner scan = new Scanner(new StringReader(text));
-            Symbol symbol = scan.next_token();
-            while (symbol.sym != ParserSym.EOF) {
-                System.out.println("Token: " + symbol.sym + ", Value: " + symbol.value);
-                symbol = scan.next_token();
-            }
-            System.out.println(Scanner.erroreslexicos.size());
+            Parser sintax = new Parser(scan);
+            sintax.parse();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -463,7 +466,24 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         textPane = new JTextPane();
         JScrollPane scrollPane = new JScrollPane(textPane);
+        int tabSize = 16; // Tamaño en píxeles
 
+        // Crear una instancia de TabStop con el tamaño deseado
+        TabStop tabStop = new TabStop(tabSize);
+
+        // Crear una instancia de TabSet con la TabStop personalizada
+        TabSet tabSet = new TabSet(new TabStop[]{tabStop});
+
+        // Obtener el StyledDocument del JTextPane
+        StyledDocument doc = textPane.getStyledDocument();
+
+        // Obtener el atributo de tabulación del documento
+        AttributeSet attr = SimpleAttributeSet.EMPTY;
+        MutableAttributeSet paraAttributes = new SimpleAttributeSet(attr);
+        StyleConstants.setTabSet(paraAttributes, tabSet);
+
+        // Aplicar el nuevo atributo de tabulación al documento
+        doc.setParagraphAttributes(0, doc.getLength(), paraAttributes, false);
         String untitledFileName = "Untitled";
         ButtonTabComponent tabComponent = new ButtonTabComponent(tabbedPane);
         tabbedPane.addTab(untitledFileName, scrollPane);

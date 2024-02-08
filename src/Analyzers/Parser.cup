@@ -4,3 +4,159 @@ import java_cup.runtime.*;
 
 class Parser;
 
+parser code{:
+
+public void syntax_error(Symbol s){
+	System.out.println("Sintax error: " +s.value + " en la línea " + s.right+ " en la columna " + s.left);
+}
+
+public void unrecovered_syntax_error(Symbol s)throws java.lang.Exception{
+	System.out.println("Sintax error: " +s.value + " en la línea " + s.right+" en la columna " + s.left);
+}
+
+:};
+
+terminal String TK_programa;
+terminal String TK_var;
+terminal String TK_colon;
+terminal String TK_double;
+terminal String TK_lbracket;
+terminal String TK_rbracket;
+terminal String TK_id;
+terminal String TK_minus;
+terminal String TK_lt;
+terminal String TK_gt;
+terminal String TK_string;
+terminal String TK_semicolon;
+terminal String TK_arr;
+terminal String TK_comma;
+terminal String TK_lparen;
+terminal String TK_rparen;
+terminal String TK_sum;
+terminal String TK_res;
+terminal String TK_mul;
+terminal String TK_div;
+terminal String TK_mod;
+terminal String TK_media;
+terminal String TK_mediana;
+terminal String TK_print;
+terminal String TK_column;
+terminal String TK_graphbar;
+terminal String TK_titulo;
+terminal String TK_ejex;
+terminal String TK_ejey;
+terminal String TK_titulox;
+terminal String TK_tituloy;
+terminal String TK_exec;
+terminal String TK_graphline;
+terminal String TK_graphpie;
+terminal String TK_label;
+terminal String TK_values;
+terminal String TK_histogram;
+terminal String TK_end;
+terminal String TK_console;
+terminal String TK_equal;
+
+non terminal  INIT, INSTRUCTIONS, INSTRUCTION, DECLARATION, CONSOLE, TYPE, EXP, CHAR, ARRAY_EXP, VALUES, VALUE, ARITHMETHIC_EXP, OP, VALUESPRINT, VALUEPRINT, ATTRIBUTES_GRAPH, ATTRIBUTE_GRAPH, GRAPH,TITLE,CONSOLE_ARRAY, TYPE_GRAPH,VARIABLE;
+
+// ---> Precedencia de menor a mayor;
+
+start with INIT;
+
+INIT ::= 
+	TK_programa INSTRUCTIONS TK_end |
+	TK_programa TK_end;
+
+INSTRUCTIONS ::=
+	INSTRUCTIONS INSTRUCTION |
+	INSTRUCTION;
+
+INSTRUCTION ::=
+	DECLARATION TK_end TK_semicolon |
+	CONSOLE TK_end TK_semicolon|
+	GRAPH TK_end TK_semicolon;
+
+DECLARATION ::= 
+	TK_var TK_colon TYPE TK_colon TK_colon TK_id TK_lt TK_minus EXP |
+	TK_arr TK_colon TYPE TK_colon TK_colon TK_id TK_lt TK_minus EXP;
+
+TYPE ::=
+	TK_double |
+	CHAR ;
+
+CHAR ::=
+	TK_string TK_lbracket TK_rbracket;
+
+EXP ::=
+	TK_id |
+	TK_double |
+	TK_string |
+	ARRAY_EXP |
+	ARITHMETHIC_EXP;
+
+ARRAY_EXP ::=
+	TK_lbracket VALUES TK_rbracket;
+
+VALUES ::=
+	VALUES TK_comma VALUE |
+	VALUE;
+
+VALUE ::=
+	TK_double |
+	TK_string |
+	TK_id |
+	ARITHMETHIC_EXP;
+
+ARITHMETHIC_EXP ::=
+	OP TK_lparen EXP TK_comma EXP TK_rparen ;
+
+OP ::=
+	TK_sum |
+	TK_res |
+	TK_mul |
+	TK_div |
+	TK_mod |
+
+
+CONSOLE ::=
+	TK_console TK_colon TK_colon TK_print TK_equal VALUESPRINT |
+	TK_console TK_colon TK_colon TK_column TK_equal TITLE TK_minus TK_gt CONSOLE_ARRAY;
+
+CONSOLE_ARRAY ::=
+	TK_lparen VALUES TK_rparen |
+	TK_id;
+
+VALUESPRINT ::=
+	VALUESPRINT TK_comma VALUEPRINT |
+	VALUEPRINT;
+
+VALUEPRINT ::=
+	TK_id |
+	TK_string |
+	TK_double |
+	ARITHMETHIC_EXP;
+
+GRAPH ::=
+	TYPE_GRAPH TK_lparen ATTRIBUTES_GRAPH TK_rparen;
+
+TYPE_GRAPH ::=
+	TK_graphbar |
+	TK_graphline |
+	TK_graphpie |
+	TK_histogram;
+
+ATTRIBUTES_GRAPH ::=
+	ATTRIBUTES_GRAPH ATTRIBUTE_GRAPH TK_exec TYPE_GRAPH TK_end TK_semicolon
+	ATTRIBUTE_GRAPH TK_exec TYPE_GRAPH TK_end TK_semicolon;
+
+ATTRIBUTE_GRAPH ::=
+	VARIABLE TK_colon TK_colon TYPE TK_equal VALUE TK_end TK_semicolon;
+
+VARIABLE ::=
+	TK_titulo |
+	TK_ejex |
+	TK_ejey |
+	TK_titulox |
+	TK_tituloy |
+	TK_label |
+	TK_values;
