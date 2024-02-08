@@ -24,21 +24,12 @@ public class Proyecto1 {
         }
 
         
-        Generate g = new Generate();
+        //Generate g = new Generate();
 
         UIManager.put("defaultFont", new Font("Montserrat", 0, 13));
         Principal p = new Principal();
         p.setVisible(true);
 
     }
-    
-    
-    public void test(){
-        System.out.println( "----- Ejemplo 1 -----" );
-        String entrada = "var=10";
-        Reader sr = new StringReader(entrada);
-    }
-    
-
 
 }

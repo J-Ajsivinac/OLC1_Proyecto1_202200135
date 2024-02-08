@@ -46,11 +46,12 @@ COMMENTS = [<!](\n)*?[!>]
 	return symbol(ParserSym.EOF);
 %eofval} 
 %%
-<YYINITIAL> "programa" {return symbol(ParserSym.TK_programa, yytext());}
+<YYINITIAL> "program" {return symbol(ParserSym.TK_program, yytext());}
 <YYINITIAL> "end" {return symbol(ParserSym.TK_end, yytext());}
 <YYINITIAL> "var" {return symbol(ParserSym.TK_var, yytext());}
 <YYINITIAL> ":" {return symbol(ParserSym.TK_colon, yytext());}
 <YYINITIAL> "double" {return symbol(ParserSym.TK_double, yytext());}
+<YYINITIAL> "char" {return symbol(ParserSym.TK_char, yytext());}
 <YYINITIAL> "[" {return symbol(ParserSym.TK_lbracket, yytext());}
 <YYINITIAL> "]" {return symbol(ParserSym.TK_rbracket, yytext());}
 <YYINITIAL> "=" {return symbol(ParserSym.TK_equal, yytext());}
@@ -73,11 +74,11 @@ COMMENTS = [<!](\n)*?[!>]
 <YYINITIAL> "column" {return symbol(ParserSym.TK_column, yytext());}
 <YYINITIAL> "console" {return symbol(ParserSym.TK_console, yytext());}
 <YYINITIAL> "graphbar" {return symbol(ParserSym.TK_graphbar, yytext());}
-<YYINITIAL> "titulo" {return symbol(ParserSym.TK_titulo, yytext());}
 <YYINITIAL> "ejex" {return symbol(ParserSym.TK_ejex, yytext());}
 <YYINITIAL> "ejey" {return symbol(ParserSym.TK_ejey, yytext());}
 <YYINITIAL> "titulox" {return symbol(ParserSym.TK_titulox, yytext());}
 <YYINITIAL> "tituloy" {return symbol(ParserSym.TK_tituloy, yytext());}
+<YYINITIAL> "titulo" {return symbol(ParserSym.TK_titulo, yytext());}
 <YYINITIAL> "exec" {return symbol(ParserSym.TK_exec, yytext());}
 <YYINITIAL> "graphline" {return symbol(ParserSym.TK_graphline, yytext());}
 <YYINITIAL> "graphpie" {return symbol(ParserSym.TK_graphpie, yytext());}

@@ -16,7 +16,7 @@ public void unrecovered_syntax_error(Symbol s)throws java.lang.Exception{
 
 :};
 
-terminal String TK_programa;
+terminal String TK_program;
 terminal String TK_var;
 terminal String TK_colon;
 terminal String TK_double;
@@ -56,16 +56,18 @@ terminal String TK_histogram;
 terminal String TK_end;
 terminal String TK_console;
 terminal String TK_equal;
+terminal String TK_char;
 
-non terminal  INIT, INSTRUCTIONS, INSTRUCTION, DECLARATION, CONSOLE, TYPE, EXP, CHAR, ARRAY_EXP, VALUES, VALUE, ARITHMETHIC_EXP, OP, VALUESPRINT, VALUEPRINT, ATTRIBUTES_GRAPH, ATTRIBUTE_GRAPH, GRAPH,TITLE,CONSOLE_ARRAY, TYPE_GRAPH,VARIABLE;
+
+non terminal  INIT, INSTRUCTIONS, INSTRUCTION, DECLARATION, CONSOLE, TYPE, EXP, CHAR, ARRAY_EXP, VALUES, VALUE, ARITHMETHIC_EXP, OP, VALUESPRINT, VALUEPRINT, ATTRIBUTES_GRAPH, ATTRIBUTE_GRAPH, GRAPH,TITLE,CONSOLE_ARRAY, TYPE_GRAPH,VARIABLE,STATISTICAL_EXP,TYPE_S;
 
 // ---> Precedencia de menor a mayor;
 
 start with INIT;
 
 INIT ::= 
-	TK_programa INSTRUCTIONS TK_end |
-	TK_programa TK_end;
+	TK_program INSTRUCTIONS TK_end TK_program |
+	TK_program TK_end TK_program;
 
 INSTRUCTIONS ::=
 	INSTRUCTIONS INSTRUCTION |
@@ -82,17 +84,15 @@ DECLARATION ::=
 
 TYPE ::=
 	TK_double |
-	CHAR ;
-
-CHAR ::=
-	TK_string TK_lbracket TK_rbracket;
+	TK_char TK_lbracket TK_rbracket;
 
 EXP ::=
 	TK_id |
 	TK_double |
 	TK_string |
 	ARRAY_EXP |
-	ARITHMETHIC_EXP;
+	ARITHMETHIC_EXP|
+    STATISTICAL_EXP ;
 
 ARRAY_EXP ::=
 	TK_lbracket VALUES TK_rbracket;
@@ -105,18 +105,27 @@ VALUE ::=
 	TK_double |
 	TK_string |
 	TK_id |
-	ARITHMETHIC_EXP;
+	ARITHMETHIC_EXP|
+	STATISTICAL_EXP;
 
 ARITHMETHIC_EXP ::=
 	OP TK_lparen EXP TK_comma EXP TK_rparen ;
+
+STATISTICAL_EXP ::=
+    TYPE_S TK_lparen ARRAY_EXP TK_rparen|
+	TYPE_S TK_lparen TK_id TK_rparen;
+
+TYPE_S ::=
+	TK_media |
+	TK_mediana;
+    
 
 OP ::=
 	TK_sum |
 	TK_res |
 	TK_mul |
 	TK_div |
-	TK_mod |
-
+	TK_mod ;
 
 CONSOLE ::=
 	TK_console TK_colon TK_colon TK_print TK_equal VALUESPRINT |
@@ -137,20 +146,20 @@ VALUEPRINT ::=
 	ARITHMETHIC_EXP;
 
 GRAPH ::=
-	TYPE_GRAPH TK_lparen ATTRIBUTES_GRAPH TK_rparen;
+	TYPE_GRAPH TK_lparen ATTRIBUTES_GRAPH TK_exec TYPE_GRAPH TK_end TK_semicolon TK_rparen;
 
 TYPE_GRAPH ::=
 	TK_graphbar |
 	TK_graphline |
 	TK_graphpie |
-	TK_histogram;
-
+	TK_histogram ;
+ 
 ATTRIBUTES_GRAPH ::=
-	ATTRIBUTES_GRAPH ATTRIBUTE_GRAPH TK_exec TYPE_GRAPH TK_end TK_semicolon
-	ATTRIBUTE_GRAPH TK_exec TYPE_GRAPH TK_end TK_semicolon;
+	ATTRIBUTES_GRAPH ATTRIBUTE_GRAPH |
+	ATTRIBUTE_GRAPH;
 
 ATTRIBUTE_GRAPH ::=
-	VARIABLE TK_colon TK_colon TYPE TK_equal VALUE TK_end TK_semicolon;
+	VARIABLE TK_colon TK_colon TYPE TK_equal EXP TK_end TK_semicolon;
 
 VARIABLE ::=
 	TK_titulo |

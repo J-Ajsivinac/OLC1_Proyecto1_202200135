@@ -33,6 +33,7 @@ public class ParserSym {
   public static final int TK_tituloy = 32;
   public static final int TK_titulox = 31;
   public static final int TK_label = 36;
+  public static final int TK_char = 42;
   public static final int TK_column = 26;
   public static final int TK_print = 25;
   public static final int TK_semicolon = 13;
@@ -41,7 +42,7 @@ public class ParserSym {
   public static final int TK_lbracket = 6;
   public static final int TK_mediana = 24;
   public static final int TK_ejey = 30;
-  public static final int TK_programa = 2;
+  public static final int TK_program = 2;
   public static final int TK_graphpie = 35;
   public static final int TK_ejex = 29;
   public static final int TK_values = 37;
@@ -53,7 +54,7 @@ public class ParserSym {
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
-  "TK_programa",
+  "TK_program",
   "TK_var",
   "TK_colon",
   "TK_double",
@@ -92,7 +93,8 @@ public class ParserSym {
   "TK_histogram",
   "TK_end",
   "TK_console",
-  "TK_equal"
+  "TK_equal",
+  "TK_char"
   };
 }
 
