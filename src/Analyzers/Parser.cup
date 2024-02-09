@@ -1,18 +1,19 @@
 package Analyzers;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java_cup.runtime.*;
 
 class Parser;
 
 parser code{:
+    //public Instruction mainM;
+    public void syntax_error(Symbol s){
+            System.out.println("Sintax error: " +s.value + " en la línea " + s.right+ " en la columna " + s.left);
+    }
 
-public void syntax_error(Symbol s){
-	System.out.println("Sintax error: " +s.value + " en la línea " + s.right+ " en la columna " + s.left);
-}
-
-public void unrecovered_syntax_error(Symbol s)throws java.lang.Exception{
-	System.out.println("Sintax error: " +s.value + " en la línea " + s.right+" en la columna " + s.left);
-}
+    public void unrecovered_syntax_error(Symbol s)throws java.lang.Exception{
+            System.out.println("Sintax error: " +s.value + " en la línea " + s.right+" en la columna " + s.left);
+    }
 
 :};
 
@@ -57,6 +58,11 @@ terminal String TK_end;
 terminal String TK_console;
 terminal String TK_equal;
 terminal String TK_char;
+terminal String TK_moda;
+terminal String TK_varianza;
+terminal String TK_max;
+terminal String TK_min;
+
 
 
 non terminal  INIT, INSTRUCTIONS, INSTRUCTION, DECLARATION, CONSOLE, TYPE, EXP, CHAR, ARRAY_EXP, VALUES, VALUE, ARITHMETHIC_EXP, OP, VALUESPRINT, VALUEPRINT, ATTRIBUTES_GRAPH, ATTRIBUTE_GRAPH, GRAPH,TITLE,CONSOLE_ARRAY, TYPE_GRAPH,VARIABLE,STATISTICAL_EXP,TYPE_S;
@@ -109,16 +115,19 @@ VALUE ::=
 	STATISTICAL_EXP;
 
 ARITHMETHIC_EXP ::=
-	OP TK_lparen EXP TK_comma EXP TK_rparen ;
+	OP TK_lparen VALUE TK_comma VALUE TK_rparen ;
 
 STATISTICAL_EXP ::=
     TYPE_S TK_lparen ARRAY_EXP TK_rparen|
-	TYPE_S TK_lparen TK_id TK_rparen;
+    TYPE_S TK_lparen TK_id TK_rparen;
 
 TYPE_S ::=
 	TK_media |
-	TK_mediana;
-    
+	TK_mediana |
+        TK_moda |
+        TK_varianza |
+        TK_max |
+        TK_min ;  
 
 OP ::=
 	TK_sum |

@@ -20,11 +20,10 @@ public class Proyecto1 {
             UIManager.setLookAndFeel(new FlatMacDarkLaf());
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            //System.out.println(ex);
         }
 
         
-        //Generate g = new Generate();
+        Generate g = new Generate();
 
         UIManager.put("defaultFont", new Font("Montserrat", 0, 13));
         Principal p = new Principal();

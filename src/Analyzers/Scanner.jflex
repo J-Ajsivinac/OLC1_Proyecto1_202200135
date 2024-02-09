@@ -22,7 +22,8 @@ ID_ARRAY = "@"{ID}
 STRING = [\"][^\"\n]+[\"]
 DOUBLE = [0-9]+(\.[0-9])*
 COMMENT = [!]([^\r\n]*)?
-COMMENTS = [<!](\n)*?[!>]
+COMMENTS= [<][!][^!]*[!]+([^<!][^!]*[!]+)*[>]
+
 
 %{
 	StringBuffer string = new StringBuffer();
@@ -46,6 +47,7 @@ COMMENTS = [<!](\n)*?[!>]
 	return symbol(ParserSym.EOF);
 %eofval} 
 %%
+
 <YYINITIAL> "program" {return symbol(ParserSym.TK_program, yytext());}
 <YYINITIAL> "end" {return symbol(ParserSym.TK_end, yytext());}
 <YYINITIAL> "var" {return symbol(ParserSym.TK_var, yytext());}
@@ -70,6 +72,10 @@ COMMENTS = [<!](\n)*?[!>]
 <YYINITIAL> "mod" {return symbol(ParserSym.TK_mod, yytext());}
 <YYINITIAL> "media" {return symbol(ParserSym.TK_media, yytext());}
 <YYINITIAL> "mediana" {return symbol(ParserSym.TK_mediana, yytext());}
+<YYINITIAL> "moda" {return symbol(ParserSym.TK_moda, yytext());}
+<YYINITIAL> "varianza" {return symbol(ParserSym.TK_varianza, yytext());}
+<YYINITIAL> "max" {return symbol(ParserSym.TK_max, yytext());}
+<YYINITIAL> "min" {return symbol(ParserSym.TK_min, yytext());}
 <YYINITIAL> "print" {return symbol(ParserSym.TK_print, yytext());}
 <YYINITIAL> "column" {return symbol(ParserSym.TK_column, yytext());}
 <YYINITIAL> "console" {return symbol(ParserSym.TK_console, yytext());}
