@@ -1,55 +1,28 @@
 package TableSymb;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class TableSymb {
 
-    public Map<String, Map<String, Data>> filesJSON;
+    private HashMap<String, Object> table;
 
     public TableSymb() {
-        filesJSON = new TreeMap<>();
+        table = new HashMap<>();
     }
 
-    public void addFile(String nameFile) {
-        filesJSON.put(nameFile, new TreeMap<>());
+    public void put(String key, Object value) {
+        table.put(key, value);
     }
 
-    public void addAttribute(String nameFile, String attribute, String value, boolean isString) {
-        Map<String, Data> fileAttributes = filesJSON.get(nameFile);
-        if (isString) {
-            fileAttributes.put(attribute, new Data(isString, value));
-            return;
-        }
-        fileAttributes.put(attribute, new Data(isString, Double.parseDouble(value)));
+    public Object get(String key) {
+        return table.get(key);
     }
 
-    public void displayValues() {
-        for (Map.Entry<String, Map<String, Data>> fileEntry : filesJSON.entrySet()) {
-            String fileName = fileEntry.getKey();
-            Map<String, Data> fileAttributes = fileEntry.getValue();
-
-            System.out.println("Archivo: " + fileName);
-
-            for (Map.Entry<String, Data> attributeEntry : fileAttributes.entrySet()) {
-                String attributeName = attributeEntry.getKey();
-                Data attributeValue = attributeEntry.getValue();
-
-                System.out.printf("\t %-8s %20s \n", attributeName, attributeValue);
-            }
-
-            System.out.println(); // Línea en blanco para separar archivos
-        }
+    public Set<String> keySet() {
+        return table.keySet();
     }
 
-    public Data getValue(String nameFile, String attribute) {
-        ;
-        if (filesJSON.containsKey(nameFile)) {
-            Map<String, Data> fileAttributes = filesJSON.get(nameFile);
-            if (fileAttributes.containsKey(attribute)) {
-                return fileAttributes.get(attribute);
-            }
-        }
-        return null;
-    }
 }

@@ -2,17 +2,21 @@ package Analyzers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java_cup.runtime.*;
+import Errores.Errores;
 
 class Parser;
 
 parser code{:
     //public Instruction mainM;
+    ArrayList<Errores> erroresSintacticos = new ArrayList<Errores>();
     public void syntax_error(Symbol s){
-            System.out.println("Sintax error: " +s.value + " en la línea " + s.right+ " en la columna " + s.left);
+            
+        System.out.println("Sintax error: " +s.value + " en la línea " + s.right+ " en la columna " + s.left+"test->");
+        erroresSintacticos.add(new Errores(1,"El caracter : '"+ParserSym.terminalNames[s.sym]+"no se esperaba", String.valueOf(s.right) ,String.valueOf(s.left)));
     }
 
     public void unrecovered_syntax_error(Symbol s)throws java.lang.Exception{
-            System.out.println("Sintax error: " +s.value + " en la línea " + s.right+" en la columna " + s.left);
+            System.out.println("El error no se pudo recueprar");
     }
 
 :};
@@ -73,7 +77,8 @@ start with INIT;
 
 INIT ::= 
 	TK_program INSTRUCTIONS TK_end TK_program |
-	TK_program TK_end TK_program;
+	TK_program TK_end TK_program|
+        error;
 
 INSTRUCTIONS ::=
 	INSTRUCTIONS INSTRUCTION |
@@ -82,7 +87,7 @@ INSTRUCTIONS ::=
 INSTRUCTION ::=
 	DECLARATION TK_end TK_semicolon |
 	CONSOLE TK_end TK_semicolon|
-	GRAPH TK_end TK_semicolon;
+	GRAPH TK_end TK_semicolon ;
 
 DECLARATION ::= 
 	TK_var TK_colon TYPE TK_colon TK_colon TK_id TK_lt TK_minus EXP |
@@ -90,7 +95,8 @@ DECLARATION ::=
 
 TYPE ::=
 	TK_double |
-	TK_char TK_lbracket TK_rbracket;
+	TK_char TK_lbracket TK_rbracket|
+        error;
 
 EXP ::=
 	TK_id |
@@ -98,7 +104,7 @@ EXP ::=
 	TK_string |
 	ARRAY_EXP |
 	ARITHMETHIC_EXP|
-    STATISTICAL_EXP ;
+        STATISTICAL_EXP ;
 
 ARRAY_EXP ::=
 	TK_lbracket VALUES TK_rbracket;
@@ -119,7 +125,8 @@ ARITHMETHIC_EXP ::=
 
 STATISTICAL_EXP ::=
     TYPE_S TK_lparen ARRAY_EXP TK_rparen|
-    TYPE_S TK_lparen TK_id TK_rparen;
+    TYPE_S TK_lparen TK_id TK_rparen|
+    error;
 
 TYPE_S ::=
 	TK_media |
@@ -127,7 +134,8 @@ TYPE_S ::=
         TK_moda |
         TK_varianza |
         TK_max |
-        TK_min ;  
+        TK_min |
+        error;
 
 OP ::=
 	TK_sum |
@@ -138,11 +146,13 @@ OP ::=
 
 CONSOLE ::=
 	TK_console TK_colon TK_colon TK_print TK_equal VALUESPRINT |
-	TK_console TK_colon TK_colon TK_column TK_equal TITLE TK_minus TK_gt CONSOLE_ARRAY;
+	TK_console TK_colon TK_colon TK_column TK_equal TITLE TK_minus TK_gt CONSOLE_ARRAY|
+        error ;
 
 CONSOLE_ARRAY ::=
 	TK_lparen VALUES TK_rparen |
-	TK_id;
+	TK_id
+        error;
 
 VALUESPRINT ::=
 	VALUESPRINT TK_comma VALUEPRINT |
@@ -161,7 +171,8 @@ TYPE_GRAPH ::=
 	TK_graphbar |
 	TK_graphline |
 	TK_graphpie |
-	TK_histogram ;
+	TK_histogram |
+        error;
  
 ATTRIBUTES_GRAPH ::=
 	ATTRIBUTES_GRAPH ATTRIBUTE_GRAPH |
@@ -177,4 +188,5 @@ VARIABLE ::=
 	TK_titulox |
 	TK_tituloy |
 	TK_label |
-	TK_values;
+	TK_values|
+        error;

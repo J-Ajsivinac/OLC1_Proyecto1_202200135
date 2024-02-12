@@ -7,6 +7,7 @@ import Components.MReport;
 import Components.glasspanel.DefaultOption;
 import Components.glasspanel.GlassPanePopup;
 import Components.tabs.ButtonTabComponent;
+import TableSymb.TableSymb;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,6 +24,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.function.Function;
 import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
@@ -118,7 +120,8 @@ public class Principal extends javax.swing.JFrame {
             String text = textPaneTemp.getText();
             Scanner scan = new Scanner(new StringReader(text));
             Parser sintax = new Parser(scan);
-           sintax.parse();
+            sintax.parse();
+
 //            Symbol symbol = scan.next_token();
 //            while (symbol.sym != ParserSym.EOF) {
 //                System.out.println("Token: " + symbol.sym + ", Value: " + symbol.value+" col= "+symbol.left +" fila= "+symbol.toString());
