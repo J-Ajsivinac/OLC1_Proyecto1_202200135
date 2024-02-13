@@ -8,10 +8,11 @@ import Tools.VariableValue;
 import Tools.ArithmeticExp;
 import Tools.StatisticalExp;
 import Tools.VariableDeclaration;
+import Tools.Instructions;
 class Parser;
 
 parser code{:
-    //public Instruction mainM;
+    public Instructions mainM = new Instructions();
     ArrayList<Errores> erroresSintacticos = new ArrayList<Errores>();
     public void syntax_error(Symbol s){
             
@@ -22,6 +23,10 @@ parser code{:
     public void unrecovered_syntax_error(Symbol s)throws java.lang.Exception{
             System.out.println("El error no se pudo recueprar");
     }
+
+	public void getInstructions(){
+		mainM.print();
+	}
 
 :};
 
@@ -73,8 +78,8 @@ terminal String TK_min;
 
 
 
-non terminal  INIT,INSTRUCTIONS,INSTRUCTION,DECLARATION, CONSOLE, TYPE, EXP, CHAR, VALUES,  VALUESPRINT, VALUEPRINT, ATTRIBUTES_GRAPH, ATTRIBUTE_GRAPH, GRAPH,TITLE,CONSOLE_ARRAY, TYPE_GRAPH,VARIABLE;
-non terminal VariableValue ARRAY_EXP,STATISTICAL_EXP,ARITHMETHIC_EXP,VALUE;
+non terminal  INIT,INSTRUCTIONS, CONSOLE, TYPE, EXP, CHAR, VALUES,  VALUESPRINT, VALUEPRINT, ATTRIBUTES_GRAPH, ATTRIBUTE_GRAPH, GRAPH,TITLE,CONSOLE_ARRAY, TYPE_GRAPH,VARIABLE;
+non terminal VariableValue ARRAY_EXP,STATISTICAL_EXP,ARITHMETHIC_EXP,VALUE,INSTRUCTION,DECLARATION;
 non terminal String TYPE_S,OP;
 // ---> Precedencia de menor a mayor;
 precedence left TK_colon;
@@ -87,13 +92,13 @@ INIT ::=
         error;
 
 INSTRUCTIONS ::=
-	INSTRUCTIONS INSTRUCTION |
-	INSTRUCTION;
+	INSTRUCTIONS INSTRUCTION:i {:mainM.push((i));:} |
+	INSTRUCTION:i {: mainM.push((i)); :};
 
 INSTRUCTION ::=
-	DECLARATION TK_end TK_semicolon |
-	CONSOLE TK_end TK_semicolon|
-	GRAPH TK_end TK_semicolon ;
+	DECLARATION:r TK_end TK_semicolon {:RESULT = r;:} |
+	CONSOLE TK_end TK_semicolon{:RESULT = null;:}|
+	GRAPH TK_end TK_semicolon {:RESULT = null;:};
 
 DECLARATION ::= 
 	TK_var TK_colon TYPE TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e);

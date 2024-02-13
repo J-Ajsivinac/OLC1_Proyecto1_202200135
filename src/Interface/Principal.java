@@ -121,7 +121,7 @@ public class Principal extends javax.swing.JFrame {
             Scanner scan = new Scanner(new StringReader(text));
             Parser sintax = new Parser(scan);
             sintax.parse();
-
+            sintax.getInstructions();
 //            Symbol symbol = scan.next_token();
 //            while (symbol.sym != ParserSym.EOF) {
 //                System.out.println("Token: " + symbol.sym + ", Value: " + symbol.value+" col= "+symbol.left +" fila= "+symbol.toString());
