@@ -12,7 +12,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 public class Proyecto1 {
 
     public static void main(String[] args) {
@@ -28,7 +27,6 @@ public class Proyecto1 {
         UIManager.put("defaultFont", new Font("Montserrat", 0, 13));
         Principal p = new Principal();
         p.setVisible(true);
-
     }
 
 }

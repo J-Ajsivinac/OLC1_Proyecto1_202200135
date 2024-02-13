@@ -3,7 +3,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java_cup.runtime.*;
 import Errores.Errores;
-
+import Tools.TypeVariable;
+import Tools.VariableValue;
+import Tools.ArithmeticExp;
+import Tools.StatisticalExp;
+import Tools.VariableDeclaration;
 class Parser;
 
 parser code{:
@@ -69,9 +73,11 @@ terminal String TK_min;
 
 
 
-non terminal  INIT, INSTRUCTIONS, INSTRUCTION, DECLARATION, CONSOLE, TYPE, EXP, CHAR, ARRAY_EXP, VALUES, VALUE, ARITHMETHIC_EXP, OP, VALUESPRINT, VALUEPRINT, ATTRIBUTES_GRAPH, ATTRIBUTE_GRAPH, GRAPH,TITLE,CONSOLE_ARRAY, TYPE_GRAPH,VARIABLE,STATISTICAL_EXP,TYPE_S;
-
+non terminal  INIT,INSTRUCTIONS,INSTRUCTION,DECLARATION, CONSOLE, TYPE, EXP, CHAR, VALUES,  VALUESPRINT, VALUEPRINT, ATTRIBUTES_GRAPH, ATTRIBUTE_GRAPH, GRAPH,TITLE,CONSOLE_ARRAY, TYPE_GRAPH,VARIABLE;
+non terminal VariableValue ARRAY_EXP,STATISTICAL_EXP,ARITHMETHIC_EXP,VALUE;
+non terminal String TYPE_S,OP;
 // ---> Precedencia de menor a mayor;
+precedence left TK_colon;
 
 start with INIT;
 
@@ -90,8 +96,14 @@ INSTRUCTION ::=
 	GRAPH TK_end TK_semicolon ;
 
 DECLARATION ::= 
-	TK_var TK_colon TYPE TK_colon TK_colon TK_id TK_lt TK_minus EXP |
-	TK_arr TK_colon TYPE TK_colon TK_colon TK_id TK_lt TK_minus EXP;
+	TK_var TK_colon TYPE TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e);
+																			System.out.println(e);
+																			RESULT = new VariableValue(new VariableDeclaration(id, e),TypeVariable.DECLARATION);  
+																			:} |
+	TK_arr TK_colon TYPE TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e); 
+																			System.out.println(e);
+																			RESULT = new VariableValue(new VariableDeclaration(id, e),TypeVariable.DECLARATION);
+																			:};
 
 TYPE ::=
 	TK_double |
@@ -99,50 +111,53 @@ TYPE ::=
         error;
 
 EXP ::=
-	TK_id |
-	TK_double |
-	TK_string |
-	ARRAY_EXP |
-	ARITHMETHIC_EXP|
-        STATISTICAL_EXP ;
+	TK_id:r {: RESULT = new VariableValue(r,TypeVariable.ID); :} |
+	TK_double:r {: RESULT = new VariableValue(r,TypeVariable.VALUE); :} |
+	TK_string:r {: RESULT = new VariableValue(r,TypeVariable.VALUE); :} |
+	ARRAY_EXP:r {: RESULT = r; :}|
+	ARITHMETHIC_EXP:r {: RESULT = r; :}|
+    STATISTICAL_EXP:r {: RESULT = r; :} ;
+
 
 ARRAY_EXP ::=
-	TK_lbracket VALUES TK_rbracket;
+	TK_lbracket VALUES:vs {: RESULT = new VariableValue(vs,TypeVariable.ARRAY); :} TK_rbracket;
 
 VALUES ::=
-	VALUES TK_comma VALUE |
-	VALUE;
+	VALUES:val TK_comma VALUE:v {: RESULT = val; RESULT += ","; :} |
+	VALUE:v {: RESULT = v+","; :} ;
+
 
 VALUE ::=
-	TK_double |
-	TK_string |
-	TK_id |
-	ARITHMETHIC_EXP|
-	STATISTICAL_EXP;
+	TK_double:r {: RESULT = new VariableValue(r,TypeVariable.VALUE); :} |
+	TK_string:r {: RESULT = new VariableValue(r,TypeVariable.VALUE); :} |
+	TK_id:r {: RESULT =  new VariableValue(r,TypeVariable.ID); :} |
+	ARITHMETHIC_EXP:r {: RESULT =  r; :}|
+	STATISTICAL_EXP:r {: RESULT = r; :} ;
+
 
 ARITHMETHIC_EXP ::=
-	OP TK_lparen VALUE TK_comma VALUE TK_rparen ;
+	OP:operador TK_lparen VALUE:v1 TK_comma VALUE:v2 TK_rparen {: RESULT= new VariableValue(new ArithmeticExp(v1,v2,operador),TypeVariable.AR); :};
 
 STATISTICAL_EXP ::=
-    TYPE_S TK_lparen ARRAY_EXP TK_rparen|
-    TYPE_S TK_lparen TK_id TK_rparen|
+    TYPE_S:type_ TK_lparen ARRAY_EXP:array TK_rparen {: RESULT = new VariableValue(new StatisticalExp(array, type_),TypeVariable.ST);:}|
+    TYPE_S:type_ TK_lparen TK_id:id TK_rparen  {: RESULT = new VariableValue(new StatisticalExp(id, type_),TypeVariable.ST);:}|
     error;
 
 TYPE_S ::=
-	TK_media |
-	TK_mediana |
-        TK_moda |
-        TK_varianza |
-        TK_max |
-        TK_min |
-        error;
+	TK_media:t {: RESULT = t ; :}  |
+	TK_mediana:t {: RESULT = t ; :}|
+    TK_moda:t {: RESULT = t ; :}|
+    TK_varianza:t {: RESULT = t ; :}|
+    TK_max:t {: RESULT = t ; :}|
+    TK_min:t {: RESULT = t ; :}|
+    error;
 
 OP ::=
-	TK_sum |
-	TK_res |
-	TK_mul |
-	TK_div |
-	TK_mod ;
+	TK_sum {: RESULT = "+" ; :} |
+	TK_res {: RESULT = "-" ; :} |
+	TK_mul {: RESULT = "*" ; :} |
+	TK_div {: RESULT = "/" ; :} |
+	TK_mod {: RESULT = "%" ; :} ;
 
 CONSOLE ::=
 	TK_console TK_colon TK_colon TK_print TK_equal VALUESPRINT |
@@ -189,4 +204,4 @@ VARIABLE ::=
 	TK_tituloy |
 	TK_label |
 	TK_values|
-        error;
+    error;
