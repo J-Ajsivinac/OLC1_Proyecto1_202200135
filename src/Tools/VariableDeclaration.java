@@ -4,7 +4,7 @@ package Tools;
 public class VariableDeclaration {
     private Object id;
     private Object value;
-
+    
     public VariableDeclaration(Object id, Object value) {
         this.id = id;
         this.value = value;

@@ -3,6 +3,8 @@ package Tools;
 
 public enum TypeVariable{
     ID,
+    DOUBLE,
+    STRING,
     VALUE,
     ARRAY,
     GRAPH,

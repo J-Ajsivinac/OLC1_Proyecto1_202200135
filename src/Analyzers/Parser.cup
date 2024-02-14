@@ -78,8 +78,8 @@ terminal String TK_min;
 
 
 
-non terminal  INIT,INSTRUCTIONS, CONSOLE, TYPE, EXP, CHAR, VALUES,  VALUESPRINT, VALUEPRINT, ATTRIBUTES_GRAPH, ATTRIBUTE_GRAPH, GRAPH,TITLE,CONSOLE_ARRAY, TYPE_GRAPH,VARIABLE;
-non terminal VariableValue ARRAY_EXP,STATISTICAL_EXP,ARITHMETHIC_EXP,VALUE,INSTRUCTION,DECLARATION;
+non terminal  INIT,INSTRUCTIONS, CONSOLE, TYPE, CHAR, VALUES,  VALUESPRINT, VALUEPRINT, ATTRIBUTES_GRAPH, ATTRIBUTE_GRAPH, GRAPH,TITLE,CONSOLE_ARRAY, TYPE_GRAPH,VARIABLE;
+non terminal VariableValue ARRAY_EXP,STATISTICAL_EXP,ARITHMETHIC_EXP,VALUE,INSTRUCTION,DECLARATION,EXP;
 non terminal String TYPE_S,OP;
 // ---> Precedencia de menor a mayor;
 precedence left TK_colon;
@@ -102,11 +102,11 @@ INSTRUCTION ::=
 
 DECLARATION ::= 
 	TK_var TK_colon TYPE TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e);
-																			System.out.println(e);
+																			//System.out.println(e);
 																			RESULT = new VariableValue(new VariableDeclaration(id, e),TypeVariable.DECLARATION);  
 																			:} |
 	TK_arr TK_colon TYPE TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e); 
-																			System.out.println(e);
+																			//System.out.println(e);
 																			RESULT = new VariableValue(new VariableDeclaration(id, e),TypeVariable.DECLARATION);
 																			:};
 
@@ -117,8 +117,10 @@ TYPE ::=
 
 EXP ::=
 	TK_id:r {: RESULT = new VariableValue(r,TypeVariable.ID); :} |
-	TK_double:r {: RESULT = new VariableValue(r,TypeVariable.VALUE); :} |
-	TK_string:r {: RESULT = new VariableValue(r,TypeVariable.VALUE); :} |
+	TK_double:r {: RESULT = new VariableValue(Double.parseDouble(r),TypeVariable.DOUBLE); 
+	//System.out.println("valor d ->"+ r); 
+	:} |
+	TK_string:r {: RESULT = new VariableValue(String.valueOf(r),TypeVariable.STRING); :} |
 	ARRAY_EXP:r {: RESULT = r; :}|
 	ARITHMETHIC_EXP:r {: RESULT = r; :}|
     STATISTICAL_EXP:r {: RESULT = r; :} ;
@@ -192,8 +194,8 @@ TYPE_GRAPH ::=
 	TK_graphline |
 	TK_graphpie |
 	TK_histogram |
-        error;
- 
+    error;
+
 ATTRIBUTES_GRAPH ::=
 	ATTRIBUTES_GRAPH ATTRIBUTE_GRAPH |
 	ATTRIBUTE_GRAPH;
