@@ -1,16 +1,14 @@
 package TableSymb;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class TableSymb {
-
-    private HashMap<String, Object> table;
+    private LinkedHashMap<String, Object> table;
 
     public TableSymb() {
-        table = new HashMap<>();
+        table = new LinkedHashMap<>();
     }
 
     public void put(String key, Object value) {
@@ -25,4 +23,9 @@ public class TableSymb {
         return table.keySet();
     }
 
+    public void printTable() {
+        for (Map.Entry<String, Object> entry : table.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+    }
 }

@@ -135,15 +135,15 @@ VALUES ::=
 
 
 VALUE ::=
-	TK_double:r {: RESULT = new VariableValue(r,TypeVariable.VALUE); :} |
-	TK_string:r {: RESULT = new VariableValue(r,TypeVariable.VALUE); :} |
+	TK_double:r {: RESULT = new VariableValue(r,TypeVariable.DOUBLE); :} |
+	TK_string:r {: RESULT = new VariableValue(r,TypeVariable.STRING); :} |
 	TK_id:r {: RESULT =  new VariableValue(r,TypeVariable.ID); :} |
 	ARITHMETHIC_EXP:r {: RESULT =  r; :}|
 	STATISTICAL_EXP:r {: RESULT = r; :} ;
 
 
 ARITHMETHIC_EXP ::=
-	OP:operador TK_lparen VALUE:v1 TK_comma VALUE:v2 TK_rparen {: RESULT= new VariableValue(new ArithmeticExp(v1,v2,operador),TypeVariable.AR); :};
+	OP:operador TK_lparen EXP:v1 TK_comma EXP:v2 TK_rparen {: RESULT= new VariableValue(new ArithmeticExp(v1,v2,operador),TypeVariable.AR); :};
 
 STATISTICAL_EXP ::=
     TYPE_S:type_ TK_lparen ARRAY_EXP:array TK_rparen {: RESULT = new VariableValue(new StatisticalExp(array, type_),TypeVariable.ST);:}|
