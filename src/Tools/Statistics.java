@@ -8,52 +8,32 @@ import java_cup.runtime.Symbol;
 
 public class Statistics {
 
-    public static double Mean(String data) {
-        String[] parts = data.split(",", -1);
-        List<String> lista = new ArrayList<>(Arrays.asList(parts));
-
+    public static double Mean(ArrayList<Double>  data) {
         double suma = 0;
-        for (String symbol : lista) {
-            suma += Double.parseDouble(symbol);
+        for (double numero : data) {
+            suma += numero;
         }
-        return suma / lista.size();
+        return suma / data.size();
     }
 
-    public static String Median(String data) {
-        String[] parts = data.split(",", -1);
-        List<String> lista = new ArrayList<>(Arrays.asList(parts));
-        Collections.sort(lista, (s1, s2) -> {
-            double valor1 = Double.parseDouble(s1);
-            double valor2 = Double.parseDouble(s2);
-            return Double.compare(valor1, valor2);
-        });
-
+    public static double  Median(ArrayList<Double> lista) {
+         Collections.sort(lista);
         int tamaño = lista.size();
         if (tamaño % 2 == 0) {
-            double valor1 = Double.parseDouble(lista.get(tamaño / 2 - 1));
-            double valor2 = Double.parseDouble(lista.get(tamaño / 2));
-            return Double.toString((valor1 + valor2) / 2.0);
+            return (lista.get(tamaño / 2 - 1) + lista.get(tamaño / 2)) / 2.0;
         } else {
-            return (lista.get(tamaño / 2));
+            return lista.get(tamaño / 2);
         }
     }
 
-    public static String Mode(String data) {
-        String[] parts = data.split(",", -1);
-        List<String> lista = new ArrayList<>(Arrays.asList(parts));
-        Collections.sort(lista, (s1, s2) -> {
-            double valor1 = Double.parseDouble(s1);
-            double valor2 = Double.parseDouble(s2);
-            return Double.compare(valor1, valor2);
-        });
-
-        String moda = lista.get(0);
+    public static double Mode(ArrayList<Double> lista) {
+        double moda = lista.get(0);
         int maximoConteo = 0;
 
         for (int i = 0; i < lista.size(); i++) {
             int conteo = 0;
             for (int j = 0; j < lista.size(); j++) {
-                if (lista.get(j).equals(lista.get(i))) {
+                if (lista.get(j) == lista.get(i)) {
                     conteo++;
                 }
             }
@@ -65,38 +45,20 @@ public class Statistics {
         return moda;
     }
 
-    public static double Variance(String data) {
-        double media = Mean(data);
-        String[] parts = data.split(",", -1);
-        List<String> lista = new ArrayList<>(Arrays.asList(parts));
-
+    public static double Variance(ArrayList<Double> lista) {
+        double media = Mean(lista);
         double sumaDiferenciasCuadrado = 0;
-        for (String symbol : lista) {
-            double valor = Double.parseDouble(symbol);
-            sumaDiferenciasCuadrado += Math.pow(valor - media, 2);
+        for (double numero : lista) {
+            sumaDiferenciasCuadrado += Math.pow(numero - media, 2);
         }
         return sumaDiferenciasCuadrado / lista.size();
     }
 
-    public static String Maximum(String data) {
-        String[] parts = data.split(",", -1);
-        List<String> lista = new ArrayList<>(Arrays.asList(parts));
-        Collections.sort(lista, (s1, s2) -> {
-            double valor1 = Double.parseDouble(s1);
-            double valor2 = Double.parseDouble(s2);
-            return Double.compare(valor1, valor2);
-        });
-        return lista.get(lista.size() - 1);
+    public static double Maximum(ArrayList<Double> lista) {
+        return Collections.max(lista);
     }
 
-    public static String Minimum(String data) {
-        String[] parts = data.split(",", -1);
-        List<String> lista = new ArrayList<>(Arrays.asList(parts));
-        Collections.sort(lista, (s1, s2) -> {
-            double valor1 = Double.parseDouble(s1);
-            double valor2 = Double.parseDouble(s2);
-            return Double.compare(valor1, valor2);
-        });
-        return lista.get(0);
+    public static double  Minimum(ArrayList<Double> lista) {
+       return Collections.min(lista);
     }
 }

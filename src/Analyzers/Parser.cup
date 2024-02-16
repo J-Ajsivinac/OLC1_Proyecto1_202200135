@@ -78,9 +78,10 @@ terminal String TK_min;
 
 
 
-non terminal  INIT,INSTRUCTIONS, CONSOLE, TYPE, CHAR, VALUES,  VALUESPRINT, VALUEPRINT, ATTRIBUTES_GRAPH, ATTRIBUTE_GRAPH, GRAPH,TITLE,CONSOLE_ARRAY, TYPE_GRAPH,VARIABLE;
+non terminal  INIT,INSTRUCTIONS, CONSOLE, TYPE, CHAR, VALUESPRINT, VALUEPRINT, ATTRIBUTES_GRAPH, ATTRIBUTE_GRAPH, GRAPH,TITLE,CONSOLE_ARRAY, TYPE_GRAPH,VARIABLE;
 non terminal VariableValue ARRAY_EXP,STATISTICAL_EXP,ARITHMETHIC_EXP,VALUE,INSTRUCTION,DECLARATION,EXP;
 non terminal String TYPE_S,OP;
+non terminal ArrayList<VariableValue> VALUES;
 // ---> Precedencia de menor a mayor;
 precedence left TK_colon;
 
@@ -130,13 +131,13 @@ ARRAY_EXP ::=
 	TK_lbracket VALUES:vs {: RESULT = new VariableValue(vs,TypeVariable.ARRAY); :} TK_rbracket;
 
 VALUES ::=
-	VALUES:val TK_comma VALUE:v {: RESULT = val; RESULT += ","; :} |
-	VALUE:v {: RESULT = v+","; :} ;
+	VALUES:val TK_comma VALUE:v {: RESULT = val; RESULT.add(v);:} |
+	VALUE:v {: RESULT = new ArrayList<>(Arrays.asList(v)); :} ;
 
 
 VALUE ::=
-	TK_double:r {: RESULT = new VariableValue(r,TypeVariable.DOUBLE); :} |
-	TK_string:r {: RESULT = new VariableValue(r,TypeVariable.STRING); :} |
+	TK_double:r {: RESULT = new VariableValue(Double.parseDouble(r),TypeVariable.DOUBLE); :} |
+	TK_string:r {: RESULT = new VariableValue(String.valueOf(r),TypeVariable.STRING); :} |
 	TK_id:r {: RESULT =  new VariableValue(r,TypeVariable.ID); :} |
 	ARITHMETHIC_EXP:r {: RESULT =  r; :}|
 	STATISTICAL_EXP:r {: RESULT = r; :} ;

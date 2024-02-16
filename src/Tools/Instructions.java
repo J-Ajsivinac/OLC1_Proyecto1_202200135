@@ -7,7 +7,7 @@ public class Instructions {
 
     private ArrayList<VariableValue> ins;
     private TableSymb table;
-    
+
     public Instructions() {
         this.ins = new ArrayList<>();
         table = new TableSymb();
@@ -42,8 +42,22 @@ public class Instructions {
                     table.put(variable, temp);
                 } else if (value.getType() == TypeVariable.AR) {
                     ArithmeticExp temp = (ArithmeticExp) value.getValue();
-                    double res = evaluate(temp);
+                    double res = evaluateArith(temp);
                     table.put(variable, res);
+                } else if (value.getType() == TypeVariable.ARRAY) {
+                    ArrayList<VariableValue> temp = (ArrayList<VariableValue>) value.getValue();
+
+                    //VariableValue temp2 = (VariableValue) temp;
+                    //table.put(variable, temp);
+//                    for (VariableValue variableValue : temp) {
+//                        System.out.println(variableValue.getValue());
+//                    }
+                    table.put(variable, temp);
+                } else if (value.getType() == TypeVariable.ST) {
+                    //System.out.println(" .-->"+value.getValue());
+                    StatisticalExp e = (StatisticalExp) value.getValue();
+                    double res = evaluateStats(e);
+                    System.out.println(res);
                 } else {
                     System.out.println(value.getValue());
                 }
@@ -52,7 +66,7 @@ public class Instructions {
         table.printTable();
     }
 
-    public double evaluate(ArithmeticExp data) {
+    private double evaluateArith(ArithmeticExp data) {
         double resultado = 0.0f;
         VariableValue v1 = (VariableValue) data.getV1();
         VariableValue v2 = (VariableValue) data.getV2();
@@ -62,13 +76,13 @@ public class Instructions {
         double operando1, operando2;
         if (v1.getType() == TypeVariable.AR) {
             ArithmeticExp temp = (ArithmeticExp) v1.getValue();
-            operando1 = evaluate(temp);
+            operando1 = evaluateArith(temp);
         } else {
             operando1 = (double) v1.getValue();
         }
         if (v2.getType() == TypeVariable.AR) {
             ArithmeticExp temp = (ArithmeticExp) v2.getValue();
-            operando2 = evaluate(temp);
+            operando2 = evaluateArith(temp);
         } else {
             operando2 = (double) v2.getValue();
         }
@@ -91,6 +105,51 @@ public class Instructions {
                 break;
             default:
                 resultado = 0;
+        }
+
+        return resultado;
+    }
+
+    private double evaluateStats(StatisticalExp data) {
+        double resultado = 0.0f;
+        String op = data.getType_s();
+        VariableValue v = (VariableValue) data.getValues();
+        ArrayList<VariableValue> array = (ArrayList<VariableValue>) v.getValue();
+        //System.out.println(v.getValue());
+        ArrayList<Double> arrayListDeDoubles = new ArrayList<>();
+        for (VariableValue variableValue : array) {
+            if (variableValue.getType() == TypeVariable.DOUBLE) {
+                arrayListDeDoubles.add((Double) variableValue.getValue());
+            }else if (variableValue.getType() == TypeVariable.AR){
+                ArithmeticExp temp = (ArithmeticExp) variableValue.getValue();
+                arrayListDeDoubles.add(evaluateArith(temp));
+            }
+            //System.out.println(" .-.->"+variableValue.getValue()+" - "+ variableValue.getType());
+        }
+
+        //System.out.println();
+
+        switch (op) {
+            case "Media":
+                resultado = Statistics.Mean(arrayListDeDoubles);
+                break;
+            case "Mediana":
+                resultado = Statistics.Median(arrayListDeDoubles);
+                break;
+            case "Moda":
+                resultado = Statistics.Mode(arrayListDeDoubles);
+                break;
+            case "Varianza":
+                resultado = Statistics.Variance(arrayListDeDoubles);
+                break;
+            case "Max":
+                resultado = Statistics.Maximum(arrayListDeDoubles);
+                break;
+            case "Min":
+                resultado = Statistics.Minimum(arrayListDeDoubles);
+                break;
+            default:
+                throw new AssertionError();
         }
 
         return resultado;
