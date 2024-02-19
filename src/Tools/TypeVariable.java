@@ -10,5 +10,9 @@ public enum TypeVariable{
     GRAPH,
     AR,
     ST,
-    DECLARATION
+    DECLARATION,
+    PRINT,
+    PRINTARRAY,
+    TYPEGRAPH,
+    VARIABLEGRAPH,
 }

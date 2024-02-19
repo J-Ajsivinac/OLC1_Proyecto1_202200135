@@ -26,5 +26,4 @@ public class StatisticalExp {
         this.values = values;
     }
     
-    
 }
