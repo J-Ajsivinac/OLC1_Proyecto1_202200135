@@ -1,12 +1,15 @@
 package Tools;
 
+import Interface.Principal;
 import TableSymb.TableSymb;
 import java.util.ArrayList;
+import javax.swing.JTextPane;
 
 public class Instructions {
 
     private ArrayList<VariableValue> ins;
     private TableSymb table;
+    private JTextPane console;
 
     public Instructions() {
         this.ins = new ArrayList<>();
@@ -46,12 +49,6 @@ public class Instructions {
                     table.put(variable, res);
                 } else if (value.getType() == TypeVariable.ARRAY) {
                     ArrayList<VariableValue> temp = (ArrayList<VariableValue>) value.getValue();
-
-                    //VariableValue temp2 = (VariableValue) temp;
-                    //table.put(variable, temp);
-//                    for (VariableValue variableValue : temp) {
-//                        System.out.println(variableValue.getValue());
-//                    }
                     table.put(variable, temp);
                 } else if (value.getType() == TypeVariable.ST) {
                     //System.out.println(" .-->"+value.getValue());
@@ -62,8 +59,65 @@ public class Instructions {
                     System.out.println(value.getValue());
                 }
             }
+            if (v.getType() == TypeVariable.CONSOLE) {
+                ArrayList<VariableValue> aux = (ArrayList<VariableValue>) v.getValue();
+                for (VariableValue variableValue : aux) {
+                    //System.out.println(variableValue);
+
+                    if (variableValue.getType() == TypeVariable.STRING) {
+                        String temp = (String) variableValue.getValue();
+                        String stringSinComillas = temp.replaceAll("\"", "");
+//                        System.out.println(stringSinComillas);
+                        output(stringSinComillas);
+                    } else if (variableValue.getType() == TypeVariable.DOUBLE) {
+                        Double temp = (Double) variableValue.getValue();
+//                            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), temp + "\n", null);
+                        output(temp);
+                    }
+
+                }
+
+            }
+            if (v.getType() == TypeVariable.PRINTARRAY) {
+                VariableValue temp = (VariableValue) v.getValue();
+                
+                if (temp.getType() == TypeVariable.ARRAY) {
+                    ArrayList<VariableValue> aux = (ArrayList<VariableValue>) temp.getValue();
+                    for (VariableValue variableValue : aux) {
+                        //System.out.println(variableValue);
+
+                        if (variableValue.getType() == TypeVariable.STRING) {
+                            String temp2 = (String) variableValue.getValue();
+                            String stringSinComillas = temp2.replaceAll("\"", "");
+//                        System.out.println(stringSinComillas);
+                            output(stringSinComillas);
+                        } else if (variableValue.getType() == TypeVariable.DOUBLE) {
+                            Double temp2 = (Double) variableValue.getValue();
+//                            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), temp + "\n", null);
+                            output(temp2);
+                        }
+
+                    }
+                }
+            }
+            table.printTable();
         }
-        table.printTable();
+    }
+
+    private void output(String text) {
+        try {
+            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), text + "\n", null);
+        } catch (Exception e) {
+            System.err.println("error " + e);
+        }
+    }
+
+    private void output(Double text) {
+        try {
+            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), text + "\n", null);
+        } catch (Exception e) {
+            System.err.println("error " + e);
+        }
     }
 
     private double evaluateArith(ArithmeticExp data) {
@@ -120,7 +174,7 @@ public class Instructions {
         for (VariableValue variableValue : array) {
             if (variableValue.getType() == TypeVariable.DOUBLE) {
                 arrayListDeDoubles.add((Double) variableValue.getValue());
-            }else if (variableValue.getType() == TypeVariable.AR){
+            } else if (variableValue.getType() == TypeVariable.AR) {
                 ArithmeticExp temp = (ArithmeticExp) variableValue.getValue();
                 arrayListDeDoubles.add(evaluateArith(temp));
             }
@@ -128,7 +182,6 @@ public class Instructions {
         }
 
         //System.out.println();
-
         switch (op) {
             case "Media":
                 resultado = Statistics.Mean(arrayListDeDoubles);

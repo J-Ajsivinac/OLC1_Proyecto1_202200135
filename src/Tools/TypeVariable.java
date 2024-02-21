@@ -12,6 +12,7 @@ public enum TypeVariable{
     ST,
     DECLARATION,
     PRINT,
+    CONSOLE,
     PRINTARRAY,
     TYPEGRAPH,
     VARIABLEGRAPH,

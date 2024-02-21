@@ -195,9 +195,9 @@ public class Principal extends javax.swing.JFrame {
         panelCode = new Components.PanelRound();
         tabbedPane = new javax.swing.JTabbedPane();
         panelRound2 = new Components.PanelRound();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane2 = new javax.swing.JTextPane();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        paneConsole = new javax.swing.JTextPane();
         jLabel1 = new javax.swing.JLabel();
         btnNew = new Components.ButtonRound();
         btnOpen = new Components.ButtonRound();
@@ -294,10 +294,10 @@ public class Principal extends javax.swing.JFrame {
         panelRound2.setRoundTopLeft(10);
         panelRound2.setRoundTopRight(10);
 
-        jScrollPane2.setViewportView(jTextPane2);
-
         jLabel2.setFont(new java.awt.Font("Montserrat", 1, 14)); // NOI18N
         jLabel2.setText("Consola");
+
+        jScrollPane1.setViewportView(paneConsole);
 
         javax.swing.GroupLayout panelRound2Layout = new javax.swing.GroupLayout(panelRound2);
         panelRound2.setLayout(panelRound2Layout);
@@ -306,9 +306,9 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(panelRound2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addContainerGap(17, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         panelRound2Layout.setVerticalGroup(
             panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,8 +316,8 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Montserrat", 2, 15)); // NOI18N
@@ -545,11 +545,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane jTextPane2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDown2;
     private javax.swing.JLabel lblHome1;
     private javax.swing.JLabel lblReport;
+    public static javax.swing.JTextPane paneConsole;
     private Components.PanelRound panelCode;
     private Components.PanelRound panelRound2;
     private javax.swing.JTabbedPane tabbedPane;

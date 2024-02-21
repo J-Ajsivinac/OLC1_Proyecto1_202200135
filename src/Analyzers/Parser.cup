@@ -10,6 +10,8 @@ import Tools.ArithmeticExp;
 import Tools.StatisticalExp;
 import Tools.VariableDeclaration;
 import Tools.Instructions;
+import Tools.SetCustom;
+import java.util.HashMap;
 class Parser;
 
 parser code{:
@@ -79,10 +81,13 @@ terminal String TK_min;
 
 
 
-non terminal  INIT,INSTRUCTIONS, CONSOLE, TYPE, CHAR, ATTRIBUTES_GRAPH, ATTRIBUTE_GRAPH, GRAPH,CONSOLE_ARRAY, TYPE_GRAPH,VARIABLE;
-non terminal VariableValue ARRAY_EXP,STATISTICAL_EXP,ARITHMETHIC_EXP,VALUE,INSTRUCTION,DECLARATION,EXP,VALUEPRINT,TITLE;
-non terminal String TYPE_S,OP;
+non terminal  INIT,INSTRUCTIONS, TYPE,CONSOLE_ARRAY, TYPE_GRAPH;
+non terminal VariableValue ARRAY_EXP,STATISTICAL_EXP,ARITHMETHIC_EXP,VALUE,INSTRUCTION,DECLARATION,EXP,VALUEPRINT,TITLE,CHAR,GRAPH,CONSOLE;
+non terminal String TYPE_S,OP,VARIABLE;
 non terminal ArrayList<VariableValue> VALUES,VALUESPRINT;
+non terminal VariableDeclaration ATTRIBUTE_GRAPH;
+// non terminal ArrayList<VariableValue> ATTRIBUTES_GRAPH;
+non terminal HashMap<String, Object> ATTRIBUTES_GRAPH;
 // ---> Precedencia de menor a mayor;
 precedence left TK_colon;
 
@@ -99,8 +104,8 @@ INSTRUCTIONS ::=
 
 INSTRUCTION ::=
 	DECLARATION:r TK_end TK_semicolon {:RESULT = r;:} |
-	CONSOLE TK_end TK_semicolon{:RESULT = null;:}|
-	GRAPH TK_end TK_semicolon {:RESULT = null;:};
+	CONSOLE:r TK_end TK_semicolon{:RESULT = r;:}|
+	GRAPH:r TK_end TK_semicolon {:RESULT = r;:};
 
 DECLARATION ::= 
 	TK_var TK_colon TYPE TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e);
@@ -169,12 +174,12 @@ OP ::=
 	TK_mod {: RESULT = "%" ; :} ;
 
 CONSOLE ::=
-	TK_console TK_colon TK_colon TK_print TK_equal VALUESPRINT {: RESULT = new VariableValue(new VariableDeclaration(id, e),TypeVariable.PRINT); :}|
-	TK_console TK_colon TK_colon TK_column TK_equal TITLE TK_minus TK_gt CONSOLE_ARRAY {: RESULT = new VariableValue(new VariableDeclaration(id, e),TypeVariable.PRINTARRAY); :} |
+	TK_console TK_colon TK_colon TK_print TK_equal VALUESPRINT:e {: RESULT = new VariableValue(e,TypeVariable.CONSOLE); :}|
+	TK_console TK_colon TK_colon TK_column TK_equal TITLE TK_minus TK_gt CONSOLE_ARRAY:e {: RESULT = new VariableValue(e,TypeVariable.PRINTARRAY); :} |
     error ;
 
 CONSOLE_ARRAY ::=
-	TK_lbracket VALUESPRINT:vs TK_lbracket {: RESULT = new VariableValue(vs,TypeVariable.ARRAY); :} |
+	TK_lbracket VALUESPRINT:vs TK_rbracket {: RESULT = new VariableValue(vs,TypeVariable.ARRAY); :} |
 	TK_id:r {: RESULT = new VariableValue(r,TypeVariable.ID); :} |
         error;
 
@@ -189,7 +194,7 @@ VALUEPRINT ::=
 	ARITHMETHIC_EXP:r {: RESULT =  r; :};
 
 GRAPH ::=
-	TYPE_GRAPH TK_lparen ATTRIBUTES_GRAPH TK_exec TYPE_GRAPH TK_end TK_semicolon TK_rparen;
+	TYPE_GRAPH TK_lparen ATTRIBUTES_GRAPH:att TK_exec TYPE_GRAPH TK_end TK_semicolon TK_rparen {: RESULT = new VariableValue(att, TypeVariable.GRAPH) ;System.out.println(att.size());:};
 
 TYPE_GRAPH ::=
 	TK_graphbar:r {: RESULT = new VariableValue(r,TypeVariable.TYPEGRAPH); :} |
@@ -200,21 +205,21 @@ TYPE_GRAPH ::=
 
 TITLE ::=
 	TK_string :r  {: RESULT = new VariableValue(String.valueOf(r),TypeVariable.STRING); :} |
-	TK_id:r {: RESULT =  new VariableValue(r,TypeVariable.ID); :} |
+	TK_id:r {: RESULT =  new VariableValue(r,TypeVariable.ID); :} ;
 
 ATTRIBUTES_GRAPH ::=
-	ATTRIBUTES_GRAPH:val  ATTRIBUTE_GRAPH:v {: RESULT = val; RESULT.add(v);:} |
-	ATTRIBUTE_GRAPH:v {:RESULT = new ArrayList<>(Arrays.asList(v));:};
+	ATTRIBUTES_GRAPH:val  ATTRIBUTE_GRAPH:v {: RESULT = val; VariableDeclaration temp = (VariableDeclaration) v; RESULT.put(String.valueOf(temp.getId()), temp.getValue());:} |
+	ATTRIBUTE_GRAPH:v {:RESULT = new HashMap<>(); VariableDeclaration temp = (VariableDeclaration) v; RESULT.put(String.valueOf(temp.getId()), temp.getValue()); :};
 
 ATTRIBUTE_GRAPH ::=
-	VARIABLE:v TK_colon TK_colon TYPE TK_equal EXP:e TK_end TK_semicolon  {: RESULT = new VariableValue(new VariableDeclaration(v, e),TypeVariable.VARIABLEGRAPH); :};
+	VARIABLE:v TK_colon TK_colon TYPE TK_equal EXP:e TK_end TK_semicolon  {: RESULT = new VariableDeclaration(v, e); :};
 
 VARIABLE ::=
-	TK_titulo:r {: RESULT = new VariableValue(r,TypeVariableG.TITULO); :} |
-	TK_ejex:r {: RESULT = new VariableValue(r,TypeVariableG.EJEX); :} |
-	TK_ejey:r {: RESULT = new VariableValue(r,TypeVariableG.EJEY); :} |
-	TK_titulox:r {: RESULT = new VariableValue(r,TypeVariableG.TITULOX); :} |
-	TK_tituloy:r {: RESULT = new VariableValue(r,TypeVariableG.TITULOY); :} |
-	TK_label:r {: RESULT = new VariableValue(r,TypeVariableG.LABEL); :} |
-	TK_values:r {: RESULT = new VariableValue(r,TypeVariableG.VALUES); :} |
+	TK_titulo:r {: RESULT = r; :} |
+	TK_ejex:r {: RESULT = r; :} |
+	TK_ejey:r {: RESULT = r; :} |
+	TK_titulox:r {: RESULT = r; :} |
+	TK_tituloy:r {: RESULT = r; :} |
+	TK_label:r {: RESULT = r; :} |
+	TK_values:r {: RESULT = r; :} |
     error;
