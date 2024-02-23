@@ -45,6 +45,8 @@ public class Principal extends javax.swing.JFrame {
     private JFileChooser fileChooser;
     private JTextPane textPane;
     private ArrayList<String> rutes = new ArrayList<>();
+    double[] data = {33,25,44};
+    String[] titles = {"33","25","44"};
     int indexFilePJ = -1;
 
     public Principal() {

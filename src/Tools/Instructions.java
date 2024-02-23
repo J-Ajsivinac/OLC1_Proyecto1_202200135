@@ -1,8 +1,11 @@
 package Tools;
 
 import Interface.Principal;
+import Interface.Test;
 import TableSymb.TableSymb;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JTextPane;
 
 public class Instructions {
@@ -80,7 +83,7 @@ public class Instructions {
             }
             if (v.getType() == TypeVariable.PRINTARRAY) {
                 VariableValue temp = (VariableValue) v.getValue();
-                
+
                 if (temp.getType() == TypeVariable.ARRAY) {
                     ArrayList<VariableValue> aux = (ArrayList<VariableValue>) temp.getValue();
                     for (VariableValue variableValue : aux) {
@@ -100,8 +103,65 @@ public class Instructions {
                     }
                 }
             }
+
+            if (v.getType() == TypeVariable.GRAPH) {
+//                VariableValue temp = (VariableValue) v.getValue();
+                VariableDeclaration temp = (VariableDeclaration) v.getValue();
+                TypeVariableG graphType = (TypeVariableG) temp.getId();
+                if (graphType == TypeVariableG.BARRAS) {
+                    HashMap<String, Object> values = (HashMap<String, Object>) temp.getValue();
+                    boolean isBar = true;
+
+                    for (Map.Entry<String, Object> entry : values.entrySet()) {
+                        VariableValue val = (VariableValue) entry.getValue();
+                        //System.out.println(entry.getKey() + " -> " + val.getType()+val.getValue());
+                        if (!validateFieldsBar(entry.getKey().toLowerCase(), val)) {
+                            isBar = false;
+                            continue;
+                        }
+//      
+
+                    }
+                    //String titulo = (String) ((VariableValue) values.get("titulo")).getValue();
+                    ArrayList<VariableValue> tempx = (ArrayList<VariableValue>) ((VariableValue) values.get("ejeX")).getValue();
+                    ArrayList<VariableValue> tempy = (ArrayList<VariableValue>) ((VariableValue) values.get("ejeY")).getValue();
+                    String titulox = (String) ((VariableValue) values.get("tituloX")).getValue();;
+                    String tituloy = (String) ((VariableValue) values.get("tituloY")).getValue();;
+//                    Test T = new Test();
+//                    T.setData("rest", tituloy, titulox, ejey, ejex);
+//                  
+                    ArrayList<String> ejex = new ArrayList<>();
+                    for (VariableValue variableValue : tempx) {
+                        ejex.add(((String)variableValue.getValue()).replaceAll("\"", "") );
+                    }
+                    ArrayList<Double> ejey = new ArrayList<>();
+                    for (VariableValue variableValue : tempy) {
+                        ejey.add((Double) variableValue.getValue());
+                    }
+
+                    System.out.println(ejex + "." + ejey + "." + titulox + "." + tituloy + ".");
+
+                    Test T = new Test();
+                    T.setData("test", tituloy.replaceAll("\"", ""), titulox.replaceAll("\"", ""), ejey, ejex);
+                    T.setVisible(true);
+                }
+            }
             table.printTable();
         }
+    }
+
+    private boolean validateFieldsBar(String attrO, VariableValue values) {
+        String[] attribute = {"titulo", "ejex", "ejey", "titulox", "tituloy"};
+        TypeVariable[] types = {TypeVariable.STRING, TypeVariable.ARRAY, TypeVariable.ARRAY, TypeVariable.STRING, TypeVariable.STRING};
+
+        for (int i = 0; i < attribute.length; i++) {
+            if (attrO.equals(attribute[i])) {
+                if (values.getType() != types[i]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void output(String text) {
