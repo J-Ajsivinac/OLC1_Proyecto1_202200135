@@ -81,11 +81,12 @@ terminal String TK_min;
 
 
 
-non terminal  INIT,INSTRUCTIONS, TYPE,CONSOLE_ARRAY, TYPE_GRAPH;
+non terminal  INIT,INSTRUCTIONS, TYPE,CONSOLE_ARRAY;
 non terminal VariableValue ARRAY_EXP,STATISTICAL_EXP,ARITHMETHIC_EXP,VALUE,INSTRUCTION,DECLARATION,EXP,VALUEPRINT,TITLE,CHAR,GRAPH,CONSOLE;
 non terminal String TYPE_S,OP,VARIABLE;
 non terminal ArrayList<VariableValue> VALUES,VALUESPRINT;
 non terminal VariableDeclaration ATTRIBUTE_GRAPH;
+non terminal TypeVariableG TYPE_GRAPH;
 // non terminal ArrayList<VariableValue> ATTRIBUTES_GRAPH;
 non terminal HashMap<String, Object> ATTRIBUTES_GRAPH;
 // ---> Precedencia de menor a mayor;
@@ -194,13 +195,13 @@ VALUEPRINT ::=
 	ARITHMETHIC_EXP:r {: RESULT =  r; :};
 
 GRAPH ::=
-	TYPE_GRAPH TK_lparen ATTRIBUTES_GRAPH:att TK_exec TYPE_GRAPH TK_end TK_semicolon TK_rparen {: RESULT = new VariableValue(att, TypeVariable.GRAPH) ;System.out.println(att.size());:};
+	TYPE_GRAPH:id TK_lparen ATTRIBUTES_GRAPH:att TK_exec TYPE_GRAPH TK_end TK_semicolon TK_rparen {: RESULT = new VariableValue(new VariableDeclaration( id,att), TypeVariable.GRAPH) ;System.out.println(att.size());:};
 
 TYPE_GRAPH ::=
-	TK_graphbar:r {: RESULT = new VariableValue(r,TypeVariable.TYPEGRAPH); :} |
-	TK_graphline:r {: RESULT = new VariableValue(r,TypeVariable.TYPEGRAPH); :}|
-	TK_graphpie:r {: RESULT = new VariableValue(r,TypeVariable.TYPEGRAPH); :}|
-	TK_histogram:r {: RESULT = new VariableValue(r,TypeVariable.TYPEGRAPH); :}|
+	TK_graphbar:r {: RESULT = TypeVariableG.BARRAS; :} |
+	TK_graphline:r {: RESULT = TypeVariableG.PIE; :}|
+	TK_graphpie:r {: RESULT = TypeVariableG.LINEA; :}|
+	TK_histogram:r {: RESULT = TypeVariableG.HISTOGRAMA; :}|
     error;
 
 TITLE ::=
