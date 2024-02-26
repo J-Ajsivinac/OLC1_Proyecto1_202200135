@@ -2,7 +2,6 @@ package proyecto;
 
 import Analyzers.Generate;
 import Interface.Principal;
-import Interface.Test;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Font;
 import java.io.File;
@@ -28,8 +27,6 @@ public class Proyecto1 {
         UIManager.put("defaultFont", new Font("Montserrat", 0, 13));
         Principal p = new Principal();
         p.setVisible(true);
-//        Test T = new Test();
-//        T.setVisible(true);
     }
 
 }

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package Charts.Bar;
+package Charts.Barc;
 
 /**
  *
@@ -29,10 +29,10 @@ public class LegendItemLeft extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        rotatedLabel1 = new Charts.Bar.RotatedLabel();
+        rotatedLabel1 = new Charts.Barc.RotatedLabel();
         lbColor = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        rotatedLabel2 = new Charts.Bar.RotatedLabel();
+        rotatedLabel2 = new Charts.Barc.RotatedLabel();
 
         rotatedLabel1.setText("rotatedLabel1");
 
@@ -77,7 +77,7 @@ public class LegendItemLeft extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lbColor;
-    private Charts.Bar.RotatedLabel rotatedLabel1;
-    private Charts.Bar.RotatedLabel rotatedLabel2;
+    private Charts.Barc.RotatedLabel rotatedLabel1;
+    private Charts.Barc.RotatedLabel rotatedLabel2;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,7 +1,8 @@
 package Tools;
 
+import Interface.Charts;
 import Interface.Principal;
-import Interface.Test;
+//import Interface.Test;
 import TableSymb.TableSymb;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,6 +59,9 @@ public class Instructions {
                     StatisticalExp e = (StatisticalExp) value.getValue();
                     double res = evaluateStats(e);
                     System.out.println(res);
+                } else if (value.getType() == TypeVariable.ID) {
+                    String temp = (String) value.getValue();
+                    table.put(variable, table.get(temp));
                 } else {
                     System.out.println(value.getValue());
                 }
@@ -66,16 +70,26 @@ public class Instructions {
                 ArrayList<VariableValue> aux = (ArrayList<VariableValue>) v.getValue();
                 for (VariableValue variableValue : aux) {
                     //System.out.println(variableValue);
-
+                    System.out.println("verify: " + variableValue.getValue());
                     if (variableValue.getType() == TypeVariable.STRING) {
                         String temp = (String) variableValue.getValue();
                         String stringSinComillas = temp.replaceAll("\"", "");
-//                        System.out.println(stringSinComillas);
                         output(stringSinComillas);
                     } else if (variableValue.getType() == TypeVariable.DOUBLE) {
                         Double temp = (Double) variableValue.getValue();
 //                            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), temp + "\n", null);
                         output(temp);
+                    } else if (variableValue.getType() == TypeVariable.ID) {
+                        String temp = (String) variableValue.getValue();
+//                        Object resp = table.get(temp);
+//                        if (resp instanceof Double) {
+//                            output((Double) resp);
+//                        } else if (resp instanceof String) {
+//                            output((String) resp);
+//                        } else {
+//                            System.out.println("error -> ");
+//                        }
+                        System.out.println("variable: " + temp);
                     }
 
                 }
@@ -105,9 +119,11 @@ public class Instructions {
             }
 
             if (v.getType() == TypeVariable.GRAPH) {
+                
 //                VariableValue temp = (VariableValue) v.getValue();
                 VariableDeclaration temp = (VariableDeclaration) v.getValue();
                 TypeVariableG graphType = (TypeVariableG) temp.getId();
+                System.out.println("Es una gráfica "+graphType);
                 if (graphType == TypeVariableG.BARRAS) {
                     HashMap<String, Object> values = (HashMap<String, Object>) temp.getValue();
                     boolean isBar = true;
@@ -132,25 +148,57 @@ public class Instructions {
 //                  
                     ArrayList<String> ejex = new ArrayList<>();
                     for (VariableValue variableValue : tempx) {
-                        ejex.add(((String)variableValue.getValue()).replaceAll("\"", "") );
+                        ejex.add(((String) variableValue.getValue()).replaceAll("\"", ""));
                     }
                     ArrayList<Double> ejey = new ArrayList<>();
                     for (VariableValue variableValue : tempy) {
                         ejey.add((Double) variableValue.getValue());
                     }
 
-                    System.out.println(ejex + "." + ejey + "." + titulox + "." + tituloy + ".");
-
-                    Test T = new Test();
-                    T.setData("test", tituloy.replaceAll("\"", ""), titulox.replaceAll("\"", ""), ejey, ejex);
-                    T.setVisible(true);
+//                    Test T = new Test();
+//                    T.setData("test", tituloy.replaceAll("\"", ""), titulox.replaceAll("\"", ""), ejey, ejex);
+//                    T.setVisible(true);
+                } else if (graphType == TypeVariableG.PIE) {
+                    HashMap<String, Object> values = (HashMap<String, Object>) temp.getValue();
+                    ArrayList<VariableValue> tempvalues = (ArrayList<VariableValue>) ((VariableValue) values.get("values")).getValue();
+                    ArrayList<VariableValue> templabels = (ArrayList<VariableValue>) ((VariableValue) values.get("label")).getValue();
+                    
+                    ArrayList<String> labels = new ArrayList<>();
+                    for (VariableValue variableValue : templabels) {
+                        labels.add(((String) variableValue.getValue()).replaceAll("\"", ""));
+                    }
+                    ArrayList<Double> val = new ArrayList<>();
+                    for (VariableValue variableValue : tempvalues) {
+                        val.add((Double) variableValue.getValue());
+                    }
+                    
+                    Charts c = new Charts();
+                    c.addPieChart(val, labels);
+                    c.setVisible(true);
+                    System.out.println("Gráfica de pie");
+                    
                 }
             }
-            table.printTable();
+            // table.printTable();
         }
+        //table.printTable();
     }
 
     private boolean validateFieldsBar(String attrO, VariableValue values) {
+        String[] attribute = {"titulo", "ejex", "ejey", "titulox", "tituloy"};
+        TypeVariable[] types = {TypeVariable.STRING, TypeVariable.ARRAY, TypeVariable.ARRAY, TypeVariable.STRING, TypeVariable.STRING};
+
+        for (int i = 0; i < attribute.length; i++) {
+            if (attrO.equals(attribute[i])) {
+                if (values.getType() != types[i]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean validateFieldsPie(String attrO, VariableValue values) {
         String[] attribute = {"titulo", "ejex", "ejey", "titulox", "tituloy"};
         TypeVariable[] types = {TypeVariable.STRING, TypeVariable.ARRAY, TypeVariable.ARRAY, TypeVariable.STRING, TypeVariable.STRING};
 
@@ -191,12 +239,23 @@ public class Instructions {
         if (v1.getType() == TypeVariable.AR) {
             ArithmeticExp temp = (ArithmeticExp) v1.getValue();
             operando1 = evaluateArith(temp);
+        } else if (v1.getType() == TypeVariable.ID) {
+            String temp = (String) v1.getValue();
+            Object resp = table.get(temp);
+            operando1 = (double) resp;
+
+//            System.out.println("valor 1: " + temp);
         } else {
             operando1 = (double) v1.getValue();
         }
         if (v2.getType() == TypeVariable.AR) {
             ArithmeticExp temp = (ArithmeticExp) v2.getValue();
             operando2 = evaluateArith(temp);
+        } else if (v2.getType() == TypeVariable.ID) {
+            String temp = (String) v2.getValue();
+            Object resp = table.get(temp);
+            operando2 = 0;
+            operando2 = (double) resp;
         } else {
             operando2 = (double) v2.getValue();
         }
@@ -237,34 +296,40 @@ public class Instructions {
             } else if (variableValue.getType() == TypeVariable.AR) {
                 ArithmeticExp temp = (ArithmeticExp) variableValue.getValue();
                 arrayListDeDoubles.add(evaluateArith(temp));
+            } else if (variableValue.getType() == TypeVariable.ID) {
+                String id = (String) variableValue.getValue();
+                Object resp = table.get(id);
+//                operando2 = (double) resp;
+                if (resp instanceof Double) {
+                    arrayListDeDoubles.add((double) resp);
+                }
+                //System.out.println(" .-.->"+variableValue.getValue()+" - "+ variableValue.getType());
             }
-            //System.out.println(" .-.->"+variableValue.getValue()+" - "+ variableValue.getType());
-        }
 
-        //System.out.println();
-        switch (op) {
-            case "Media":
-                resultado = Statistics.Mean(arrayListDeDoubles);
-                break;
-            case "Mediana":
-                resultado = Statistics.Median(arrayListDeDoubles);
-                break;
-            case "Moda":
-                resultado = Statistics.Mode(arrayListDeDoubles);
-                break;
-            case "Varianza":
-                resultado = Statistics.Variance(arrayListDeDoubles);
-                break;
-            case "Max":
-                resultado = Statistics.Maximum(arrayListDeDoubles);
-                break;
-            case "Min":
-                resultado = Statistics.Minimum(arrayListDeDoubles);
-                break;
-            default:
-                throw new AssertionError();
+            //System.out.println();
+            switch (op) {
+                case "Media":
+                    resultado = Statistics.Mean(arrayListDeDoubles);
+                    break;
+                case "Mediana":
+                    resultado = Statistics.Median(arrayListDeDoubles);
+                    break;
+                case "Moda":
+                    resultado = Statistics.Mode(arrayListDeDoubles);
+                    break;
+                case "Varianza":
+                    resultado = Statistics.Variance(arrayListDeDoubles);
+                    break;
+                case "Max":
+                    resultado = Statistics.Maximum(arrayListDeDoubles);
+                    break;
+                case "Min":
+                    resultado = Statistics.Minimum(arrayListDeDoubles);
+                    break;
+                default:
+                    throw new AssertionError();
+            }
         }
-
         return resultado;
     }
 

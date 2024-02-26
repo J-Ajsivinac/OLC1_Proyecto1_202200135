@@ -199,8 +199,8 @@ GRAPH ::=
 
 TYPE_GRAPH ::=
 	TK_graphbar:r {: RESULT = TypeVariableG.BARRAS; :} |
-	TK_graphline:r {: RESULT = TypeVariableG.PIE; :}|
-	TK_graphpie:r {: RESULT = TypeVariableG.LINEA; :}|
+	TK_graphline:r {: RESULT = TypeVariableG.LINEA; :}|
+	TK_graphpie:r {: RESULT = TypeVariableG.PIE; :}|
 	TK_histogram:r {: RESULT = TypeVariableG.HISTOGRAMA; :}|
     error;
 
