@@ -81,15 +81,15 @@ public class Instructions {
                         output(temp);
                     } else if (variableValue.getType() == TypeVariable.ID) {
                         String temp = (String) variableValue.getValue();
-//                        Object resp = table.get(temp);
-//                        if (resp instanceof Double) {
-//                            output((Double) resp);
-//                        } else if (resp instanceof String) {
-//                            output((String) resp);
-//                        } else {
-//                            System.out.println("error -> ");
-//                        }
-                        System.out.println("variable: " + temp);
+                        Object resp = table.get(temp);
+                        if (resp instanceof Double) {
+                            output((Double) resp);
+                        } else if (resp instanceof String) {
+                            output((String) resp);
+                        } else {
+                            System.out.println("error -> ");
+                        }
+                        //System.out.println("variable: " + temp);
                     }
 
                 }
@@ -119,11 +119,11 @@ public class Instructions {
             }
 
             if (v.getType() == TypeVariable.GRAPH) {
-                
+
 //                VariableValue temp = (VariableValue) v.getValue();
                 VariableDeclaration temp = (VariableDeclaration) v.getValue();
                 TypeVariableG graphType = (TypeVariableG) temp.getId();
-                System.out.println("Es una gráfica "+graphType);
+                System.out.println("Es una gráfica " + graphType);
                 if (graphType == TypeVariableG.BARRAS) {
                     HashMap<String, Object> values = (HashMap<String, Object>) temp.getValue();
                     boolean isBar = true;
@@ -162,21 +162,28 @@ public class Instructions {
                     HashMap<String, Object> values = (HashMap<String, Object>) temp.getValue();
                     ArrayList<VariableValue> tempvalues = (ArrayList<VariableValue>) ((VariableValue) values.get("values")).getValue();
                     ArrayList<VariableValue> templabels = (ArrayList<VariableValue>) ((VariableValue) values.get("label")).getValue();
-                    
+
                     ArrayList<String> labels = new ArrayList<>();
                     for (VariableValue variableValue : templabels) {
                         labels.add(((String) variableValue.getValue()).replaceAll("\"", ""));
                     }
                     ArrayList<Double> val = new ArrayList<>();
                     for (VariableValue variableValue : tempvalues) {
-                        val.add((Double) variableValue.getValue());
+                        if (variableValue.getType() == TypeVariable.ID) {
+                            String name = (String) variableValue.getValue();
+                            Object resp = table.get(name);
+                            val.add((Double) resp);
+                        } else {
+                            val.add((Double) variableValue.getValue());
+                        }
+
                     }
-                    
+
                     Charts c = new Charts();
                     c.addPieChart(val, labels);
                     c.setVisible(true);
                     System.out.println("Gráfica de pie");
-                    
+
                 }
             }
             // table.printTable();
