@@ -154,10 +154,10 @@ public class Instructions {
                     for (VariableValue variableValue : tempy) {
                         ejey.add((Double) variableValue.getValue());
                     }
-
-//                    Test T = new Test();
-//                    T.setData("test", tituloy.replaceAll("\"", ""), titulox.replaceAll("\"", ""), ejey, ejex);
-//                    T.setVisible(true);
+                    Charts c = new Charts();
+                    c.addBarChart("test", tituloy.replaceAll("\"", ""), titulox.replaceAll("\"", ""), ejey, ejex);
+                    c.setVisible(true);
+                    System.out.println("Gráfica de pie");
                 } else if (graphType == TypeVariableG.PIE) {
                     HashMap<String, Object> values = (HashMap<String, Object>) temp.getValue();
                     ArrayList<VariableValue> tempvalues = (ArrayList<VariableValue>) ((VariableValue) values.get("values")).getValue();

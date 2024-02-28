@@ -4,6 +4,8 @@
  */
 package Interface;
 
+import Components.BarWindow;
+import Components.PieWindow;
 import java.util.ArrayList;
 
 /**
@@ -18,11 +20,17 @@ public class Charts extends javax.swing.JFrame {
     public Charts() {
         initComponents();
     }
-    
-    public void addPieChart(ArrayList<Double> values, ArrayList<String> labels){
+
+    public void addPieChart(ArrayList<Double> values, ArrayList<String> labels) {
         PieWindow p = new PieWindow();
         p.createPieData(values, labels);
         viewCharts.add(p);
+    }
+
+    public void addBarChart(String title, String bottom, String right, ArrayList<Double> values, ArrayList<String> labels) {
+        BarWindow b = new BarWindow();
+        b.createBarData(title, bottom, right, values, labels);
+        viewCharts.add(b);
     }
 
     /**
@@ -41,7 +49,7 @@ public class Charts extends javax.swing.JFrame {
         viewCharts = new Components.PanelRound();
         jLabel4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Visualizador de Gráficas");
@@ -68,12 +76,12 @@ public class Charts extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(viewCharts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(20, 20, 20))
+                        .addComponent(viewCharts, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 463, Short.MAX_VALUE)
@@ -94,8 +102,8 @@ public class Charts extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(viewCharts, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(viewCharts, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
