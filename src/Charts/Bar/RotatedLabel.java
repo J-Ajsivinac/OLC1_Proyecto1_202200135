@@ -1,4 +1,4 @@
-package Charts.Barc;
+package Charts.Bar;
 
 import javax.swing.*;
 import java.awt.*;

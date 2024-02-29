@@ -4,7 +4,7 @@
  */
 package Components;
 
-import Charts.Barc.ModelChart;
+import Charts.Bar.ModelChart;
 import java.util.ArrayList;
 
 /**
@@ -40,7 +40,7 @@ public class BarWindow extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        chart = new Charts.Barc.Chart();
+        chart = new Charts.Bar.Chart();
 
         setOpaque(false);
         java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
@@ -54,6 +54,6 @@ public class BarWindow extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private Charts.Barc.Chart chart;
+    private Charts.Bar.Chart chart;
     // End of variables declaration//GEN-END:variables
 }

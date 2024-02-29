@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package Charts.Barc;
+package Charts.Bar;
 
 
 import Charts.Bar.blankchart.BlankPlotChart;
@@ -11,6 +11,8 @@ import Charts.Bar.blankchart.SeriesSize;
 import java.awt.Color;
 
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +28,8 @@ public class Chart extends javax.swing.JPanel {
     private List<ModelLegend> legends = new ArrayList<>();
     private List<ModelLegend> legendsLeft = new ArrayList<>();
     private List<ModelChart> model = new ArrayList<>();
-    private final int seriesSize = 12;
-    private final int seriesSpace = 6;
+    private final int seriesSize = 10;
+    private final int seriesSpace = 5;
 
     public Chart() {
         initComponents();
@@ -50,6 +52,8 @@ public class Chart extends javax.swing.JPanel {
                     x += seriesSpace + seriesSize;
                 }
             }
+
+           
         
         });
     
@@ -123,8 +127,8 @@ public class Chart extends javax.swing.JPanel {
                         .addComponent(panelLegendB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(panelLegendR, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(blankPlotChart, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(blankPlotChart, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(21, 21, 21))
         );
         jPanel1Layout.setVerticalGroup(
@@ -134,8 +138,8 @@ public class Chart extends javax.swing.JPanel {
                 .addComponent(lblTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelLegendR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(blankPlotChart, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE))
+                    .addComponent(panelLegendR, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                    .addComponent(blankPlotChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelLegendB, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))

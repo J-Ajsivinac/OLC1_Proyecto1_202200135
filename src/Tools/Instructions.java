@@ -157,7 +157,7 @@ public class Instructions {
                     Charts c = new Charts();
                     c.addBarChart("test", tituloy.replaceAll("\"", ""), titulox.replaceAll("\"", ""), ejey, ejex);
                     c.setVisible(true);
-                    System.out.println("Gráfica de pie");
+
                 } else if (graphType == TypeVariableG.PIE) {
                     HashMap<String, Object> values = (HashMap<String, Object>) temp.getValue();
                     ArrayList<VariableValue> tempvalues = (ArrayList<VariableValue>) ((VariableValue) values.get("values")).getValue();
@@ -182,8 +182,22 @@ public class Instructions {
                     Charts c = new Charts();
                     c.addPieChart(val, labels);
                     c.setVisible(true);
-                    System.out.println("Gráfica de pie");
-
+                } else if (graphType == TypeVariableG.LINEA) {
+                    HashMap<String, Object> values = (HashMap<String, Object>) temp.getValue();
+                    ArrayList<VariableValue> tempx = (ArrayList<VariableValue>) ((VariableValue) values.get("ejeX")).getValue();
+                    ArrayList<VariableValue> tempy = (ArrayList<VariableValue>) ((VariableValue) values.get("ejeY")).getValue();
+                    ArrayList<String> ejex = new ArrayList<>();
+                    for (VariableValue variableValue : tempx) {
+                        ejex.add(((String) variableValue.getValue()).replaceAll("\"", ""));
+                    }
+                    ArrayList<Double> ejey = new ArrayList<>();
+                    for (VariableValue variableValue : tempy) {
+                        ejey.add((Double) variableValue.getValue());
+                    }
+                    System.out.println(ejey);
+                    Charts c = new Charts();
+                    c.addLineChart("test", "testy", "testx", ejey, ejex);
+                    c.setVisible(true);
                 }
             }
             // table.printTable();

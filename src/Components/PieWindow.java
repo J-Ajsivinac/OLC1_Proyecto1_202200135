@@ -19,7 +19,7 @@ import raven.chart.pie.PieChart;
 public class PieWindow extends javax.swing.JPanel {
 
     private PieChart pieChart1;
-
+    
     /**
      * Creates new form PieWindow
      */

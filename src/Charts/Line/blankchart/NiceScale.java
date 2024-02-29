@@ -1,10 +1,10 @@
-package Charts.Bar.blankchart;
+package Charts.Line.blankchart;
 
 public class NiceScale {
 
     private double min;
     private double max;
-    private int maxTicks;
+    private int maxTicks = 10;
     private double tickSpacing;
     private double range;
     private double niceMin;
@@ -13,7 +13,6 @@ public class NiceScale {
     public NiceScale(final double MIN, final double MAX) {
         min = MIN;
         max = MAX;
-        calculateMaxTicks();
         calculate();
     }
 
@@ -24,22 +23,10 @@ public class NiceScale {
         niceMax = Math.ceil(max / tickSpacing) * tickSpacing;
     }
 
-    private void calculateMaxTicks() {
-        double range = max - min;
-        maxTicks = (int) Math.ceil(range / 10); // Ajusta el valor divisor según tus necesidades
-
-        // Asegurarse de que maxTicks esté dentro del rango deseado
-        if (maxTicks < 5) {
-            maxTicks = 5;
-        } else if (maxTicks > 10) {
-            maxTicks = 10;
-        }
-    }
-
     private double niceNum(final double RANGE, final boolean ROUND) {
-        double exponent;
-        double fraction;
-        double niceFraction;
+        double exponent;     // exponent of RANGE
+        double fraction;     // fractional part of RANGE
+        double niceFraction; // nice, rounded fraction
 
         exponent = Math.floor(Math.log10(RANGE));
         fraction = RANGE / Math.pow(10, exponent);
@@ -112,5 +99,4 @@ public class NiceScale {
         this.max = max;
         calculate();
     }
-
 }

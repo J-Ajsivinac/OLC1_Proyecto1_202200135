@@ -40,8 +40,8 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="panelLegendR" min="-2" pref="28" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                          <Component id="blankPlotChart" min="-2" pref="490" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="blankPlotChart" min="-2" pref="502" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
@@ -55,8 +55,8 @@
                   <Component id="lblTitle" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="panelLegendR" max="32767" attributes="0"/>
-                      <Component id="blankPlotChart" pref="281" max="32767" attributes="0"/>
+                      <Component id="panelLegendR" pref="281" max="32767" attributes="0"/>
+                      <Component id="blankPlotChart" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="panelLegendB" min="-2" pref="34" max="-2" attributes="0"/>
@@ -169,7 +169,7 @@
             </CodeStatement>
           </LayoutCode>
         </Container>
-        <Container class="Charts.Barc.blankchart.BlankPlotChart" name="blankPlotChart">
+        <Container class="Charts.Bar.blankchart.BlankPlotChart" name="blankPlotChart">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
             <Property name="useNullLayout" type="boolean" value="true"/>

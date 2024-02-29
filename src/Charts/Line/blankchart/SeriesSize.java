@@ -1,4 +1,4 @@
-package Charts.Bar.blankchart;
+package Charts.Line.blankchart;
 
 public class SeriesSize {
 

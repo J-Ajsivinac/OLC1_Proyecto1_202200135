@@ -5,6 +5,8 @@
 package Interface;
 
 import Components.BarWindow;
+import Components.LineWindow;
+//import Components.LineWindow;
 import Components.PieWindow;
 import java.util.ArrayList;
 
@@ -31,6 +33,12 @@ public class Charts extends javax.swing.JFrame {
         BarWindow b = new BarWindow();
         b.createBarData(title, bottom, right, values, labels);
         viewCharts.add(b);
+    }
+
+    public void addLineChart(String title, String bottom, String right, ArrayList<Double> values, ArrayList<String> labels) {
+        LineWindow l = new LineWindow();
+        l.createLineData(title, bottom, right, values, labels);
+        viewCharts.add(l);
     }
 
     /**

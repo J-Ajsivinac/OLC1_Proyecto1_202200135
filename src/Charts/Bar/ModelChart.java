@@ -1,4 +1,4 @@
-package Charts.Barc;
+package Charts.Bar;
 
 public class ModelChart {
 

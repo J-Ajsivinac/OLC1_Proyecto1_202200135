@@ -2,22 +2,32 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package Charts.Barc;
+package Components;
+
+import Charts.Line.ModelChart;
+import java.util.ArrayList;
 
 /**
  *
  * @author mesoi
  */
-public class LegendItem extends javax.swing.JPanel {
+public class LineWindow extends javax.swing.JPanel {
 
     /**
-     * Creates new form LegendItem
+     * Creates new form LineWindow
      */
-    public LegendItem(ModelLegend data) {
+    public LineWindow() {
         initComponents();
-        setOpaque(false);
-        lbColor.setBackground(data.getColor());
-        lbName.setText(data.getName());
+    }
+
+    public void createLineData(String title, String bottom, String right, ArrayList<Double> ejey, ArrayList<String> ejex) {
+        //lineChart1.setTitle(title);
+        lineChart1.addLegend(bottom, new java.awt.Color(245, 189, 135), new java.awt.Color(255, 255, 255));
+
+        for (int i = 0; i < ejey.size(); i++) {
+            lineChart1.addData(new ModelChart(ejex.get(i), new double[]{ejey.get(i)}));
+        }
+        lineChart1.start();
     }
 
     /**
@@ -29,10 +39,7 @@ public class LegendItem extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lbColor = new javax.swing.JLabel();
-        lbName = new javax.swing.JLabel();
-
-        lbName.setText("Name");
+        lineChart1 = new Charts.Line.LineChart();
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -40,25 +47,20 @@ public class LegendItem extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbColor, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbName)
+                .addComponent(lineChart1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbName)
-                    .addComponent(lbColor, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(lineChart1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lbColor;
-    private javax.swing.JLabel lbName;
+    private Charts.Line.LineChart lineChart1;
     // End of variables declaration//GEN-END:variables
 }
