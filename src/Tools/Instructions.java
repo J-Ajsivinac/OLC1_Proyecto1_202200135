@@ -33,6 +33,7 @@ public class Instructions {
     }
 
     public void print() {
+        Charts c = new Charts();
         for (VariableValue v : ins) {
             //System.out.println(v.getType());
             if (v.getType() == TypeVariable.DECLARATION) {
@@ -124,6 +125,7 @@ public class Instructions {
                 VariableDeclaration temp = (VariableDeclaration) v.getValue();
                 TypeVariableG graphType = (TypeVariableG) temp.getId();
                 System.out.println("Es una gráfica " + graphType);
+                
                 if (graphType == TypeVariableG.BARRAS) {
                     HashMap<String, Object> values = (HashMap<String, Object>) temp.getValue();
                     boolean isBar = true;
@@ -154,9 +156,9 @@ public class Instructions {
                     for (VariableValue variableValue : tempy) {
                         ejey.add((Double) variableValue.getValue());
                     }
-                    Charts c = new Charts();
+//                    Charts c = new Charts();
                     c.addBarChart("test", tituloy.replaceAll("\"", ""), titulox.replaceAll("\"", ""), ejey, ejex);
-                    c.setVisible(true);
+                    //c.setVisible(true);
 
                 } else if (graphType == TypeVariableG.PIE) {
                     HashMap<String, Object> values = (HashMap<String, Object>) temp.getValue();
@@ -179,9 +181,9 @@ public class Instructions {
 
                     }
 
-                    Charts c = new Charts();
+//                    Charts c = new Charts();
                     c.addPieChart(val, labels);
-                    c.setVisible(true);
+                    //c.setVisible(true);
                 } else if (graphType == TypeVariableG.LINEA) {
                     HashMap<String, Object> values = (HashMap<String, Object>) temp.getValue();
                     ArrayList<VariableValue> tempx = (ArrayList<VariableValue>) ((VariableValue) values.get("ejeX")).getValue();
@@ -195,14 +197,15 @@ public class Instructions {
                         ejey.add((Double) variableValue.getValue());
                     }
                     System.out.println(ejey);
-                    Charts c = new Charts();
+                    
                     c.addLineChart("test", "testy", "testx", ejey, ejex);
-                    c.setVisible(true);
+                    //c.setVisible(true);
                 }
             }
             // table.printTable();
         }
         //table.printTable();
+        c.setVisible(true);
     }
 
     private boolean validateFieldsBar(String attrO, VariableValue values) {

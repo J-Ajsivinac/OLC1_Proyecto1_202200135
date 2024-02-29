@@ -8,6 +8,7 @@ import Components.BarWindow;
 import Components.LineWindow;
 //import Components.LineWindow;
 import Components.PieWindow;
+import java.awt.CardLayout;
 import java.util.ArrayList;
 
 /**
@@ -16,11 +17,12 @@ import java.util.ArrayList;
  */
 public class Charts extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Chart
-     */
+    private CardLayout cl;
+    
     public Charts() {
         initComponents();
+        cl = new CardLayout();
+        viewCharts.setLayout(cl);
     }
 
     public void addPieChart(ArrayList<Double> values, ArrayList<String> labels) {
@@ -63,8 +65,18 @@ public class Charts extends javax.swing.JFrame {
         jLabel1.setText("Visualizador de Gráficas");
 
         jLabel2.setText("<");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
 
         jLabel3.setText(">");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
 
         viewCharts.setBackground(new java.awt.Color(51, 51, 51));
         viewCharts.setRoundBottomLeft(10);
@@ -129,6 +141,16 @@ public class Charts extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        // TODO add your handling code here:
+        cl.previous(viewCharts);
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        // TODO add your handling code here:
+        cl.next(viewCharts);
+    }//GEN-LAST:event_jLabel2MouseClicked
 
     /**
      * @param args the command line arguments
