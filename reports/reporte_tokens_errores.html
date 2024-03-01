@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+    <link href="./output.css" rel="stylesheet">
+    <style>
+         body{            background: #151515;            }        .table {
+            border-spacing: 0 15px;
+        }
+
+        .table tr {
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex w-full justify-center h-screen bg-[#151515] py-6">
+        <div class="flex flex-col w-5/6 h-fit gap-y-6">
+            <h1 class="text-3xl font-bold  text-white">
+                Reporte de Errores
+            </h1>
+ <div class="w-full bg-[#1f1f24] py-2 px-4 rounded-lg">
+                <h2 class="text-2xl font-bold text-[#ff9393] w-full px-2 py-2 mt-3 ">
+                    <i class="icon-[material-symbols--error]"></i>
+                    Léxicos
+                </h2>
+                <table class="table w-full text-white border-spacing-4 text-lg border-neutral-200">
+                    <thead class="">
+                        <tr class="text-left px-6 py-4 border-b border-b-[#434343]">
+                            <th class="px-6 py-4">No </th>
+                            <th class="px-6 py-4">Descripción</th>
+                            <th class="px-6 py-4">Línea</th>
+                            <th class="px-6 py-4">Columna</th>
+                        </tr>
+                    </thead></table>
+            </div>
+<div class="w-full bg-[#1f1f24] py-2 px-4 rounded-lg">
+                <h2 class="text-2xl font-bold text-[#ff9393] w-full px-2 py-2 mt-3 ">
+                    <i class="icon-[material-symbols--error]"></i>
+                    Sintácticos
+                </h2> <table class="table w-full text-white border-spacing-4 text-lg border-neutral-200">
+                    <thead class="">
+                        <tr class="text-left px-6 py-4 border-b border-b-[#434343]">
+                            <th class="px-6 py-4">No </th>
+                            <th class="px-6 py-4">Descripción</th>
+                            <th class="px-6 py-4">Línea</th>
+                            <th class="px-6 py-4">Columna</th>
+                        </tr>
+                    </thead></table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -7,6 +7,7 @@ import Components.MReport;
 import Components.glasspanel.DefaultOption;
 import Components.glasspanel.GlassPanePopup;
 import Components.tabs.ButtonTabComponent;
+import Errores.Errores;
 import TableSymb.TableSymb;
 import Tools.CreateReports;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -47,8 +48,11 @@ public class Principal extends javax.swing.JFrame {
     private JFileChooser fileChooser;
     private JTextPane textPane;
     private ArrayList<String> rutes = new ArrayList<>();
+    ArrayList<Errores> errorS = new ArrayList<>();
+    ArrayList<Errores> errorL = new ArrayList<>();
 
     public Principal() {
+
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -116,7 +120,7 @@ public class Principal extends javax.swing.JFrame {
         return (JTextPane) scrollPane.getViewport().getView();
     }
 
-    public void print() {
+    public void analyze() {
         try {
             int selectedIndex = tabbedPane.getSelectedIndex();
             JTextPane textPaneTemp = getTextPaneAt(selectedIndex);
@@ -126,7 +130,13 @@ public class Principal extends javax.swing.JFrame {
             sintax.parse();
             sintax.getInstructions();
             Symbol token = null;
-            CreateReports.saveReportTok(CreateReports.TokenReport(text, token, "name.xd"), "name.xd");
+            TableSymb t = sintax.getTable();
+            CreateReports.saveReportTok(CreateReports.TokenReport(text, token, "name"), "name");
+            errorS = sintax.getErroresSintacticos();
+            errorL = scan.getErroresL();
+            CreateReports.saveReportTok(CreateReports.ErrorsReport(errorL, errorS), "errores");
+            CreateReports.saveReportTok(CreateReports.symbolReport(t), "tabla");
+
 //            Symbol symbol = scan.next_token();
 //            while (symbol.sym != ParserSym.EOF) {
 //                System.out.println("Token: " + symbol.sym + ", Value: " + symbol.value+" col= "+symbol.left +" fila= "+symbol.toString());
@@ -512,7 +522,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
         // TODO add your handling code here:
-        print();
+        analyze();
     }//GEN-LAST:event_btnPlayActionPerformed
 
     public static void main(String args[]) {

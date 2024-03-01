@@ -37,6 +37,10 @@ public class Instructions {
     public void push(VariableValue v) {
         ins.add(v);
     }
+    
+    public TableSymb getTable(){
+        return table;
+    }
 
     public void execute() {
         boolean viewChart = false;

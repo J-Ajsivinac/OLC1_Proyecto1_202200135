@@ -448,8 +448,16 @@ public class Scanner implements java_cup.runtime.Scanner {
 	}
 
 
-    public static ArrayList<token> lexemas = new ArrayList<token>();
-    public static ArrayList<Errores> erroreslexicos = new ArrayList<Errores>();
+    private ArrayList<token> lexemas = new ArrayList<token>();
+    private ArrayList<Errores> erroreslexicos = new ArrayList<Errores>();
+
+	public ArrayList<token> getLexemas() {
+		return lexemas;
+	}
+
+	public ArrayList<Errores> getErroresL  () {
+		return erroreslexicos;
+	}
 
 
 
@@ -825,7 +833,7 @@ public class Scanner implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { erroreslexicos.add(new Errores(0,"El caracter : '"+yytext(), Integer.toString(yyline), Integer.toString(yychar)));
+            { erroreslexicos.add(new Errores(0,"El caracter : '"+yytext()+"' No pertenece al lenguaje", Integer.toString(yyline), Integer.toString(yychar)));
             } 
             // fall through
           case 49: break;
@@ -835,7 +843,7 @@ public class Scanner implements java_cup.runtime.Scanner {
             // fall through
           case 50: break;
           case 3: 
-            { yychar = 1;
+            { yychar = 1; yycolumn=1;
             } 
             // fall through
           case 51: break;

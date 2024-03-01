@@ -18,6 +18,7 @@ import Tools.VariableDeclaration;
 import Tools.Instructions;
 import Tools.SetCustom;
 import java.util.HashMap;
+import TableSymb.TableSymb;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -292,16 +293,24 @@ public class Parser extends java_cup.runtime.lr_parser {
     ArrayList<Errores> erroresSintacticos = new ArrayList<Errores>();
     public void syntax_error(Symbol s){
             
-        System.out.println("Sintax error: " +s.value + " en la línea " + s.right+ " en la columna " + s.left+"test->");
-        erroresSintacticos.add(new Errores(1,"El caracter : '"+ParserSym.terminalNames[s.sym]+"no se esperaba", String.valueOf(s.right) ,String.valueOf(s.left)));
+        //System.out.println("Sintax error: " +s.value + " en la línea " + s.right+ " en la columna " + s.left+"test->");
+        erroresSintacticos.add(new Errores(1,"El caracter : '"+s.value+"' no se esperaba", String.valueOf(s.right) ,String.valueOf(s.left)));
     }
 
     public void unrecovered_syntax_error(Symbol s)throws java.lang.Exception{
             System.out.println("El error no se pudo recueprar");
     }
 
+	public ArrayList<Errores> getErroresSintacticos(){
+		return erroresSintacticos;
+	}
+
 	public void getInstructions(){
 		mainM.execute();
+	}
+
+	public TableSymb getTable(){
+		return mainM.getTable();
 	}
 
 

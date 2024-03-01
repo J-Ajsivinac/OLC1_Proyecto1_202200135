@@ -44,8 +44,16 @@ COMMENTS= [<][!][^!]*[!]+([^<!][^!]*[!]+)*[>]
 	}
 
 
-    public static ArrayList<token> lexemas = new ArrayList<token>();
-    public static ArrayList<Errores> erroreslexicos = new ArrayList<Errores>();
+    private ArrayList<token> lexemas = new ArrayList<token>();
+    private ArrayList<Errores> erroreslexicos = new ArrayList<Errores>();
+
+	public ArrayList<token> getLexemas() {
+		return lexemas;
+	}
+
+	public ArrayList<Errores> getErroresL  () {
+		return erroreslexicos;
+	}
 
 %}
 
@@ -103,11 +111,11 @@ COMMENTS= [<][!][^!]*[!]+([^<!][^!]*[!]+)*[>]
 <YYINITIAL> {STRING} {return symbol(ParserSym.TK_string, yytext());}
 <YYINITIAL> {DOUBLE} {return symbol(ParserSym.TK_double, yytext());}
 
-\n                      {yychar = 1;}
+\n                      {yychar = 1; yycolumn=1;}
 {UNUSED}                {}
 {COMMENT}              {}
 {COMMENTS}              {}
 <YYINITIAL> . 
 {
-erroreslexicos.add(new Errores(0,"El caracter : '"+yytext(), Integer.toString(yyline), Integer.toString(yychar)));
+erroreslexicos.add(new Errores(0,"El caracter : '"+yytext()+"' No pertenece al lenguaje", Integer.toString(yyline), Integer.toString(yychar)));
 }

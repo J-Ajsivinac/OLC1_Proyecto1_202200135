@@ -26,4 +26,22 @@ public class Errores {
     public String getDescripcion() {
         return descripcion;
     }
+
+    public String getLinea() {
+        return linea;
+    }
+
+    public void setLinea(String linea) {
+        this.linea = linea;
+    }
+
+    public String getColumna() {
+        return columna;
+    }
+
+    public void setColumna(String columna) {
+        this.columna = columna;
+    }
+    
+    
 }
