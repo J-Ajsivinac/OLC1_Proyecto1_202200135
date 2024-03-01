@@ -6,18 +6,24 @@ import Interface.Principal;
 import TableSymb.TableSymb;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
 
 public class Instructions {
 
     private ArrayList<VariableValue> ins;
     private TableSymb table;
     private JTextPane console;
+    Charts c;
 
     public Instructions() {
         this.ins = new ArrayList<>();
         table = new TableSymb();
+        c = new Charts();
     }
 
     public ArrayList<VariableValue> getIns() {
@@ -33,7 +39,6 @@ public class Instructions {
     }
 
     public void print() {
-        Charts c = new Charts();
         for (VariableValue v : ins) {
             //System.out.println(v.getType());
             if (v.getType() == TypeVariable.DECLARATION) {
@@ -125,7 +130,7 @@ public class Instructions {
                 VariableDeclaration temp = (VariableDeclaration) v.getValue();
                 TypeVariableG graphType = (TypeVariableG) temp.getId();
                 System.out.println("Es una gráfica " + graphType);
-                
+
                 if (graphType == TypeVariableG.BARRAS) {
                     HashMap<String, Object> values = (HashMap<String, Object>) temp.getValue();
                     boolean isBar = true;
@@ -197,15 +202,102 @@ public class Instructions {
                         ejey.add((Double) variableValue.getValue());
                     }
                     System.out.println(ejey);
-                    
+
                     c.addLineChart("test", "testy", "testx", ejey, ejex);
                     //c.setVisible(true);
+                } else if (graphType == TypeVariableG.HISTOGRAMA) {
+                    createHistogram(temp);
                 }
             }
             // table.printTable();
         }
         //table.printTable();
         c.setVisible(true);
+    }
+
+    public void printHistogram(double value, int f, int fa, double fr) {
+        try {
+            String row = String.format(" %-30s %-15s %-15s %-15s ", value, f, fa, fr);
+            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), row + "\n", null);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(Instructions.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void createHistogram(VariableDeclaration base) {
+        HashMap<String, Object> values = (HashMap<String, Object>) base.getValue();
+        ArrayList<VariableValue> tempvalues = (ArrayList<VariableValue>) ((VariableValue) values.get("values")).getValue();
+
+        ArrayList<Double> datos = new ArrayList<>();
+        for (VariableValue variableValue : tempvalues) {
+            if (variableValue.getType() == TypeVariable.ID) {
+                String name = (String) variableValue.getValue();
+                Object resp = table.get(name);
+                datos.add((Double) resp);
+            } else {
+                datos.add((Double) variableValue.getValue());
+            }
+        }
+
+        Map<Double, Integer> frecuencia = new LinkedHashMap<>();
+        for (double num : datos) {
+            frecuencia.put(num, frecuencia.getOrDefault(num, 0) + 1);
+        }
+
+        ArrayList<String> ejex = new ArrayList<>();
+        ArrayList<Double> ejey = new ArrayList<>();
+
+        for (Map.Entry<Double, Integer> entry : frecuencia.entrySet()) {
+            ejex.add(String.valueOf(entry.getKey()));
+            ejey.add(Double.valueOf(entry.getValue()));
+        }
+        // Calcular la frecuencia acumulada
+        int frecuenciaAcumulada = 0;
+        LinkedHashMap<Double, Integer> frecuenciaAcumuladaMap = new LinkedHashMap<>();
+        for (Map.Entry<Double, Integer> entry : frecuencia.entrySet()) {
+            frecuenciaAcumulada += entry.getValue();
+            frecuenciaAcumuladaMap.put(entry.getKey(), frecuenciaAcumulada);
+        }
+
+        // Calcular la frecuencia relativa
+        LinkedHashMap<Double, Double> frecuenciaRelativa = new LinkedHashMap<>();
+        int totalDatos = datos.size();
+        for (Map.Entry<Double, Integer> entry : frecuencia.entrySet()) {
+            double frecuenciaRel = Math.round(((double) entry.getValue() / totalDatos) * 100);
+            frecuenciaRelativa.put(entry.getKey(), frecuenciaRel);
+        }
+
+        try {
+            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "Histograma" + "\n", null);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(Instructions.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        int totalFb = 0;
+        int totalFa = 0;
+        double totalPerc = 0;
+        String top = String.format(" %-30s %-15s %-15s %-15s ", "Valor ", "Fb", "Fa", "Fr");
+        try {
+            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), top + "\n", null);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(Instructions.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (Map.Entry<Double, Integer> entry : frecuencia.entrySet()) {
+            double valor = entry.getKey();
+            int frec = entry.getValue();
+            totalFb += frec;
+            int frecAcum = frecuenciaAcumuladaMap.get(valor);
+            totalFa = frecAcum;
+            double frecRel = frecuenciaRelativa.get(valor);
+            totalPerc += frecRel;
+            printHistogram(valor, frec, frecAcum, frecRel);
+        }
+        String bottom = String.format(" %-30s %-15s %-15s %-15s ", "totales: ", totalFb, totalFa, totalPerc);
+        try {
+            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), bottom + "\n", null);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(Instructions.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        c.addBarChart("test", "", "", ejey, ejex);
     }
 
     private boolean validateFieldsBar(String attrO, VariableValue values) {

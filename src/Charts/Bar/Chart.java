@@ -51,10 +51,7 @@ public class Chart extends javax.swing.JPanel {
                     g2.fillRect((int) (size.getX() + x), (int) (size.getY() + size.getHeight() - seriesValues), seriesSize, (int) seriesValues);
                     x += seriesSpace + seriesSize;
                 }
-            }
-
-           
-        
+            }        
         });
     
     }

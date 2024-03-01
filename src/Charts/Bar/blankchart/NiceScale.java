@@ -4,7 +4,7 @@ public class NiceScale {
 
     private double min;
     private double max;
-    private int maxTicks;
+    private int maxTicks = 5;
     private double tickSpacing;
     private double range;
     private double niceMin;
@@ -21,18 +21,18 @@ public class NiceScale {
         range = niceNum(max - min, false);
         tickSpacing = niceNum(range / (maxTicks - 1), true);
         niceMin = Math.floor(min / tickSpacing) * tickSpacing;
-        niceMax = Math.ceil(max / tickSpacing) * tickSpacing;
+
+        // Revised calculation for niceMax
+        double tempMax = Math.ceil(max / tickSpacing) * tickSpacing;
+        niceMax = Math.min(min, max - 0.2 * range);  // Allow for slightly larger niceMax
+        double t = max - 0.4 * range;
+        System.out.println(niceMax+"-"+t+"->"+max);
     }
 
     private void calculateMaxTicks() {
-        double range = max - min;
-        maxTicks = (int) Math.ceil(range / 10); // Ajusta el valor divisor según tus necesidades
-
-        // Asegurarse de que maxTicks esté dentro del rango deseado
+        maxTicks = (int) Math.ceil(max);
         if (maxTicks < 5) {
             maxTicks = 5;
-        } else if (maxTicks > 10) {
-            maxTicks = 10;
         }
     }
 
@@ -59,6 +59,8 @@ public class NiceScale {
                 niceFraction = 1;
             } else if (fraction <= 2) {
                 niceFraction = 2;
+            } else if (fraction <= 3) {  // Agregamos este caso
+                niceFraction = 3;
             } else if (fraction <= 5) {
                 niceFraction = 5;
             } else {
@@ -112,5 +114,4 @@ public class NiceScale {
         this.max = max;
         calculate();
     }
-
 }

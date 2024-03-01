@@ -69,7 +69,7 @@ public class BlankPlotChart extends JComponent {
     }
 
     private void init() {
-        initValues(0, 10);
+        initValues(0, 5);
     }
 
     public void initValues(double minValues, double maxValues) {
