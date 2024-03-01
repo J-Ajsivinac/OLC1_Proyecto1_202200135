@@ -7,7 +7,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Document</title>
     <link href="./output.css" rel="stylesheet">
+    <style>
+        .table {
+            border-spacing: 0 15px;
+        }
 
+        .table tr {
+            border-radius: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -17,27 +25,29 @@
                 Titulo del Reporte
             </h1>
             <div class="w-full bg-[#1f1f24] py-2 px-4 rounded-lg">
-                <table class="w-full border-separate text-white border-spacing-4 text-lg ">
-                    <tr class="text-left">
-                        <th>No </th>
-                        <th>Lexema</th>
-                        <th>Tipo</th>
-                        <th>Línea</th>
-                        <th>Columna</th>
+                <table class="table w-full text-white border-spacing-4 text-lg border-neutral-200">
+                    <thead class="">
+                        <tr class="text-left px-6 py-4 border-b border-b-slate-500">
+                            <th class="px-6 py-4">No </th>
+                            <th class="px-6 py-4">Lexema</th>
+                            <th class="px-6 py-4">Tipo</th>
+                            <th class="px-6 py-4">Línea</th>
+                            <th class="px-6 py-4">Columna</th>
+                        </tr>
+                    </thead>
+                    <tr class="border-b last:border-b-0 border-b-slate-500 text-[#9ca3af]">
+                        <td class="px-6 py-5">1</td>
+                        <td class="px-6 py-5">arr</td>
+                        <td class="px-6 py-5">id</td>
+                        <td class="px-6 py-5">5</td>
+                        <td class="px-6 py-5">3</td>
                     </tr>
-                    <tr class="">
-                        <td>1</td>
-                        <td>arr</td>
-                        <td>id</td>
-                        <td>5</td>
-                        <td>3</td>
-                    </tr>
-                    <tr class="border-b-2 border-red-500">
-                        <td>2</td>
-                        <td>3</td>
-                        <td>Double</td>
-                        <td>6</td>
-                        <td>3</td>
+                    <tr class="border-b last:border-b-0 border-b-slate-500 text-[#9ca3af]">
+                        <td class="px-6 py-5">2</td>
+                        <td class="px-6 py-5">3</td>
+                        <td class="px-6 py-5">Double</td>
+                        <td class="px-6 py-5">6</td>
+                        <td class="px-6 py-5">3</td>
                     </tr>
                 </table>
             </div>

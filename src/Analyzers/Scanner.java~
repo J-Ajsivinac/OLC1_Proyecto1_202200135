@@ -459,6 +459,9 @@ public class Scanner implements java_cup.runtime.Scanner {
    * @param   in  the java.io.Reader to read input from.
    */
   public Scanner(java.io.Reader in) {
+  	yyline = 1; 
+	yychar = 1; 
+        yycolumn = 1;
     this.zzReader = in;
   }
 

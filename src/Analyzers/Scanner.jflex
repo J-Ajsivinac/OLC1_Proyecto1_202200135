@@ -7,6 +7,7 @@ import java.util.ArrayList;
 %%
 %public
 %class Scanner
+%cupsym TOK
 %char
 %column
 %full
@@ -14,6 +15,13 @@ import java.util.ArrayList;
 %cup   
 %unicode
 %ignorecase
+
+%init{ 
+	yyline = 1; 
+	yychar = 1; 
+        yycolumn = 1;
+%init} 
+
 
 UNUSED=[ \r\t]+
 CONTENT = ([^\n\"\\]|\\.)

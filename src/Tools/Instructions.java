@@ -2,6 +2,7 @@ package Tools;
 
 import Interface.Charts;
 import Interface.Principal;
+import TableSymb.Information;
 //import Interface.Test;
 import TableSymb.TableSymb;
 import java.util.ArrayList;
@@ -23,7 +24,6 @@ public class Instructions {
     public Instructions() {
         this.ins = new ArrayList<>();
         table = new TableSymb();
-        c = new Charts();
     }
 
     public ArrayList<VariableValue> getIns() {
@@ -39,6 +39,7 @@ public class Instructions {
     }
 
     public void print() {
+        boolean viewChart = false;
         for (VariableValue v : ins) {
             //System.out.println(v.getType());
             if (v.getType() == TypeVariable.DECLARATION) {
@@ -49,22 +50,23 @@ public class Instructions {
 
                 if (value.getType() == TypeVariable.STRING) {
                     String temp = (String) value.getValue();
-                    table.put(variable, temp);
+                    table.put(variable, new Information(temp, "variable String"));
                 } else if (value.getType() == TypeVariable.DOUBLE) {
                     Double temp = (Double) value.getValue();
-                    table.put(variable, temp);
+                    table.put(variable, new Information(temp, "variable Double"));
                 } else if (value.getType() == TypeVariable.AR) {
                     ArithmeticExp temp = (ArithmeticExp) value.getValue();
                     double res = evaluateArith(temp);
-                    table.put(variable, res);
+                    table.put(variable, new Information(res, "variable String"));
                 } else if (value.getType() == TypeVariable.ARRAY) {
                     ArrayList<VariableValue> temp = (ArrayList<VariableValue>) value.getValue();
-                    table.put(variable, temp);
+                    table.put(variable, new Information(temp, "arreglo"));
                 } else if (value.getType() == TypeVariable.ST) {
                     //System.out.println(" .-->"+value.getValue());
                     StatisticalExp e = (StatisticalExp) value.getValue();
                     double res = evaluateStats(e);
-                    System.out.println(res);
+                    table.put(variable, new Information(value, "Variable Double"));
+                    // System.out.println(res);
                 } else if (value.getType() == TypeVariable.ID) {
                     String temp = (String) value.getValue();
                     table.put(variable, table.get(temp));
@@ -76,7 +78,6 @@ public class Instructions {
                 ArrayList<VariableValue> aux = (ArrayList<VariableValue>) v.getValue();
                 for (VariableValue variableValue : aux) {
                     //System.out.println(variableValue);
-                    System.out.println("verify: " + variableValue.getValue());
                     if (variableValue.getType() == TypeVariable.STRING) {
                         String temp = (String) variableValue.getValue();
                         String stringSinComillas = temp.replaceAll("\"", "");
@@ -87,7 +88,8 @@ public class Instructions {
                         output(temp);
                     } else if (variableValue.getType() == TypeVariable.ID) {
                         String temp = (String) variableValue.getValue();
-                        Object resp = table.get(temp);
+                        Information info = (Information) table.get(temp);
+                        Object resp = info.getValue();
                         if (resp instanceof Double) {
                             output((Double) resp);
                         } else if (resp instanceof String) {
@@ -95,7 +97,6 @@ public class Instructions {
                         } else {
                             System.out.println("error -> ");
                         }
-                        //System.out.println("variable: " + temp);
                     }
 
                 }
@@ -125,7 +126,8 @@ public class Instructions {
             }
 
             if (v.getType() == TypeVariable.GRAPH) {
-
+                viewChart = true;
+                c = new Charts();
 //                VariableValue temp = (VariableValue) v.getValue();
                 VariableDeclaration temp = (VariableDeclaration) v.getValue();
                 TypeVariableG graphType = (TypeVariableG) temp.getId();
@@ -178,7 +180,8 @@ public class Instructions {
                     for (VariableValue variableValue : tempvalues) {
                         if (variableValue.getType() == TypeVariable.ID) {
                             String name = (String) variableValue.getValue();
-                            Object resp = table.get(name);
+                            Information info = (Information) table.get(name);
+                            Object resp = info.getValue();
                             val.add((Double) resp);
                         } else {
                             val.add((Double) variableValue.getValue());
@@ -212,7 +215,9 @@ public class Instructions {
             // table.printTable();
         }
         //table.printTable();
-        c.setVisible(true);
+        if (viewChart){
+            c.setVisible(true);
+        }
     }
 
     public void printHistogram(double value, int f, int fa, double fr) {
@@ -232,7 +237,8 @@ public class Instructions {
         for (VariableValue variableValue : tempvalues) {
             if (variableValue.getType() == TypeVariable.ID) {
                 String name = (String) variableValue.getValue();
-                Object resp = table.get(name);
+                Information info = (Information) table.get(name);
+                Object resp = info.getValue();
                 datos.add((Double) resp);
             } else {
                 datos.add((Double) variableValue.getValue());
@@ -357,7 +363,8 @@ public class Instructions {
             operando1 = evaluateArith(temp);
         } else if (v1.getType() == TypeVariable.ID) {
             String temp = (String) v1.getValue();
-            Object resp = table.get(temp);
+            Information info = (Information) table.get(temp);
+            Object resp = info.getValue();
             operando1 = (double) resp;
 
 //            System.out.println("valor 1: " + temp);
@@ -369,7 +376,8 @@ public class Instructions {
             operando2 = evaluateArith(temp);
         } else if (v2.getType() == TypeVariable.ID) {
             String temp = (String) v2.getValue();
-            Object resp = table.get(temp);
+            Information info = (Information) table.get(temp);
+            Object resp = info.getValue();
             operando2 = 0;
             operando2 = (double) resp;
         } else {
@@ -414,7 +422,8 @@ public class Instructions {
                 arrayListDeDoubles.add(evaluateArith(temp));
             } else if (variableValue.getType() == TypeVariable.ID) {
                 String id = (String) variableValue.getValue();
-                Object resp = table.get(id);
+                Information info = (Information) table.get(id);
+                Object resp = info.getValue();
 //                operando2 = (double) resp;
                 if (resp instanceof Double) {
                     arrayListDeDoubles.add((double) resp);

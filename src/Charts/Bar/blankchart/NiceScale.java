@@ -26,7 +26,7 @@ public class NiceScale {
         double tempMax = Math.ceil(max / tickSpacing) * tickSpacing;
         niceMax = Math.min(min, max - 0.2 * range);  // Allow for slightly larger niceMax
         double t = max - 0.4 * range;
-        System.out.println(niceMax+"-"+t+"->"+max);
+        //System.out.println(niceMax+"-"+t+"->"+max);
     }
 
     private void calculateMaxTicks() {

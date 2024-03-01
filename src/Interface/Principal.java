@@ -8,6 +8,7 @@ import Components.glasspanel.DefaultOption;
 import Components.glasspanel.GlassPanePopup;
 import Components.tabs.ButtonTabComponent;
 import TableSymb.TableSymb;
+import Tools.CreateReports;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -45,9 +46,6 @@ public class Principal extends javax.swing.JFrame {
     private JFileChooser fileChooser;
     private JTextPane textPane;
     private ArrayList<String> rutes = new ArrayList<>();
-    double[] data = {33,25,44};
-    String[] titles = {"33","25","44"};
-    int indexFilePJ = -1;
 
     public Principal() {
         initComponents();
@@ -124,6 +122,8 @@ public class Principal extends javax.swing.JFrame {
             Parser sintax = new Parser(scan);
             sintax.parse();
             sintax.getInstructions();
+            Symbol token = null;
+            CreateReports.saveReportTok(CreateReports.TokenReport(text, token, "name.xd"), "name.xd");
 //            Symbol symbol = scan.next_token();
 //            while (symbol.sym != ParserSym.EOF) {
 //                System.out.println("Token: " + symbol.sym + ", Value: " + symbol.value+" col= "+symbol.left +" fila= "+symbol.toString());
