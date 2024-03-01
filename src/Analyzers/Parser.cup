@@ -28,7 +28,7 @@ parser code{:
     }
 
 	public void getInstructions(){
-		mainM.print();
+		mainM.execute();
 	}
 
 :};
@@ -195,7 +195,7 @@ VALUEPRINT ::=
 	ARITHMETHIC_EXP:r {: RESULT =  r; :};
 
 GRAPH ::=
-	TYPE_GRAPH:id TK_lparen ATTRIBUTES_GRAPH:att TK_exec TYPE_GRAPH TK_end TK_semicolon TK_rparen {: RESULT = new VariableValue(new VariableDeclaration( id,att), TypeVariable.GRAPH) ;System.out.println(att.size());:};
+	TYPE_GRAPH:id TK_lparen ATTRIBUTES_GRAPH:att TK_exec TYPE_GRAPH TK_end TK_semicolon TK_rparen {: RESULT = new VariableValue(new VariableDeclaration( id,att), TypeVariable.GRAPH) ; :};
 
 TYPE_GRAPH ::=
 	TK_graphbar:r {: RESULT = TypeVariableG.BARRAS; :} |
@@ -216,11 +216,11 @@ ATTRIBUTE_GRAPH ::=
 	VARIABLE:v TK_colon TK_colon TYPE TK_equal EXP:e TK_end TK_semicolon  {: RESULT = new VariableDeclaration(v, e); :};
 
 VARIABLE ::=
-	TK_titulo:r {: RESULT = r; :} |
-	TK_ejex:r {: RESULT = r; :} |
-	TK_ejey:r {: RESULT = r; :} |
-	TK_titulox:r {: RESULT = r; :} |
-	TK_tituloy:r {: RESULT = r; :} |
-	TK_label:r {: RESULT = r; :} |
-	TK_values:r {: RESULT = r; :} |
+	TK_titulo:r {: RESULT = r.toLowerCase(); :} |
+	TK_ejex:r {: RESULT = r.toLowerCase(); :} |
+	TK_ejey:r {: RESULT = r.toLowerCase(); :} |
+	TK_titulox:r {: RESULT = r.toLowerCase(); :} |
+	TK_tituloy:r {: RESULT = r.toLowerCase(); :} |
+	TK_label:r {: RESULT = r.toLowerCase(); :} |
+	TK_values:r {: RESULT = r.toLowerCase(); :} |
     error;

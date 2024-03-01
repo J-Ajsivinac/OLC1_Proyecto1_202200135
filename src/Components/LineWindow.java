@@ -21,13 +21,13 @@ public class LineWindow extends javax.swing.JPanel {
     }
 
     public void createLineData(String title, String bottom, String right, ArrayList<Double> ejey, ArrayList<String> ejex) {
-        //lineChart1.setTitle(title);
-        lineChart1.addLegend(bottom, new java.awt.Color(245, 189, 135), new java.awt.Color(255, 255, 255));
-
+        lineChart.setTitle(title);
+        lineChart.addLegend(bottom, new java.awt.Color(245, 189, 135), new java.awt.Color(255, 255, 255));
+        lineChart.addLegendLeft(right, new java.awt.Color(245, 189, 135),new java.awt.Color(245, 189, 135));
         for (int i = 0; i < ejey.size(); i++) {
-            lineChart1.addData(new ModelChart(ejex.get(i), new double[]{ejey.get(i)}));
+            lineChart.addData(new ModelChart(ejex.get(i), new double[]{ejey.get(i)}));
         }
-        lineChart1.start();
+        lineChart.start();
     }
 
     /**
@@ -39,28 +39,15 @@ public class LineWindow extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lineChart1 = new Charts.Line.LineChart();
+        lineChart = new Charts.Line.LineChart();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lineChart1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lineChart1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        setOpaque(false);
+        setLayout(new java.awt.GridBagLayout());
+        add(lineChart, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private Charts.Line.LineChart lineChart1;
+    private Charts.Line.LineChart lineChart;
     // End of variables declaration//GEN-END:variables
 }

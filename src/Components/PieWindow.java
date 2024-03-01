@@ -35,11 +35,11 @@ public class PieWindow extends javax.swing.JPanel {
         }
         
         pieChart1 = new PieChart();
-//        pieChart1.setBackground(Color.red);
         JLabel header1 = new JLabel("Product Income");
         header1.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:+1");
         pieChart1.setHeader(header1);
+        pieChart1.setBackground(new Color(19, 20, 23));
         pieChart1.getChartColor().addColor(Color.decode("#f87171"), Color.decode("#fb923c"), Color.decode("#fbbf24"), Color.decode("#a3e635"), Color.decode("#34d399"), Color.decode("#22d3ee"), Color.decode("#818cf8"), Color.decode("#c084fc"));
         pieChart1.putClientProperty(FlatClientProperties.STYLE, ""
                 + "border:5,5,5,5,$Component.borderColor,,10");

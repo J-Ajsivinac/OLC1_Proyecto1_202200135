@@ -40,6 +40,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.TabSet;
 import javax.swing.text.TabStop;
+import javax.swing.text.html.HTMLEditorKit;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -91,7 +92,9 @@ public class Principal extends javax.swing.JFrame {
         btnSave.setIcon(SVGSave);
 
         fileChooser = new JFileChooser();
-
+//        paneConsole.setContentType("text/plain; charset=UTF-8");
+        paneConsole.setContentType("text/html;charset=UTF-8");
+        paneConsole.setEditorKit(new HTMLEditorKit());
     }
 
     public void pressReport() {
@@ -300,9 +303,9 @@ public class Principal extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Montserrat", 1, 14)); // NOI18N
         jLabel2.setText("Consola");
 
-        paneConsole.setEditable(false);
         paneConsole.setBackground(new java.awt.Color(19, 20, 23));
         paneConsole.setBorder(null);
+        paneConsole.setFont(new java.awt.Font("Cascadia Code PL", 0, 12)); // NOI18N
         jScrollPane1.setViewportView(paneConsole);
 
         javax.swing.GroupLayout panelRound2Layout = new javax.swing.GroupLayout(panelRound2);

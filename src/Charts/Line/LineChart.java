@@ -1,5 +1,6 @@
 package Charts.Line;
 
+import Charts.Bar.LegendItemLeft;
 import Charts.Line.blankchart.BlankPlotChartLine;
 import Charts.Line.blankchart.BlankPlotChatRenderLine;
 import Charts.Line.blankchart.SeriesSize;
@@ -27,6 +28,8 @@ public class LineChart extends javax.swing.JPanel {
     DecimalFormat df = new DecimalFormat("#,##0.##");
     private List<ModelLegend> legends = new ArrayList<>();
     private List<ModelChart> model = new ArrayList<>();
+    private List<ModelLegend> legendsLeft = new ArrayList<>();
+    
     private final int seriesSize = 18;
     private final int seriesSpace = 0;
     private final Animator animator;
@@ -126,6 +129,11 @@ public class LineChart extends javax.swing.JPanel {
             }
         });
     }
+    
+    public void setTitle(String Title) {
+        lblTitle.setText(Title);
+    }
+
 
     public void addLegend(String name, Color color, Color color1) {
         ModelLegend data = new ModelLegend(name, color, color1);
@@ -133,6 +141,14 @@ public class LineChart extends javax.swing.JPanel {
         panelLegend.add(new LegendItem(data));
         panelLegend.repaint();
         panelLegend.revalidate();
+    }
+    
+    public void addLegendLeft(String name, Color color, Color color1) {
+        ModelLegend data = new ModelLegend(name, color, color1);
+        legendsLeft.add(data);
+        panelLegendR.add(new LegendItemLeft(data));
+        panelLegendR.repaint();
+        panelLegendR.revalidate();
     }
 
     public void addData(ModelChart data) {
@@ -171,11 +187,26 @@ public class LineChart extends javax.swing.JPanel {
 
         panelLegend = new javax.swing.JPanel();
         blankPlotChartLine = new Charts.Line.blankchart.BlankPlotChartLine();
+        panelLegendR = new javax.swing.JPanel();
+        lblTitle = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
         panelLegend.setOpaque(false);
         panelLegend.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 0));
+
+        panelLegendR.setBackground(new java.awt.Color(102, 102, 102));
+        panelLegendR.setOpaque(false);
+        java.awt.GridBagLayout panelLegendRLayout = new java.awt.GridBagLayout();
+        panelLegendRLayout.columnWidths = new int[] {10};
+        panelLegendRLayout.rowHeights = new int[] {10};
+        panelLegendRLayout.columnWeights = new double[] {10.0};
+        panelLegendRLayout.rowWeights = new double[] {10.0};
+        panelLegendR.setLayout(panelLegendRLayout);
+
+        lblTitle.setFont(new java.awt.Font("Montserrat Black", 0, 18)); // NOI18N
+        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblTitle.setText("Titulo");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -183,18 +214,25 @@ public class LineChart extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelLegend, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelLegend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(panelLegendR, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(blankPlotChartLine, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 10, Short.MAX_VALUE))
+                    .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(blankPlotChartLine, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(blankPlotChartLine, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+                .addGap(10, 10, 10)
+                .addComponent(lblTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(blankPlotChartLine, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                    .addComponent(panelLegendR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelLegend, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -203,6 +241,8 @@ public class LineChart extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Charts.Line.blankchart.BlankPlotChartLine blankPlotChartLine;
+    private javax.swing.JLabel lblTitle;
     private javax.swing.JPanel panelLegend;
+    private javax.swing.JPanel panelLegendR;
     // End of variables declaration//GEN-END:variables
 }

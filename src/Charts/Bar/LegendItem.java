@@ -32,6 +32,8 @@ public class LegendItem extends javax.swing.JPanel {
         lbColor = new javax.swing.JLabel();
         lbName = new javax.swing.JLabel();
 
+        lbName.setFont(new java.awt.Font("Montserrat Medium", 0, 16)); // NOI18N
+        lbName.setForeground(new java.awt.Color(162, 163, 165));
         lbName.setText("Name");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

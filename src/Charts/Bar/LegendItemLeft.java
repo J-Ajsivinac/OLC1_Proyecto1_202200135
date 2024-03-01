@@ -4,6 +4,8 @@
  */
 package Charts.Bar;
 
+import java.awt.Color;
+
 /**
  *
  * @author mesoi
@@ -18,6 +20,17 @@ public class LegendItemLeft extends javax.swing.JPanel {
         setOpaque(false);
         lbColor.setBackground(data.getColor());
         rotatedLabel2.setTextAndAngle(data.getName(),270);
+        rotatedLabel2.setForeground(new Color(162,163,165));
+        rotatedLabel2.setFont(new java.awt.Font("Montserrat Medium", 0, 16));
+    }
+    
+    public LegendItemLeft(Charts.Line.ModelLegend data) {
+        initComponents();
+        setOpaque(false);
+        lbColor.setBackground(data.getColor());
+        rotatedLabel2.setTextAndAngle(data.getName(),270);
+        rotatedLabel2.setForeground(new Color(162,163,165));
+        rotatedLabel2.setFont(new java.awt.Font("Montserrat Medium", 0, 16));
     }
 
     /**

@@ -4,7 +4,6 @@
  */
 package Charts.Bar;
 
-
 import Charts.Bar.blankchart.BlankPlotChart;
 import Charts.Bar.blankchart.BlankPlotChatRender;
 import Charts.Bar.blankchart.SeriesSize;
@@ -33,30 +32,45 @@ public class Chart extends javax.swing.JPanel {
 
     public Chart() {
         initComponents();
-        
-        blankPlotChart.setBlankPlotChatRender(new BlankPlotChatRender(){
+
+        blankPlotChart.setBlankPlotChatRender(new BlankPlotChatRender() {
             @Override
             public String getLabelText(int index) {
-                 return model.get(index).getLabel();
+                return model.get(index).getLabel();
             }
 
             @Override
             public void renderSeries(BlankPlotChart chart, Graphics2D g2, SeriesSize size, int index) {
-                double totalSeriesWidth = (seriesSize * legends.size()) + (seriesSpace * (legends.size() - 1));
+                int newBarWidth = 20; // Ajusta este valor según lo que necesites
+
+                // Calcular el nuevo ancho total de todas las series
+                double totalSeriesWidth = (newBarWidth * legends.size()) + (seriesSpace * (legends.size() - 1));
+
+                // Calcular la nueva posición inicial para centrar las barras
                 double x = (size.getWidth() - totalSeriesWidth) / 2;
+
                 for (int i = 0; i < legends.size(); i++) {
                     ModelLegend legend = legends.get(i);
                     g2.setColor(legend.getColor());
+
+                    // Obtener el valor de la serie y escalarlo al tamaño de la gráfica
                     double seriesValues = chart.getSeriesValuesOf(model.get(index).getValues()[i], size.getHeight());
-                    g2.fillRect((int) (size.getX() + x), (int) (size.getY() + size.getHeight() - seriesValues), seriesSize, (int) seriesValues);
-                    x += seriesSpace + seriesSize;
+
+                    // Dibujar la barra con el nuevo grosor y la nueva posición x
+                    g2.fillRect((int) (size.getX() + x),
+                            (int) (size.getY() + size.getHeight() - seriesValues),
+                            newBarWidth, // Usar el nuevo grosor
+                            (int) seriesValues);
+
+                    // Mover la posición x para la siguiente serie
+                    x += seriesSpace + newBarWidth; // Ajustar en función del espacio entre barras
                 }
-            }        
+            }
         });
-    
+
     }
-    
-    public void setTitle (String Title){
+
+    public void setTitle(String Title) {
         lblTitle.setText(Title);
     }
 
@@ -100,11 +114,18 @@ public class Chart extends javax.swing.JPanel {
         panelLegendR = new javax.swing.JPanel();
         blankPlotChart = new Charts.Bar.blankchart.BlankPlotChart();
 
-        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        setOpaque(false);
+
+        jPanel1.setOpaque(false);
+
+        lblTitle.setFont(new java.awt.Font("Montserrat Black", 0, 18)); // NOI18N
+        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTitle.setText("Titulo");
 
+        panelLegendB.setOpaque(false);
         panelLegendB.setLayout(new java.awt.GridBagLayout());
 
+        panelLegendR.setOpaque(false);
         java.awt.GridBagLayout panelLegendRLayout = new java.awt.GridBagLayout();
         panelLegendRLayout.columnWidths = new int[] {10};
         panelLegendRLayout.rowHeights = new int[] {10};
@@ -118,24 +139,23 @@ public class Chart extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(14, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lblTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
-                        .addComponent(panelLegendB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelLegendB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(panelLegendR, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(blankPlotChart, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(blankPlotChart, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(21, 21, 21))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(14, 14, 14)
                 .addComponent(lblTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelLegendR, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                    .addComponent(panelLegendR, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
                     .addComponent(blankPlotChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelLegendB, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
