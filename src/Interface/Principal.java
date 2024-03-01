@@ -63,7 +63,7 @@ public class Principal extends javax.swing.JFrame {
         FlatSVGIcon.ColorFilter whiteF = new FlatSVGIcon.ColorFilter(new Function<Color, Color>() {
             @Override
             public Color apply(Color t) {
-                return new Color(255, 255, 255);
+                return new Color(238, 238, 241);
             }
 
         });
@@ -208,6 +208,7 @@ public class Principal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DataForge");
 
+        jPanel1.setBackground(new java.awt.Color(5, 5, 5));
         jPanel1.setPreferredSize(new java.awt.Dimension(1100, 670));
 
         btnPlay.setBackground(new java.awt.Color(68, 174, 110));
@@ -223,7 +224,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        btnReport.setBackground(new java.awt.Color(51, 51, 51));
+        btnReport.setBackground(new java.awt.Color(38, 40, 44));
         btnReport.setRoundBottomLeft(10);
         btnReport.setRoundBottomRight(10);
         btnReport.setRoundTopLeft(10);
@@ -265,13 +266,13 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        panelCode.setBackground(new java.awt.Color(51, 51, 51));
+        panelCode.setBackground(new java.awt.Color(19, 20, 23));
         panelCode.setRoundBottomLeft(10);
         panelCode.setRoundBottomRight(10);
         panelCode.setRoundTopLeft(10);
         panelCode.setRoundTopRight(10);
 
-        tabbedPane.setBackground(new java.awt.Color(51, 51, 51));
+        tabbedPane.setBackground(new java.awt.Color(19, 20, 23));
 
         javax.swing.GroupLayout panelCodeLayout = new javax.swing.GroupLayout(panelCode);
         panelCode.setLayout(panelCodeLayout);
@@ -290,7 +291,7 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        panelRound2.setBackground(new java.awt.Color(51, 51, 51));
+        panelRound2.setBackground(new java.awt.Color(19, 20, 23));
         panelRound2.setRoundBottomLeft(10);
         panelRound2.setRoundBottomRight(10);
         panelRound2.setRoundTopLeft(10);
@@ -299,6 +300,9 @@ public class Principal extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Montserrat", 1, 14)); // NOI18N
         jLabel2.setText("Consola");
 
+        paneConsole.setEditable(false);
+        paneConsole.setBackground(new java.awt.Color(19, 20, 23));
+        paneConsole.setBorder(null);
         jScrollPane1.setViewportView(paneConsole);
 
         javax.swing.GroupLayout panelRound2Layout = new javax.swing.GroupLayout(panelRound2);
@@ -326,11 +330,11 @@ public class Principal extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Joab Ajsivinac - 202200135");
 
-        btnNew.setBackground(new java.awt.Color(51, 51, 51));
+        btnNew.setBackground(new java.awt.Color(38, 40, 44));
         btnNew.setBorder(null);
         btnNew.setBorderColor(new java.awt.Color(51, 51, 51));
-        btnNew.setColor(new java.awt.Color(51, 51, 51));
-        btnNew.setColorClick(new java.awt.Color(102, 102, 102));
+        btnNew.setColor(new java.awt.Color(38, 40, 44));
+        btnNew.setColorClick(new java.awt.Color(45, 47, 52));
         btnNew.setColorOver(new java.awt.Color(102, 102, 102));
         btnNew.setRadius(10);
         btnNew.addActionListener(new java.awt.event.ActionListener() {
@@ -339,11 +343,11 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        btnOpen.setBackground(new java.awt.Color(51, 51, 51));
+        btnOpen.setBackground(new java.awt.Color(38, 40, 44));
         btnOpen.setBorder(null);
         btnOpen.setBorderColor(new java.awt.Color(51, 51, 51));
-        btnOpen.setColor(new java.awt.Color(51, 51, 51));
-        btnOpen.setColorClick(new java.awt.Color(102, 102, 102));
+        btnOpen.setColor(new java.awt.Color(38, 40, 44));
+        btnOpen.setColorClick(new java.awt.Color(45, 47, 52));
         btnOpen.setColorOver(new java.awt.Color(102, 102, 102));
         btnOpen.setRadius(10);
         btnOpen.addActionListener(new java.awt.event.ActionListener() {
@@ -352,11 +356,11 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        btnSave.setBackground(new java.awt.Color(51, 51, 51));
+        btnSave.setBackground(new java.awt.Color(38, 40, 44));
         btnSave.setBorder(null);
         btnSave.setBorderColor(new java.awt.Color(51, 51, 51));
-        btnSave.setColor(new java.awt.Color(51, 51, 51));
-        btnSave.setColorClick(new java.awt.Color(102, 102, 102));
+        btnSave.setColor(new java.awt.Color(38, 40, 44));
+        btnSave.setColorClick(new java.awt.Color(45, 47, 52));
         btnSave.setColorOver(new java.awt.Color(102, 102, 102));
         btnSave.setRadius(10);
         btnSave.addActionListener(new java.awt.event.ActionListener() {
@@ -439,6 +443,7 @@ public class Principal extends javax.swing.JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             textPane = new JTextPane();
+            textPane.setBackground(new Color(19, 20, 23));
             JScrollPane scrollPane = new JScrollPane(textPane);
 
             // Crear un ButtonTabComponent para la nueva pestaña
@@ -475,6 +480,7 @@ public class Principal extends javax.swing.JFrame {
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
         // TODO add your handling code here:
         textPane = new JTextPane();
+        textPane.setBackground(new Color(19, 20, 23));
         JScrollPane scrollPane = new JScrollPane(textPane);
         int tabSize = 16; // Tamaño en píxeles
 
