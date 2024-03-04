@@ -2,23 +2,23 @@ package Analyzers;
 
 public class token {
 
-    private ParserSym tokenType;
+    private String tokenType;
     private String lexema;
     private int line;
     private int column;
 
-    public token(ParserSym tokenType, String lexema, int line, int column) {
+    public token(String tokenType, String lexema, int line, int column) {
         this.tokenType = tokenType;
         this.lexema = lexema;
         this.line = line;
         this.column = column;
     }
 
-    public void setTokenType(ParserSym tokenType) {
+    public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
     }
 
-    public ParserSym gettokenType() {
+    public String gettokenType() {
         return this.tokenType;
     }
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 
 %%
+
 %public
 %class Scanner
 %cupsym TOK
@@ -64,52 +65,52 @@ COMMENTS= [<][!][^!]*[!]+([^<!][^!]*[!]+)*[>]
 %eofval} 
 %%
 
-<YYINITIAL> "program" {return symbol(ParserSym.TK_program, yytext());}
-<YYINITIAL> "end" {return symbol(ParserSym.TK_end, yytext());}
-<YYINITIAL> "var" {return symbol(ParserSym.TK_var, yytext());}
-<YYINITIAL> ":" {return symbol(ParserSym.TK_colon, yytext());}
-<YYINITIAL> "double" {return symbol(ParserSym.TK_double, yytext());}
-<YYINITIAL> "char" {return symbol(ParserSym.TK_char, yytext());}
-<YYINITIAL> "[" {return symbol(ParserSym.TK_lbracket, yytext());}
-<YYINITIAL> "]" {return symbol(ParserSym.TK_rbracket, yytext());}
-<YYINITIAL> "=" {return symbol(ParserSym.TK_equal, yytext());}
-<YYINITIAL> "-" {return symbol(ParserSym.TK_minus, yytext());} 
-<YYINITIAL> "<" {return symbol(ParserSym.TK_lt, yytext());}
-<YYINITIAL> ">" {return symbol(ParserSym.TK_gt, yytext());}
-<YYINITIAL> ";" {return symbol(ParserSym.TK_semicolon, yytext());}
-<YYINITIAL> "arr" {return symbol(ParserSym.TK_arr, yytext());}
-<YYINITIAL> "," {return symbol(ParserSym.TK_comma, yytext());}
-<YYINITIAL> "(" {return symbol(ParserSym.TK_lparen, yytext());}
-<YYINITIAL> ")" {return symbol(ParserSym.TK_rparen, yytext());}
-<YYINITIAL> "sum" {return symbol(ParserSym.TK_sum, yytext());}
-<YYINITIAL> "res" {return symbol(ParserSym.TK_res, yytext());}
-<YYINITIAL> "mul" {return symbol(ParserSym.TK_mul, yytext());}
-<YYINITIAL> "div" {return symbol(ParserSym.TK_div, yytext());}
-<YYINITIAL> "mod" {return symbol(ParserSym.TK_mod, yytext());}
-<YYINITIAL> "media" {return symbol(ParserSym.TK_media, yytext());}
-<YYINITIAL> "mediana" {return symbol(ParserSym.TK_mediana, yytext());}
-<YYINITIAL> "moda" {return symbol(ParserSym.TK_moda, yytext());}
-<YYINITIAL> "varianza" {return symbol(ParserSym.TK_varianza, yytext());}
-<YYINITIAL> "max" {return symbol(ParserSym.TK_max, yytext());}
-<YYINITIAL> "min" {return symbol(ParserSym.TK_min, yytext());}
-<YYINITIAL> "print" {return symbol(ParserSym.TK_print, yytext());}
-<YYINITIAL> "column" {return symbol(ParserSym.TK_column, yytext());}
-<YYINITIAL> "console" {return symbol(ParserSym.TK_console, yytext());}
-<YYINITIAL> "graphbar" {return symbol(ParserSym.TK_graphbar, yytext());}
-<YYINITIAL> "ejex" {return symbol(ParserSym.TK_ejex, yytext());}
-<YYINITIAL> "ejey" {return symbol(ParserSym.TK_ejey, yytext());}
-<YYINITIAL> "titulox" {return symbol(ParserSym.TK_titulox, yytext());}
-<YYINITIAL> "tituloy" {return symbol(ParserSym.TK_tituloy, yytext());}
-<YYINITIAL> "titulo" {return symbol(ParserSym.TK_titulo, yytext());}
-<YYINITIAL> "exec" {return symbol(ParserSym.TK_exec, yytext());}
-<YYINITIAL> "graphline" {return symbol(ParserSym.TK_graphline, yytext());}
-<YYINITIAL> "graphpie" {return symbol(ParserSym.TK_graphpie, yytext());}
-<YYINITIAL> "label" {return symbol(ParserSym.TK_label, yytext());}
-<YYINITIAL> "values" {return symbol(ParserSym.TK_values, yytext());}
-<YYINITIAL> "histogram" {return symbol(ParserSym.TK_histogram, yytext());}
-<YYINITIAL> ({ID}|{ID_ARRAY}) {return symbol(ParserSym.TK_id, yytext());}
-<YYINITIAL> {STRING} {return symbol(ParserSym.TK_string, yytext());}
-<YYINITIAL> {DOUBLE} {return symbol(ParserSym.TK_double, yytext());}
+<YYINITIAL> "program" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_program], yytext(), yyline, yychar)); return symbol(ParserSym.TK_program, yytext());}
+<YYINITIAL> "end" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_end], yytext(), yyline, yychar)); return symbol(ParserSym.TK_end, yytext());}
+<YYINITIAL> "var" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_var], yytext(), yyline, yychar)); return symbol(ParserSym.TK_var, yytext());}
+<YYINITIAL> ":" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_colon], yytext(), yyline, yychar)); return symbol(ParserSym.TK_colon, yytext());}
+<YYINITIAL> "double" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_double], yytext(), yyline, yychar)); return symbol(ParserSym.TK_double, yytext());}
+<YYINITIAL> "char" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_char], yytext(), yyline, yychar)); return symbol(ParserSym.TK_char, yytext());}
+<YYINITIAL> "[" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_lbracket], yytext(), yyline, yychar)); return symbol(ParserSym.TK_lbracket, yytext());}
+<YYINITIAL> "]" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_rbracket], yytext(), yyline, yychar)); return symbol(ParserSym.TK_rbracket, yytext());}
+<YYINITIAL> "=" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_equal], yytext(), yyline, yychar)); return symbol(ParserSym.TK_equal, yytext());}
+<YYINITIAL> "-" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_minus], yytext(), yyline, yychar)); return symbol(ParserSym.TK_minus, yytext());} 
+<YYINITIAL> "<" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_lt], yytext(), yyline, yychar)); return symbol(ParserSym.TK_lt, yytext());}
+<YYINITIAL> ">" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_gt], yytext(), yyline, yychar)); return symbol(ParserSym.TK_gt, yytext());}
+<YYINITIAL> ";" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_semicolon], yytext(), yyline, yychar)); return symbol(ParserSym.TK_semicolon, yytext());}
+<YYINITIAL> "arr" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_arr], yytext(), yyline, yychar)); return symbol(ParserSym.TK_arr, yytext());}
+<YYINITIAL> "," {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_comma], yytext(), yyline, yychar)); return symbol(ParserSym.TK_comma, yytext());}
+<YYINITIAL> "(" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_lparen], yytext(), yyline, yychar)); return symbol(ParserSym.TK_lparen, yytext());}
+<YYINITIAL> ")" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_rparen], yytext(), yyline, yychar)); return symbol(ParserSym.TK_rparen, yytext());}
+<YYINITIAL> "sum" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_sum], yytext(), yyline, yychar)); return symbol(ParserSym.TK_sum, yytext());}
+<YYINITIAL> "res" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_res], yytext(), yyline, yychar)); return symbol(ParserSym.TK_res, yytext());}
+<YYINITIAL> "mul" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_mul], yytext(), yyline, yychar)); return symbol(ParserSym.TK_mul, yytext());}
+<YYINITIAL> "div" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_div], yytext(), yyline, yychar)); return symbol(ParserSym.TK_div, yytext());}
+<YYINITIAL> "mod" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_mod], yytext(), yyline, yychar)); return symbol(ParserSym.TK_mod, yytext());}
+<YYINITIAL> "media" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_media], yytext(), yyline, yychar)); return symbol(ParserSym.TK_media, yytext());}
+<YYINITIAL> "mediana" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_mediana], yytext(), yyline, yychar)); return symbol(ParserSym.TK_mediana, yytext());}
+<YYINITIAL> "moda" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_moda], yytext(), yyline, yychar)); return symbol(ParserSym.TK_moda, yytext());}
+<YYINITIAL> "varianza" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_varianza], yytext(), yyline, yychar)); return symbol(ParserSym.TK_varianza, yytext());}
+<YYINITIAL> "max" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_max], yytext(), yyline, yychar)); return symbol(ParserSym.TK_max, yytext());}
+<YYINITIAL> "min" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_min], yytext(), yyline, yychar)); return symbol(ParserSym.TK_min, yytext());}
+<YYINITIAL> "print" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_print], yytext(), yyline, yychar)); return symbol(ParserSym.TK_print, yytext());}
+<YYINITIAL> "column" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_column], yytext(), yyline, yychar)); return symbol(ParserSym.TK_column, yytext());}
+<YYINITIAL> "console" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_console], yytext(), yyline, yychar)); return symbol(ParserSym.TK_console, yytext());}
+<YYINITIAL> "graphbar" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_graphbar], yytext(), yyline, yychar)); return symbol(ParserSym.TK_graphbar, yytext());}
+<YYINITIAL> "ejex" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_ejex], yytext(), yyline, yychar)); return symbol(ParserSym.TK_ejex, yytext());}
+<YYINITIAL> "ejey" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_ejey], yytext(), yyline, yychar)); return symbol(ParserSym.TK_ejey, yytext());}
+<YYINITIAL> "titulox" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_titulox], yytext(), yyline, yychar)); return symbol(ParserSym.TK_titulox, yytext());}
+<YYINITIAL> "tituloy" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_tituloy], yytext(), yyline, yychar)); return symbol(ParserSym.TK_tituloy, yytext());}
+<YYINITIAL> "titulo" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_titulo], yytext(), yyline, yychar)); return symbol(ParserSym.TK_titulo, yytext());}
+<YYINITIAL> "exec" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_exec], yytext(), yyline, yychar)); return symbol(ParserSym.TK_exec, yytext());}
+<YYINITIAL> "graphline" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_graphline], yytext(), yyline, yychar)); return symbol(ParserSym.TK_graphline, yytext());}
+<YYINITIAL> "graphpie" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_graphpie], yytext(), yyline, yychar)); return symbol(ParserSym.TK_graphpie, yytext());}
+<YYINITIAL> "label" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_label], yytext(), yyline, yychar)); return symbol(ParserSym.TK_label, yytext());}
+<YYINITIAL> "values" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_values], yytext(), yyline, yychar)); return symbol(ParserSym.TK_values, yytext());}
+<YYINITIAL> "histogram" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_histogram], yytext(), yyline, yychar)); return symbol(ParserSym.TK_histogram, yytext());}
+<YYINITIAL> ({ID}|{ID_ARRAY}) {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_id], yytext(), yyline, yychar)); return symbol(ParserSym.TK_id, yytext());}
+<YYINITIAL> {STRING} {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_string], yytext(), yyline, yychar)); return symbol(ParserSym.TK_string, yytext());}
+<YYINITIAL> {DOUBLE} {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_double], yytext(), yyline, yychar)); return symbol(ParserSym.TK_double, yytext());}
 
 \n                      {yychar = 1; yycolumn=1;}
 {UNUSED}                {}

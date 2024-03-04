@@ -26,7 +26,8 @@ parser code{:
     }
 
     public void unrecovered_syntax_error(Symbol s)throws java.lang.Exception{
-            System.out.println("El error no se pudo recueprar");
+            //System.out.println("El error no se pudo recueprar"+s.value);
+			erroresSintacticos.add(new Errores(1,"El caracter : '"+s.value+"' no se esperaba", String.valueOf(s.right) ,String.valueOf(s.left)));
     }
 
 	public ArrayList<Errores> getErroresSintacticos(){
@@ -91,12 +92,13 @@ terminal String TK_min;
 
 
 
-non terminal  INIT,INSTRUCTIONS, TYPE,CONSOLE_ARRAY;
+non terminal  INIT,INSTRUCTIONS,CONSOLE_ARRAY;
 non terminal VariableValue ARRAY_EXP,STATISTICAL_EXP,ARITHMETHIC_EXP,VALUE,INSTRUCTION,DECLARATION,EXP,VALUEPRINT,TITLE,CHAR,GRAPH,CONSOLE;
 non terminal String TYPE_S,OP,VARIABLE;
 non terminal ArrayList<VariableValue> VALUES,VALUESPRINT;
 non terminal VariableDeclaration ATTRIBUTE_GRAPH;
 non terminal TypeVariableG TYPE_GRAPH;
+non terminal TypeVariable TYPE;
 // non terminal ArrayList<VariableValue> ATTRIBUTES_GRAPH;
 non terminal HashMap<String, Object> ATTRIBUTES_GRAPH;
 // ---> Precedencia de menor a mayor;
@@ -119,18 +121,18 @@ INSTRUCTION ::=
 	GRAPH:r TK_end TK_semicolon {:RESULT = r;:};
 
 DECLARATION ::= 
-	TK_var TK_colon TYPE TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e);
+	TK_var TK_colon TYPE:tt TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e);
 																			//System.out.println(e);
-																			RESULT = new VariableValue(new VariableDeclaration(id, e),TypeVariable.DECLARATION);  
+																			RESULT = new VariableValue(new VariableDeclaration(id, e, tt),TypeVariable.DECLARATION);  
 																			:} |
-	TK_arr TK_colon TYPE TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e); 
+	TK_arr TK_colon TYPE:tt TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e); 
 																			//System.out.println(e);
-																			RESULT = new VariableValue(new VariableDeclaration(id, e),TypeVariable.DECLARATION);
+																			RESULT = new VariableValue(new VariableDeclaration(id, e, tt),TypeVariable.DECLARATION);
 																			:};
 
 TYPE ::=
-	TK_double |
-	TK_char TK_lbracket TK_rbracket|
+	TK_double:t {:RESULT = TypeVariable.DOUBLE;:} |
+	TK_char TK_lbracket TK_rbracket {:RESULT = TypeVariable.STRING;:} |
         error;
 
 EXP ::=
@@ -186,7 +188,7 @@ OP ::=
 
 CONSOLE ::=
 	TK_console TK_colon TK_colon TK_print TK_equal VALUESPRINT:e {: RESULT = new VariableValue(e,TypeVariable.CONSOLE); :}|
-	TK_console TK_colon TK_colon TK_column TK_equal TITLE TK_minus TK_gt CONSOLE_ARRAY:e {: RESULT = new VariableValue(e,TypeVariable.PRINTARRAY); :} |
+	TK_console TK_colon TK_colon TK_column TK_equal TITLE:title TK_minus TK_gt CONSOLE_ARRAY:e {: RESULT = new VariableValue(new VariableDeclaration(title,e),TypeVariable.PRINTARRAY); :} |
     error ;
 
 CONSOLE_ARRAY ::=
@@ -202,7 +204,8 @@ VALUEPRINT ::=
 	TK_id:r {: RESULT = new VariableValue(r,TypeVariable.ID); :} |
 	TK_string:r  {: RESULT = new VariableValue(String.valueOf(r),TypeVariable.STRING); :} |
 	TK_double:r {: RESULT = new VariableValue(Double.parseDouble(r),TypeVariable.DOUBLE); :} |
-	ARITHMETHIC_EXP:r {: RESULT =  r; :};
+	ARITHMETHIC_EXP:r {: RESULT =  r; :} |
+	STATISTICAL_EXP:r {: RESULT = r; :};
 
 GRAPH ::=
 	TYPE_GRAPH:id TK_lparen ATTRIBUTES_GRAPH:att TK_exec TYPE_GRAPH TK_end TK_semicolon TK_rparen {: RESULT = new VariableValue(new VariableDeclaration( id,att), TypeVariable.GRAPH) ; :};
@@ -216,7 +219,8 @@ TYPE_GRAPH ::=
 
 TITLE ::=
 	TK_string :r  {: RESULT = new VariableValue(String.valueOf(r),TypeVariable.STRING); :} |
-	TK_id:r {: RESULT =  new VariableValue(r,TypeVariable.ID); :} ;
+	TK_id:r {: RESULT =  new VariableValue(r,TypeVariable.ID); :} |
+	error ;
 
 ATTRIBUTES_GRAPH ::=
 	ATTRIBUTES_GRAPH:val  ATTRIBUTE_GRAPH:v {: RESULT = val; VariableDeclaration temp = (VariableDeclaration) v; RESULT.put(String.valueOf(temp.getId()), temp.getValue());:} |

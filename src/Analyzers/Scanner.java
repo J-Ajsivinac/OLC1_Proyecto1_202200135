@@ -848,227 +848,227 @@ public class Scanner implements java_cup.runtime.Scanner {
             // fall through
           case 51: break;
           case 4: 
-            { return symbol(ParserSym.TK_id, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_id], yytext(), yyline, yychar)); return symbol(ParserSym.TK_id, yytext());
             } 
             // fall through
           case 52: break;
           case 5: 
-            { return symbol(ParserSym.TK_double, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_double], yytext(), yyline, yychar)); return symbol(ParserSym.TK_double, yytext());
             } 
             // fall through
           case 53: break;
           case 6: 
-            { return symbol(ParserSym.TK_lt, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_lt], yytext(), yyline, yychar)); return symbol(ParserSym.TK_lt, yytext());
             } 
             // fall through
           case 54: break;
           case 7: 
-            { return symbol(ParserSym.TK_gt, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_gt], yytext(), yyline, yychar)); return symbol(ParserSym.TK_gt, yytext());
             } 
             // fall through
           case 55: break;
           case 8: 
-            { return symbol(ParserSym.TK_colon, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_colon], yytext(), yyline, yychar)); return symbol(ParserSym.TK_colon, yytext());
             } 
             // fall through
           case 56: break;
           case 9: 
-            { return symbol(ParserSym.TK_lbracket, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_lbracket], yytext(), yyline, yychar)); return symbol(ParserSym.TK_lbracket, yytext());
             } 
             // fall through
           case 57: break;
           case 10: 
-            { return symbol(ParserSym.TK_rbracket, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_rbracket], yytext(), yyline, yychar)); return symbol(ParserSym.TK_rbracket, yytext());
             } 
             // fall through
           case 58: break;
           case 11: 
-            { return symbol(ParserSym.TK_equal, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_equal], yytext(), yyline, yychar)); return symbol(ParserSym.TK_equal, yytext());
             } 
             // fall through
           case 59: break;
           case 12: 
-            { return symbol(ParserSym.TK_minus, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_minus], yytext(), yyline, yychar)); return symbol(ParserSym.TK_minus, yytext());
             } 
             // fall through
           case 60: break;
           case 13: 
-            { return symbol(ParserSym.TK_semicolon, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_semicolon], yytext(), yyline, yychar)); return symbol(ParserSym.TK_semicolon, yytext());
             } 
             // fall through
           case 61: break;
           case 14: 
-            { return symbol(ParserSym.TK_comma, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_comma], yytext(), yyline, yychar)); return symbol(ParserSym.TK_comma, yytext());
             } 
             // fall through
           case 62: break;
           case 15: 
-            { return symbol(ParserSym.TK_lparen, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_lparen], yytext(), yyline, yychar)); return symbol(ParserSym.TK_lparen, yytext());
             } 
             // fall through
           case 63: break;
           case 16: 
-            { return symbol(ParserSym.TK_rparen, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_rparen], yytext(), yyline, yychar)); return symbol(ParserSym.TK_rparen, yytext());
             } 
             // fall through
           case 64: break;
           case 17: 
-            { return symbol(ParserSym.TK_string, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_string], yytext(), yyline, yychar)); return symbol(ParserSym.TK_string, yytext());
             } 
             // fall through
           case 65: break;
           case 18: 
-            { return symbol(ParserSym.TK_res, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_res], yytext(), yyline, yychar)); return symbol(ParserSym.TK_res, yytext());
             } 
             // fall through
           case 66: break;
           case 19: 
-            { return symbol(ParserSym.TK_arr, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_arr], yytext(), yyline, yychar)); return symbol(ParserSym.TK_arr, yytext());
             } 
             // fall through
           case 67: break;
           case 20: 
-            { return symbol(ParserSym.TK_mod, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_mod], yytext(), yyline, yychar)); return symbol(ParserSym.TK_mod, yytext());
             } 
             // fall through
           case 68: break;
           case 21: 
-            { return symbol(ParserSym.TK_max, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_max], yytext(), yyline, yychar)); return symbol(ParserSym.TK_max, yytext());
             } 
             // fall through
           case 69: break;
           case 22: 
-            { return symbol(ParserSym.TK_mul, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_mul], yytext(), yyline, yychar)); return symbol(ParserSym.TK_mul, yytext());
             } 
             // fall through
           case 70: break;
           case 23: 
-            { return symbol(ParserSym.TK_min, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_min], yytext(), yyline, yychar)); return symbol(ParserSym.TK_min, yytext());
             } 
             // fall through
           case 71: break;
           case 24: 
-            { return symbol(ParserSym.TK_end, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_end], yytext(), yyline, yychar)); return symbol(ParserSym.TK_end, yytext());
             } 
             // fall through
           case 72: break;
           case 25: 
-            { return symbol(ParserSym.TK_div, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_div], yytext(), yyline, yychar)); return symbol(ParserSym.TK_div, yytext());
             } 
             // fall through
           case 73: break;
           case 26: 
-            { return symbol(ParserSym.TK_var, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_var], yytext(), yyline, yychar)); return symbol(ParserSym.TK_var, yytext());
             } 
             // fall through
           case 74: break;
           case 27: 
-            { return symbol(ParserSym.TK_sum, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_sum], yytext(), yyline, yychar)); return symbol(ParserSym.TK_sum, yytext());
             } 
             // fall through
           case 75: break;
           case 28: 
-            { return symbol(ParserSym.TK_moda, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_moda], yytext(), yyline, yychar)); return symbol(ParserSym.TK_moda, yytext());
             } 
             // fall through
           case 76: break;
           case 29: 
-            { return symbol(ParserSym.TK_exec, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_exec], yytext(), yyline, yychar)); return symbol(ParserSym.TK_exec, yytext());
             } 
             // fall through
           case 77: break;
           case 30: 
-            { return symbol(ParserSym.TK_ejex, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_ejex], yytext(), yyline, yychar)); return symbol(ParserSym.TK_ejex, yytext());
             } 
             // fall through
           case 78: break;
           case 31: 
-            { return symbol(ParserSym.TK_ejey, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_ejey], yytext(), yyline, yychar)); return symbol(ParserSym.TK_ejey, yytext());
             } 
             // fall through
           case 79: break;
           case 32: 
-            { return symbol(ParserSym.TK_char, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_char], yytext(), yyline, yychar)); return symbol(ParserSym.TK_char, yytext());
             } 
             // fall through
           case 80: break;
           case 33: 
-            { return symbol(ParserSym.TK_print, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_print], yytext(), yyline, yychar)); return symbol(ParserSym.TK_print, yytext());
             } 
             // fall through
           case 81: break;
           case 34: 
-            { return symbol(ParserSym.TK_media, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_media], yytext(), yyline, yychar)); return symbol(ParserSym.TK_media, yytext());
             } 
             // fall through
           case 82: break;
           case 35: 
-            { return symbol(ParserSym.TK_label, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_label], yytext(), yyline, yychar)); return symbol(ParserSym.TK_label, yytext());
             } 
             // fall through
           case 83: break;
           case 36: 
-            { return symbol(ParserSym.TK_values, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_values], yytext(), yyline, yychar)); return symbol(ParserSym.TK_values, yytext());
             } 
             // fall through
           case 84: break;
           case 37: 
-            { return symbol(ParserSym.TK_column, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_column], yytext(), yyline, yychar)); return symbol(ParserSym.TK_column, yytext());
             } 
             // fall through
           case 85: break;
           case 38: 
-            { return symbol(ParserSym.TK_titulo, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_titulo], yytext(), yyline, yychar)); return symbol(ParserSym.TK_titulo, yytext());
             } 
             // fall through
           case 86: break;
           case 39: 
-            { return symbol(ParserSym.TK_program, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_program], yytext(), yyline, yychar)); return symbol(ParserSym.TK_program, yytext());
             } 
             // fall through
           case 87: break;
           case 40: 
-            { return symbol(ParserSym.TK_mediana, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_mediana], yytext(), yyline, yychar)); return symbol(ParserSym.TK_mediana, yytext());
             } 
             // fall through
           case 88: break;
           case 41: 
-            { return symbol(ParserSym.TK_console, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_console], yytext(), yyline, yychar)); return symbol(ParserSym.TK_console, yytext());
             } 
             // fall through
           case 89: break;
           case 42: 
-            { return symbol(ParserSym.TK_titulox, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_titulox], yytext(), yyline, yychar)); return symbol(ParserSym.TK_titulox, yytext());
             } 
             // fall through
           case 90: break;
           case 43: 
-            { return symbol(ParserSym.TK_tituloy, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_tituloy], yytext(), yyline, yychar)); return symbol(ParserSym.TK_tituloy, yytext());
             } 
             // fall through
           case 91: break;
           case 44: 
-            { return symbol(ParserSym.TK_graphpie, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_graphpie], yytext(), yyline, yychar)); return symbol(ParserSym.TK_graphpie, yytext());
             } 
             // fall through
           case 92: break;
           case 45: 
-            { return symbol(ParserSym.TK_graphbar, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_graphbar], yytext(), yyline, yychar)); return symbol(ParserSym.TK_graphbar, yytext());
             } 
             // fall through
           case 93: break;
           case 46: 
-            { return symbol(ParserSym.TK_varianza, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_varianza], yytext(), yyline, yychar)); return symbol(ParserSym.TK_varianza, yytext());
             } 
             // fall through
           case 94: break;
           case 47: 
-            { return symbol(ParserSym.TK_graphline, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_graphline], yytext(), yyline, yychar)); return symbol(ParserSym.TK_graphline, yytext());
             } 
             // fall through
           case 95: break;
           case 48: 
-            { return symbol(ParserSym.TK_histogram, yytext());
+            { lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_histogram], yytext(), yyline, yychar)); return symbol(ParserSym.TK_histogram, yytext());
             } 
             // fall through
           case 96: break;
