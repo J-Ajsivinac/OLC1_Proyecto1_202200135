@@ -166,7 +166,7 @@ Dentro del analisis léxico se definieron los siguientes tokens
 **Análisis Sintáctico**
 
 El analizador sintáctico sigue la siguiente grámatica
-
+[Gramática](grammar.txt)
 _____
 
 **Funciónes Aritmeticas**

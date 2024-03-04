@@ -1,0 +1,112 @@
+<INIT> ::= 
+	TK_programa <INSTRUCTIONS> TK_end TK_program |
+	TK_program TK_end TK_program
+
+<INSTRUCTIONS> ::=
+	<INSTRUCTIONS> <INSTRUCTION> |
+	<INSTRUCTION>
+
+<INSTRUCTION> ::=
+	<DECLARATION> TK_end TK_semicolon |
+	<CONSOLE> TK_end TK_semicolon     |
+	<GRAPH> TK_end TK_semicolon
+
+<DECLARATION> ::= 
+	TK_var TK_colon TYPE TK_colon TK_colon TK_id TK_lt TK_minus EXP |
+	TK_arr TK_colon TYPE TK_colon TK_colon TK_id TK_lt TK_minus EXP
+
+<TYPE> ::=
+	TK_double |
+	TK_char TK_lbracket TK_rbracket 
+
+<EXP> ::=
+	TK_id |
+	TK_double_v |
+	TK_string |
+	<ARRAY_EXP> |
+	<ARITHMETHIC_EXP>
+    <STATISTICAL_EXP>
+
+<ARRAY_EXP> ::=
+	TK_lbracket <VALUES> TK_rbracket
+
+<VALUES> ::=
+	<VALUES> TK_comma VALUE |
+	<VALUE>
+
+<VALUE> ::=
+	TK_double_v       |
+	TK_string         |
+	TK_id             |
+	<ARITHMETHIC_EXP> |
+    <STATISTICAL_EXP>
+
+<ARITHMETHIC_EXP> ::=
+	<OP> TK_lparen <EXP> TK_comma <EXP> TK_rparen 
+
+<STATISTICAL_EXP> ::=
+    <TYPE_S> TK_lparen <ARRAY_EXP> TK_rparen |
+    <TYPE_S> TK_lparen TK_id TK_rparen 
+
+TYPE_S ::=
+	TK_media    |
+	TK_mediana  |
+    TK_moda     |
+    TK_varianza |
+    TK_max      |
+    TK_min      |
+
+<OP> ::=
+	TK_sum |
+	TK_res |
+	TK_mul |
+	TK_div |
+	TK_mod |
+
+<CONSOLE> ::=
+	TK_console TK_colon TK_colon TK_print TK_equal <VALUESPRINT> |
+	TK_console TK_colon TK_colon TK_column TK_equal <TITLE> TK_minus TK_gt <CONSOLE_ARRAY>
+
+<CONSOLE_ARRAY> ::=
+	TK_lparen <VALUESPRINT> TK_rparen |
+	TK_id
+
+<VALUESPRINT> ::=
+	<VALUESPRINT> TK_comma <VALUEPRINT> |
+	<VALUEPRINT>
+
+<VALUEPRINT> ::=
+	TK_id             |
+	TK_string         |
+	TK_double         |
+	<ARITHMETHIC_EXP> |
+    <STATISTICAL_EXP>
+
+<GRAPH> ::=
+	<TYPE_GRAPH> TK_lparen <ATTRIBUTES_GRAPH> TK_exec <TYPE_GRAPH> TK_end TK_semicolon TK_rparen
+
+<TYPE_GRAPH> ::=
+	TK_graphbar  |
+	TK_graphline |
+	TK_graphpie  |
+	TK_histogram
+
+TITLE ::=
+	TK_string  |
+	TK_id 
+
+<ATTRIBUTES_GRAPH> ::=
+	<ATTRIBUTES_GRAPH> <ATTRIBUTE_GRAPH> |
+	<ATTRIBUTE_GRAPH> 
+
+ATTRIBUTE_GRAPH ::=
+	<VARIABLE> TK_colon TK_colon <TYPE> TK_equal <EXP> TK_end TK_semicolon;
+
+<VARIABLE> ::=
+	TK_titulo  |
+	TK_ejex    |
+	TK_ejey    |
+	TK_titulox |
+	TK_tituloy |
+	TK_label   |
+	TK_values 
