@@ -37,8 +37,8 @@ public class Instructions {
     public void push(VariableValue v) {
         ins.add(v);
     }
-    
-    public TableSymb getTable(){
+
+    public TableSymb getTable() {
         return table;
     }
 
@@ -53,72 +53,41 @@ public class Instructions {
                 if (value.getType() == TypeVariable.STRING) {
                     String temp = (String) value.getValue();
                     table.put(variable, new Information(temp, "variable String"));
+
                 } else if (value.getType() == TypeVariable.DOUBLE) {
                     Double temp = (Double) value.getValue();
                     table.put(variable, new Information(temp, "variable Double"));
+
                 } else if (value.getType() == TypeVariable.AR) {
                     ArithmeticExp temp = (ArithmeticExp) value.getValue();
                     double res = evaluateArith(temp);
-                    table.put(variable, new Information(res, "variable String"));
+                    table.put(variable, new Information(res, "variable Double"));
+
                 } else if (value.getType() == TypeVariable.ARRAY) {
                     ArrayList<VariableValue> temp = (ArrayList<VariableValue>) value.getValue();
-                    table.put(variable, new Information(temp, "arreglo"));
+                    addValuesArray(temp, aux.getTypeMain(), variable);
+
                 } else if (value.getType() == TypeVariable.ST) {
-                    //System.out.println(" .-->"+value.getValue());
                     StatisticalExp e = (StatisticalExp) value.getValue();
                     double res = evaluateStats(e);
-                    table.put(variable, new Information(value, "Variable Double"));
-                    // System.out.println(res);
+                    table.put(variable, new Information(res, "Variable Double"));
+
                 } else if (value.getType() == TypeVariable.ID) {
                     String temp = (String) value.getValue();
                     table.put(variable, table.get(temp));
+
                 } else {
-                    System.out.println(value.getValue());
+                    System.out.println("error -> "+value.getValue());
                 }
             }
+            
             if (v.getType() == TypeVariable.CONSOLE) {
-                ArrayList<VariableValue> aux = (ArrayList<VariableValue>) v.getValue();
-                for (VariableValue variableValue : aux) {
-                    if (variableValue.getType() == TypeVariable.STRING) {
-                        String temp = (String) variableValue.getValue();
-                        String stringSinComillas = temp.replaceAll("\"", "");
-                        output(stringSinComillas);
-                    } else if (variableValue.getType() == TypeVariable.DOUBLE) {
-                        Double temp = (Double) variableValue.getValue();
-                        output(temp);
-                    } else if (variableValue.getType() == TypeVariable.ID) {
-                        String temp = (String) variableValue.getValue();
-                        Information info = (Information) table.get(temp);
-                        Object resp = info.getValue();
-                        if (resp instanceof Double) {
-                            output((Double) resp);
-                        } else if (resp instanceof String) {
-                            output((String) resp);
-                        } else {
-                            System.out.println("error -> ");
-                        }
-                    }
-
-                }
-
+                ArrayList<VariableValue> data = (ArrayList<VariableValue>) v.getValue();
+                consoleSimple(data);
             }
+            
             if (v.getType() == TypeVariable.PRINTARRAY) {
-                VariableValue temp = (VariableValue) v.getValue();
-
-                if (temp.getType() == TypeVariable.ARRAY) {
-                    ArrayList<VariableValue> aux = (ArrayList<VariableValue>) temp.getValue();
-                    for (VariableValue variableValue : aux) {
-                        if (variableValue.getType() == TypeVariable.STRING) {
-                            String temp2 = (String) variableValue.getValue();
-                            String stringSinComillas = temp2.replaceAll("\"", "");
-                            output(stringSinComillas);
-                        } else if (variableValue.getType() == TypeVariable.DOUBLE) {
-                            Double temp2 = (Double) variableValue.getValue();
-                            output(temp2);
-                        }
-
-                    }
-                }
+                consoleArray(v);
             }
 
             if (v.getType() == TypeVariable.GRAPH) {
@@ -140,15 +109,143 @@ public class Instructions {
         if (viewChart) {
             c.setVisible(true);
         }
+        outputSimple("\n");
+    }
+
+    public void consoleSimple(ArrayList<VariableValue> values) {
+        outputSimple(" -> ");
+        String comma = ",";
+        int x = 0;
+        for (VariableValue variableValue : values) {
+            if (x == (values.size() - 1)) {
+                comma = " ";
+            }
+            if (variableValue.getType() == TypeVariable.STRING) {
+                String temp = (String) variableValue.getValue();
+                String stringSinComillas = temp.replaceAll("\"", "");
+                outputSimple(stringSinComillas + comma);
+            } else if (variableValue.getType() == TypeVariable.DOUBLE) {
+                Double temp = (Double) variableValue.getValue();
+                outputSimple(temp + comma);
+            } else if (variableValue.getType() == TypeVariable.ID) {
+                String temp = (String) variableValue.getValue();
+                Information info = (Information) table.get(temp);
+                Object resp = info.getValue();
+                if (resp instanceof Double) {
+                    outputSimple(resp + comma);
+                } else if (resp instanceof String) {
+                    outputSimple(resp + comma);
+                } else {
+                    System.out.println("error -> " + resp.getClass() + resp);
+                }
+            } else if (variableValue.getType() == TypeVariable.AR) {
+                ArithmeticExp temp = (ArithmeticExp) variableValue.getValue();
+                double res = evaluateArith(temp);
+                outputSimple(res + comma);
+            } else if (variableValue.getType() == TypeVariable.ST) {
+                StatisticalExp e = (StatisticalExp) variableValue.getValue();
+                double res = evaluateStats(e);
+                outputSimple(res + comma);
+            }
+            x++;
+        }
+        outputSimple("\n");
+    }
+
+    public void consoleArray(VariableValue values) {
+        VariableDeclaration valuesPrint = (VariableDeclaration) values.getValue();
+
+        VariableValue temp = (VariableValue) valuesPrint.getValue();
+        VariableValue tempTitle = (VariableValue) valuesPrint.getId();
+        output("--------------------");
+        if (tempTitle.getType() == TypeVariable.ID) {
+            String tempVal = (String) tempTitle.getValue();
+            Information info = (Information) table.get(tempVal);
+            String title = (String) info.getValue();
+            output(title);
+        } else {
+            String tit = (String) tempTitle.getValue();
+            output(tit.replaceAll("\"", ""));
+        }
+        output("--------------------");
+
+        if (temp.getType() == TypeVariable.ARRAY) {
+            ArrayList<VariableValue> aux = (ArrayList<VariableValue>) temp.getValue();
+            for (VariableValue variableValue : aux) {
+                if (variableValue.getType() == TypeVariable.STRING) {
+                    String temp2 = (String) variableValue.getValue();
+                    String stringSinComillas = temp2.replaceAll("\"", "");
+                    output(stringSinComillas);
+                } else if (variableValue.getType() == TypeVariable.DOUBLE) {
+                    Double temp2 = (Double) variableValue.getValue();
+                    output(temp2);
+                }
+
+            }
+        } else if (temp.getType() == TypeVariable.ID) {
+            //System.out.println(table.printArray(temp.getValue()));
+            output(printArray(temp.getValue()));
+        }
     }
 
     public void printHistogram(double value, int f, int fa, double fr, String formato) {
         try {
-            String row = String.format(formato, value, f, fa, fr);
+            String row = String.format(formato, value, f, fa, fr+"%");
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), row + "\n", null);
         } catch (BadLocationException ex) {
             Logger.getLogger(Instructions.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public boolean addValuesArray(ArrayList<VariableValue> array, TypeVariable typeBase, String id) {
+        ArrayList<Double> arrayDouble = new ArrayList<>();
+        ArrayList<String> arrayString = new ArrayList<>();
+
+        for (VariableValue variableValue : array) {
+            System.out.println(variableValue.getType());
+            if (typeBase == TypeVariable.DOUBLE) {
+                if (variableValue.getType() == TypeVariable.AR) {
+//                    ArithmeticExp temp = (ArithmeticExp) variableValue.getValue();
+//                    double res = evaluateArith(temp);
+//                    arrayDouble.add(res);
+                } else if (variableValue.getType() == TypeVariable.ST) {
+                    StatisticalExp e = (StatisticalExp) variableValue.getValue();
+                    double res = evaluateStats(e);
+                    arrayDouble.add(res);
+                } else if (variableValue.getType() == TypeVariable.ID) {
+                    String tempVal = (String) variableValue.getValue();
+                    Information info = (Information) table.get(tempVal);
+                    try {
+                        arrayDouble.add((Double) info.getValue());
+                    } catch (Exception e) {
+                        return false;
+                    }
+                } else {
+                    arrayDouble.add((Double) variableValue.getValue());
+                }
+            } else {
+                if (variableValue.getType() == TypeVariable.ID) {
+                    String tempVal = (String) variableValue.getValue();
+                    Information info = (Information) table.get(tempVal);
+                    try {
+                        arrayString.add((String) info.getValue());
+                    } catch (Exception e) {
+                        return false;
+                    }
+                } else {
+                    arrayString.add((String) variableValue.getValue());
+                }
+            }
+        }
+
+        if (!arrayDouble.isEmpty()) {
+            table.put(id, new Information(arrayDouble, "arreglo double"));
+        } else if (!arrayString.isEmpty()) {
+
+            table.put(id, new Information(arrayString, "arreglo string"));
+        }
+
+        return true;
     }
 
     public void createBarChart(VariableDeclaration base) {
@@ -158,18 +255,17 @@ public class Instructions {
 
         for (Map.Entry<String, Object> entry : values.entrySet()) {
             VariableValue val = (VariableValue) entry.getValue();
-            //System.out.println(entry.getKey() + " -> " + val.getType()+val.getValue());
             if (!validateFieldsBar(entry.getKey().toLowerCase(), val)) {
                 isBar = false;
                 continue;
-            }     
+            }
 
         }
         ArrayList<VariableValue> tempx = (ArrayList<VariableValue>) ((VariableValue) values.get("ejex")).getValue();
         ArrayList<VariableValue> tempy = (ArrayList<VariableValue>) ((VariableValue) values.get("ejey")).getValue();
         String titulox = (String) ((VariableValue) values.get("titulox")).getValue();
         String tituloy = (String) ((VariableValue) values.get("tituloy")).getValue();
-        
+
         String titulo = (String) ((VariableValue) values.get("titulo")).getValue();
 
         ArrayList<String> ejex = new ArrayList<>();
@@ -187,6 +283,7 @@ public class Instructions {
         HashMap<String, Object> values = (HashMap<String, Object>) base.getValue();
         ArrayList<VariableValue> tempvalues = (ArrayList<VariableValue>) ((VariableValue) values.get("values")).getValue();
         ArrayList<VariableValue> templabels = (ArrayList<VariableValue>) ((VariableValue) values.get("label")).getValue();
+        String titulo = (String) ((VariableValue) values.get("titulo")).getValue();
 
         ArrayList<String> labels = new ArrayList<>();
         for (VariableValue variableValue : templabels) {
@@ -204,7 +301,7 @@ public class Instructions {
             }
 
         }
-        c.addPieChart(val, labels);
+        c.addPieChart(val, labels, titulo.replaceAll("\"", ""));
     }
 
     public void createLineChart(VariableDeclaration base) {
@@ -274,10 +371,12 @@ public class Instructions {
         }
 
         try {
-            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), " * "+titulo.replaceAll("\"", "") + "\n", null);
+            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), " * " + titulo.replaceAll("\"", "") + "\n", null);
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "───────────────────────────────────────────────" + "\n", null);
+
         } catch (BadLocationException ex) {
-            Logger.getLogger(Instructions.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Instructions.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         int totalFb = 0;
         int totalFa = 0;
@@ -286,8 +385,10 @@ public class Instructions {
         try {
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), top + "\n", null);
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "───────────────────────────────────────────────" + "\n", null);
+
         } catch (BadLocationException ex) {
-            Logger.getLogger(Instructions.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Instructions.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         for (Map.Entry<Double, Integer> entry : frecuencia.entrySet()) {
             double valor = entry.getKey();
@@ -299,14 +400,15 @@ public class Instructions {
             totalPerc += frecRel;
             printHistogram(valor, frec, frecAcum, frecRel, formato);
         }
-        String bottom = String.format(formato, "Totales", totalFb, totalFa, totalPerc);
+        String bottom = String.format(formato, "Totales", totalFb, totalFa, totalPerc+"%");
         try {
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "───────────────────────────────────────────────" + "\n", null);
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), bottom + "\n", null);
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "───────────────────────────────────────────────" + "\n", null);
 
         } catch (BadLocationException ex) {
-            Logger.getLogger(Instructions.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Instructions.class
+                    .getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex);
         }
         c.addBarChart(titulo.replaceAll("\"", ""), "", "", ejey, ejex);
@@ -340,6 +442,22 @@ public class Instructions {
         return true;
     }
 
+    private void outputSimple(String text) {
+        try {
+            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), text, null);
+        } catch (Exception e) {
+            System.err.println("error " + e);
+        }
+    }
+
+    private void outputSimple(Double text) {
+        try {
+            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), text + "", null);
+        } catch (Exception e) {
+            System.err.println("error " + e);
+        }
+    }
+
     private void output(String text) {
         try {
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), text + "\n", null);
@@ -370,6 +488,9 @@ public class Instructions {
             Information info = (Information) table.get(temp);
             Object resp = info.getValue();
             operando1 = (double) resp;
+        } else if (v1.getType() == TypeVariable.ST) {
+            StatisticalExp e = (StatisticalExp) v1.getValue();
+            operando1 = evaluateStats(e);
         } else {
             operando1 = (double) v1.getValue();
         }
@@ -382,6 +503,9 @@ public class Instructions {
             Object resp = info.getValue();
             operando2 = 0;
             operando2 = (double) resp;
+        } else if (v2.getType() == TypeVariable.ST) {
+            StatisticalExp e = (StatisticalExp) v2.getValue();
+            operando2 = evaluateStats(e);
         } else {
             operando2 = (double) v2.getValue();
         }
@@ -410,52 +534,76 @@ public class Instructions {
     }
 
     private double evaluateStats(StatisticalExp data) {
-        double resultado = 0.0f;
         String op = data.getType_s();
-        VariableValue v = (VariableValue) data.getValues();
-        ArrayList<VariableValue> array = (ArrayList<VariableValue>) v.getValue();
-        //System.out.println(v.getValue());
         ArrayList<Double> arrayListDeDoubles = new ArrayList<>();
-        for (VariableValue variableValue : array) {
-            if (variableValue.getType() == TypeVariable.DOUBLE) {
-                arrayListDeDoubles.add((Double) variableValue.getValue());
-            } else if (variableValue.getType() == TypeVariable.AR) {
-                ArithmeticExp temp = (ArithmeticExp) variableValue.getValue();
-                arrayListDeDoubles.add(evaluateArith(temp));
-            } else if (variableValue.getType() == TypeVariable.ID) {
-                String id = (String) variableValue.getValue();
-                Information info = (Information) table.get(id);
-                Object resp = info.getValue();
+
+        if (data.getValues() instanceof String) {
+            String temp = (String) data.getValues();
+            Information info = (Information) table.get(temp);
+            arrayListDeDoubles = (ArrayList<Double>) info.getValue();
+        } else {
+            VariableValue v = (VariableValue) data.getValues();
+            ArrayList<VariableValue> array = (ArrayList<VariableValue>) v.getValue();
+
+            for (VariableValue variableValue : array) {
+                if (variableValue.getType() == TypeVariable.DOUBLE) {
+                    arrayListDeDoubles.add((Double) variableValue.getValue());
+                } else if (variableValue.getType() == TypeVariable.AR) {
+                    ArithmeticExp temp = (ArithmeticExp) variableValue.getValue();
+                    arrayListDeDoubles.add(evaluateArith(temp));
+                } else if (variableValue.getType() == TypeVariable.ID) {
+                    String id = (String) variableValue.getValue();
+                    Information info = (Information) table.get(id);
+                    Object resp = info.getValue();
 //                operando2 = (double) resp;
-                if (resp instanceof Double) {
-                    arrayListDeDoubles.add((double) resp);
+                    if (resp instanceof Double) {
+                        arrayListDeDoubles.add((double) resp);
+                    }
                 }
             }
+        }
 
-            switch (op) {
-                case "Media":
-                    resultado = Statistics.Mean(arrayListDeDoubles);
-                    break;
-                case "Mediana":
-                    resultado = Statistics.Median(arrayListDeDoubles);
-                    break;
-                case "Moda":
-                    resultado = Statistics.Mode(arrayListDeDoubles);
-                    break;
-                case "Varianza":
-                    resultado = Statistics.Variance(arrayListDeDoubles);
-                    break;
-                case "Max":
-                    resultado = Statistics.Maximum(arrayListDeDoubles);
-                    break;
-                case "Min":
-                    resultado = Statistics.Minimum(arrayListDeDoubles);
-                    break;
-                default:
-                    throw new AssertionError();
-            }
+        return operate(arrayListDeDoubles, op);
+    }
+
+    public double operate(ArrayList<Double> list, String op) {
+        double resultado = 0.0f;
+        switch (op) {
+            case "Media":
+                resultado = Statistics.Mean(list);
+                break;
+            case "Mediana":
+                resultado = Statistics.Median(list);
+                break;
+            case "Moda":
+                resultado = Statistics.Mode(list);
+                break;
+            case "Varianza":
+                resultado = Statistics.Variance(list);
+                break;
+            case "Max":
+                resultado = Statistics.Maximum(list);
+                break;
+            case "Min":
+                resultado = Statistics.Minimum(list);
+                break;
+            default:
+                throw new AssertionError();
         }
         return resultado;
+    }
+
+    public String printArray(Object id) {
+        String print = "";
+        String temp = (String) id;
+        Information info = (Information) table.get(temp);
+        if (info.getValue() instanceof ArrayList) {
+            ArrayList<Object> arrayT = (ArrayList<Object>) info.getValue();
+            for (Object obj : arrayT) {
+                print += obj + "\n";
+            }
+        }
+        return print;
     }
 
 }
