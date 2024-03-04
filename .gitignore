@@ -4,3 +4,7 @@ nbproject/private/
 
 **/node_modules
 **/package-lock.json
+
+reporte_errores.html
+reporte_tabla.html
+reporte_tokens.html
