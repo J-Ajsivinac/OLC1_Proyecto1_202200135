@@ -191,6 +191,14 @@ public class Principal extends javax.swing.JFrame {
                         String line = textPane.getText();
                         d.writeBytes(line);
                         d.close();
+                        if (selectedIndex >= rutes.size()) {
+                            for (int i = rutes.size(); i < selectedIndex; i++) {
+                                rutes.add(null);
+                            }
+                            rutes.add(selectedIndex, f.getAbsolutePath());
+                        } else {
+                            rutes.add(selectedIndex, f.getAbsolutePath());
+                        }
 
                     } catch (Exception ex) {
                         System.out.println("File not found");

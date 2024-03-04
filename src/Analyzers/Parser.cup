@@ -48,6 +48,7 @@ terminal String TK_program;
 terminal String TK_var;
 terminal String TK_colon;
 terminal String TK_double;
+terminal String TK_double_v;
 terminal String TK_lbracket;
 terminal String TK_rbracket;
 terminal String TK_id;
@@ -137,7 +138,7 @@ TYPE ::=
 
 EXP ::=
 	TK_id:r {: RESULT = new VariableValue(r,TypeVariable.ID); :} |
-	TK_double:r {: RESULT = new VariableValue(Double.parseDouble(r),TypeVariable.DOUBLE); 
+	TK_double_v:r {: RESULT = new VariableValue(Double.parseDouble(r),TypeVariable.DOUBLE); 
 	//System.out.println("valor d ->"+ r); 
 	:} |
 	TK_string:r {: RESULT = new VariableValue(String.valueOf(r),TypeVariable.STRING); :} |
@@ -155,7 +156,7 @@ VALUES ::=
 
 
 VALUE ::=
-	TK_double:r {: RESULT = new VariableValue(Double.parseDouble(r),TypeVariable.DOUBLE); :} |
+	TK_double_v:r {: RESULT = new VariableValue(Double.parseDouble(r),TypeVariable.DOUBLE); :} |
 	TK_string:r {: RESULT = new VariableValue(String.valueOf(r),TypeVariable.STRING); :} |
 	TK_id:r {: RESULT =  new VariableValue(r,TypeVariable.ID); :} |
 	ARITHMETHIC_EXP:r {: RESULT =  r; :}|
@@ -203,7 +204,7 @@ VALUESPRINT ::=
 VALUEPRINT ::=
 	TK_id:r {: RESULT = new VariableValue(r,TypeVariable.ID); :} |
 	TK_string:r  {: RESULT = new VariableValue(String.valueOf(r),TypeVariable.STRING); :} |
-	TK_double:r {: RESULT = new VariableValue(Double.parseDouble(r),TypeVariable.DOUBLE); :} |
+	TK_double_v:r {: RESULT = new VariableValue(Double.parseDouble(r),TypeVariable.DOUBLE); :} |
 	ARITHMETHIC_EXP:r {: RESULT =  r; :} |
 	STATISTICAL_EXP:r {: RESULT = r; :};
 

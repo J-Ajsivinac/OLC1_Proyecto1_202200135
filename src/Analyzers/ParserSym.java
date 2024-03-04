@@ -32,6 +32,7 @@ public class ParserSym {
   public static final int error = 1;
   public static final int TK_media = 23;
   public static final int TK_varianza = 44;
+  public static final int TK_double_v = 45;
   public static final int TK_rparen = 17;
   public static final int TK_tituloy = 32;
   public static final int TK_titulox = 31;
@@ -102,7 +103,8 @@ public class ParserSym {
   "TK_moda",
   "TK_varianza",
   "TK_max",
-  "TK_min"
+  "TK_min",
+  "TK_double_v",
   };
 }
 

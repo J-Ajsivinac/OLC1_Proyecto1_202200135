@@ -110,7 +110,7 @@ COMMENTS= [<][!][^!]*[!]+([^<!][^!]*[!]+)*[>]
 <YYINITIAL> "histogram" {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_histogram], yytext(), yyline, yychar)); return symbol(ParserSym.TK_histogram, yytext());}
 <YYINITIAL> ({ID}|{ID_ARRAY}) {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_id], yytext(), yyline, yychar)); return symbol(ParserSym.TK_id, yytext());}
 <YYINITIAL> {STRING} {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_string], yytext(), yyline, yychar)); return symbol(ParserSym.TK_string, yytext());}
-<YYINITIAL> {DOUBLE} {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_double], yytext(), yyline, yychar)); return symbol(ParserSym.TK_double, yytext());}
+<YYINITIAL> {DOUBLE} {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_double_v], yytext(), yyline, yychar)); return symbol(ParserSym.TK_double_v, yytext());}
 
 \n                      {yychar = 1; yycolumn=1;}
 {UNUSED}                {}

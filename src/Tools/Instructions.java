@@ -114,7 +114,7 @@ public class Instructions {
 
     public void consoleSimple(ArrayList<VariableValue> values) {
         outputSimple(" -> ");
-        String comma = ",";
+        String comma = ", ";
         int x = 0;
         for (VariableValue variableValue : values) {
             if (x == (values.size() - 1)) {
@@ -529,7 +529,7 @@ public class Instructions {
             default:
                 resultado = 0;
         }
-
+        resultado = Math.round(resultado * 100.0) / 100.0;;
         return resultado;
     }
 
@@ -590,6 +590,7 @@ public class Instructions {
             default:
                 throw new AssertionError();
         }
+        resultado = Math.round(resultado * 100.0) / 100.0;;
         return resultado;
     }
 
