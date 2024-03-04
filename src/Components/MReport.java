@@ -4,6 +4,22 @@
  */
 package Components;
 
+import Analyzers.token;
+import Errores.Errores;
+import Interface.Principal;
+import static Interface.Principal.errorL;
+import static Interface.Principal.errorS;
+import static Interface.Principal.tableS;
+import static Interface.Principal.lexemas;
+import Tools.CreateReports;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author mesoi
@@ -15,6 +31,43 @@ public class MReport extends javax.swing.JPanel {
      */
     public MReport() {
         initComponents();
+
+    }
+
+    public void reporteErrores() {
+        try {
+            if (errorL.isEmpty() || errorS.isEmpty()) {
+                JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
+                JOptionPane.showMessageDialog(framePadre, "No existen errores");
+            }
+            CreateReports.saveReportTok(CreateReports.ErrorsReport(errorL, errorS), "errores");
+        } catch (IOException ex) {
+            Logger.getLogger(MReport.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void reporteTabla() {
+        try {
+            if (tableS == null) {
+                JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
+                JOptionPane.showMessageDialog(framePadre, "No existen variables analizadas");
+            } 
+            CreateReports.saveReportTok(CreateReports.symbolReport(tableS), "tabla");
+        } catch (IOException ex) {
+            Logger.getLogger(MReport.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void reporteTokens() {
+        try {
+            if (lexemas.isEmpty()) {
+                JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
+                JOptionPane.showMessageDialog(framePadre, "No existen lexemas leidos");
+            }
+            CreateReports.saveReportTok(CreateReports.TokenReport(lexemas), "tokens");
+        } catch (IOException ex) {
+            Logger.getLogger(MReport.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -27,44 +80,72 @@ public class MReport extends javax.swing.JPanel {
     private void initComponents() {
 
         panelRound1 = new Components.PanelRound();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        btnErrores = new javax.swing.JButton();
+        btnTokens = new javax.swing.JButton();
+        btnTabla = new javax.swing.JButton();
 
-        panelRound1.setBackground(new java.awt.Color(51, 51, 51));
+        panelRound1.setBackground(new java.awt.Color(38, 40, 44));
         panelRound1.setAutoscrolls(true);
         panelRound1.setRoundBottomLeft(10);
         panelRound1.setRoundBottomRight(10);
         panelRound1.setRoundTopLeft(10);
         panelRound1.setRoundTopRight(10);
 
-        jLabel1.setText("Tabla de Símbolos");
+        btnErrores.setBackground(new java.awt.Color(38, 40, 44));
+        btnErrores.setFont(new java.awt.Font("Montserrat", 0, 13)); // NOI18N
+        btnErrores.setText("  Errores");
+        btnErrores.setBorder(null);
+        btnErrores.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnErrores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnErroresActionPerformed(evt);
+            }
+        });
 
-        jLabel2.setText("Tokens");
+        btnTokens.setBackground(new java.awt.Color(38, 40, 44));
+        btnTokens.setFont(new java.awt.Font("Montserrat", 0, 13)); // NOI18N
+        btnTokens.setText("  Tokens");
+        btnTokens.setBorder(null);
+        btnTokens.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnTokens.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTokensActionPerformed(evt);
+            }
+        });
 
-        jLabel3.setText("Errores");
+        btnTabla.setBackground(new java.awt.Color(38, 40, 44));
+        btnTabla.setFont(new java.awt.Font("Montserrat", 0, 13)); // NOI18N
+        btnTabla.setText("  Tabla de Simbolos");
+        btnTabla.setBorder(null);
+        btnTabla.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnTabla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTablaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelRound1Layout = new javax.swing.GroupLayout(panelRound1);
         panelRound1.setLayout(panelRound1Layout);
         panelRound1Layout.setHorizontalGroup(
             panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound1Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
-                .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+            .addGroup(panelRound1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btnErrores, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                        .addComponent(btnTokens, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         panelRound1Layout.setVerticalGroup(
             panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRound1Layout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(btnTokens, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnErrores, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -72,19 +153,34 @@ public class MReport extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelRound1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panelRound1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelRound1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(panelRound1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnErroresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnErroresActionPerformed
+        reporteErrores();
+    }//GEN-LAST:event_btnErroresActionPerformed
+
+    private void btnTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTablaActionPerformed
+        // TODO add your handling code here:
+        reporteTabla();
+    }//GEN-LAST:event_btnTablaActionPerformed
+
+    private void btnTokensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTokensActionPerformed
+        reporteTokens();
+    }//GEN-LAST:event_btnTokensActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JButton btnErrores;
+    private javax.swing.JButton btnTabla;
+    private javax.swing.JButton btnTokens;
     private Components.PanelRound panelRound1;
     // End of variables declaration//GEN-END:variables
 }
