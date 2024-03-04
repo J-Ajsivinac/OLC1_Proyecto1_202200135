@@ -4,6 +4,8 @@ import Analyzers.Parser;
 import Analyzers.ParserSym;
 import Analyzers.Scanner;
 import Analyzers.token;
+import Components.CSyntaxHighlighter;
+import Components.JavaSyntaxHighlighter;
 import Components.MReport;
 import Components.glasspanel.DefaultOption;
 import Components.glasspanel.GlassPanePopup;
@@ -34,6 +36,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.MutableAttributeSet;
@@ -99,6 +102,8 @@ public class Principal extends javax.swing.JFrame {
         btnSave.setIcon(SVGSave);
 
         fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos DataForge (*.df)", "df");
+        fileChooser.setFileFilter(filter);
 //        paneConsole.setContentType("text/plain; charset=UTF-8");
         paneConsole.setContentType("text/html;charset=UTF-8");
         paneConsole.setEditorKit(new HTMLEditorKit());
@@ -348,7 +353,7 @@ public class Principal extends javax.swing.JFrame {
 
         btnNew.setBackground(new java.awt.Color(38, 40, 44));
         btnNew.setBorder(null);
-        btnNew.setBorderColor(new java.awt.Color(51, 51, 51));
+        btnNew.setBorderColor(new java.awt.Color(38, 40, 44));
         btnNew.setColor(new java.awt.Color(38, 40, 44));
         btnNew.setColorClick(new java.awt.Color(45, 47, 52));
         btnNew.setColorOver(new java.awt.Color(102, 102, 102));
@@ -361,7 +366,7 @@ public class Principal extends javax.swing.JFrame {
 
         btnOpen.setBackground(new java.awt.Color(38, 40, 44));
         btnOpen.setBorder(null);
-        btnOpen.setBorderColor(new java.awt.Color(51, 51, 51));
+        btnOpen.setBorderColor(new java.awt.Color(38, 40, 44));
         btnOpen.setColor(new java.awt.Color(38, 40, 44));
         btnOpen.setColorClick(new java.awt.Color(45, 47, 52));
         btnOpen.setColorOver(new java.awt.Color(102, 102, 102));
@@ -374,7 +379,7 @@ public class Principal extends javax.swing.JFrame {
 
         btnSave.setBackground(new java.awt.Color(38, 40, 44));
         btnSave.setBorder(null);
-        btnSave.setBorderColor(new java.awt.Color(51, 51, 51));
+        btnSave.setBorderColor(new java.awt.Color(38, 40, 44));
         btnSave.setColor(new java.awt.Color(38, 40, 44));
         btnSave.setColorClick(new java.awt.Color(45, 47, 52));
         btnSave.setColorOver(new java.awt.Color(102, 102, 102));
@@ -458,6 +463,7 @@ public class Principal extends javax.swing.JFrame {
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
+
             textPane = new JTextPane();
             textPane.setBackground(new Color(19, 20, 23));
             textPane.setFont(new java.awt.Font("Cascadia Code PL", 0, 14));
@@ -470,7 +476,15 @@ public class Principal extends javax.swing.JFrame {
             tabbedPane.addTab(selectedFile.getName(), scrollPane);
             int index = tabbedPane.indexOfComponent(scrollPane);
             tabbedPane.setTabComponentAt(index, tabComponent);
-            rutes.add(index, selectedFile.getAbsolutePath());
+
+            if (index >= rutes.size()) {
+                for (int i = rutes.size(); i < index; i++) {
+                    rutes.add(null);
+                }
+                rutes.add(index, selectedFile.getAbsolutePath());
+            } else {
+                rutes.add(index, selectedFile.getAbsolutePath());
+            }
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
                 StyledDocument doc = textPane.getStyledDocument();
@@ -482,6 +496,7 @@ public class Principal extends javax.swing.JFrame {
 
                 // Apply syntax highlighting based on file extension
                 String fileName = selectedFile.getName();
+                JavaSyntaxHighlighter.highlight(textPane, doc);
 
             } catch (IOException | BadLocationException ex) {
                 ex.printStackTrace();
