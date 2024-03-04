@@ -3,6 +3,7 @@ package Interface;
 import Analyzers.Parser;
 import Analyzers.ParserSym;
 import Analyzers.Scanner;
+import Analyzers.token;
 import Components.MReport;
 import Components.glasspanel.DefaultOption;
 import Components.glasspanel.GlassPanePopup;
@@ -48,8 +49,10 @@ public class Principal extends javax.swing.JFrame {
     private JFileChooser fileChooser;
     private JTextPane textPane;
     private ArrayList<String> rutes = new ArrayList<>();
-    ArrayList<Errores> errorS = new ArrayList<>();
-    ArrayList<Errores> errorL = new ArrayList<>();
+    public static ArrayList<Errores> errorS = new ArrayList<>();
+    public static ArrayList<Errores> errorL = new ArrayList<>();
+    public static ArrayList<token> lexemas = new ArrayList<token>();
+    public static TableSymb tableS;
 
     public Principal() {
 
@@ -121,6 +124,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     public void analyze() {
+
         try {
             int selectedIndex = tabbedPane.getSelectedIndex();
             JTextPane textPaneTemp = getTextPaneAt(selectedIndex);
@@ -130,12 +134,10 @@ public class Principal extends javax.swing.JFrame {
             sintax.parse();
             sintax.getInstructions();
             Symbol token = null;
-            TableSymb t = sintax.getTable();
-            CreateReports.saveReportTok(CreateReports.TokenReport(text, token, "name"), "name");
+            lexemas = scan.getLexemas();
             errorS = sintax.getErroresSintacticos();
             errorL = scan.getErroresL();
-            CreateReports.saveReportTok(CreateReports.ErrorsReport(errorL, errorS), "errores");
-            CreateReports.saveReportTok(CreateReports.symbolReport(t), "tabla");
+            tableS = sintax.getTable();
 
 //            Symbol symbol = scan.next_token();
 //            while (symbol.sym != ParserSym.EOF) {
@@ -286,6 +288,7 @@ public class Principal extends javax.swing.JFrame {
         panelCode.setRoundTopRight(10);
 
         tabbedPane.setBackground(new java.awt.Color(19, 20, 23));
+        tabbedPane.setFont(new java.awt.Font("Cascadia Code PL", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout panelCodeLayout = new javax.swing.GroupLayout(panelCode);
         panelCode.setLayout(panelCodeLayout);
@@ -457,6 +460,7 @@ public class Principal extends javax.swing.JFrame {
             File selectedFile = fileChooser.getSelectedFile();
             textPane = new JTextPane();
             textPane.setBackground(new Color(19, 20, 23));
+            textPane.setFont(new java.awt.Font("Cascadia Code PL", 0, 14));
             JScrollPane scrollPane = new JScrollPane(textPane);
 
             // Crear un ButtonTabComponent para la nueva pestaña
@@ -494,6 +498,7 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         textPane = new JTextPane();
         textPane.setBackground(new Color(19, 20, 23));
+        textPane.setFont(new java.awt.Font("Cascadia Code PL", 0, 14));
         JScrollPane scrollPane = new JScrollPane(textPane);
         int tabSize = 16; // Tamaño en píxeles
 
