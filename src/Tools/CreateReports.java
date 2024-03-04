@@ -1,6 +1,7 @@
 package Tools;
 
 import Analyzers.Scanner;
+import Analyzers.token;
 import Errores.Errores;
 import TableSymb.Information;
 import java.io.BufferedReader;
@@ -17,18 +18,14 @@ public class CreateReports {
 
     // Reporte de Tokens
     public static void saveReportTok(String reporteHTML, String name) throws IOException {
-        String fileName = "Reports/reporte_tokens_" + name + ".html";
+        String fileName = "Reports/reporte_" + name + ".html";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             writer.write(reporteHTML);
         }
     }
 
-    public static String TokenReport(String input, Symbol token, String name) throws IOException {
-        Scanner scanner = new Scanner(
-                new BufferedReader(
-                        new StringReader(input)
-                )
-        );
+    public static String TokenReport(ArrayList<token> lexemas) throws IOException {
+
         String report = "<!DOCTYPE html>\n"
                 + "<html lang=\"en\">\n"
                 + "\n"
@@ -69,19 +66,17 @@ public class CreateReports {
                 + "                            <th class=\"px-6 py-4\">Columna</th>\n"
                 + "                        </tr>\n"
                 + "                    </thead>";
-        int i = 1;
-        do {
-            token = scanner.next_token();
-            report += "<tr>";
-            report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + i + "</td>\n";
-            report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + token.value + "</td>\n";
-            report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + Analyzers.ParserSym.terminalNames[token.sym] + "</td>\n";
-            report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + token.left + "</td>\n";
-            report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + token.right + "</td>\n";
+
+        for (int i = 0; i < lexemas.size(); i++) {
+            int no = i + 1;
+            report += "<tr class=\"border-b last:border-b-0 border-b-[#434343] text-[#9ca3af]\">";
+            report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + no + "</td>\n";
+            report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + lexemas.get(i).getLexema() + "</td>\n";
+            report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + lexemas.get(i).gettokenType() + "</td>\n";
+            report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + lexemas.get(i).getLine() + "</td>\n";
+            report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + lexemas.get(i).getColumn() + "</td>\n";
             report += "</tr>\n";
-            i++;
-            // reporte += token.value + " ".repeat(35 - String.valueOf(token.value).length()) + token.left + " ".repeat(6 - String.valueOf(token.left).length()) + token.right + " ".repeat(8 - String.valueOf(token.right).length()) + Language.TOK.terminalNames[token.sym];
-        } while (token.value != null);
+        }
         report += "</table>\n"
                 + "            </div>\n"
                 + "        </div>\n"
@@ -140,7 +135,7 @@ public class CreateReports {
 
         for (int i = 0; i < eLexicos.size(); i++) {
             int no = i + 1;
-            report += "<tr>";
+            report += "<tr class=\"border-b last:border-b-0 border-b-[#434343] text-[#9ca3af]\">";
             report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + no + "</td>\n";
             report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + eLexicos.get(i).getDescripcion() + "</td>\n";
             report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + eLexicos.get(i).getLinea() + "</td>\n";
