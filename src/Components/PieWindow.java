@@ -27,7 +27,7 @@ public class PieWindow extends javax.swing.JPanel {
         initComponents();
     }
 
-    public void createPieData(ArrayList<Double> values, ArrayList<String> labels) {
+    public void createPieData(ArrayList<Double> values, ArrayList<String> labels,String title) {
         DefaultPieDataset<String> dataset = new DefaultPieDataset<>();
 
         for (int i = 0; i < values.size(); i++) {
@@ -35,7 +35,7 @@ public class PieWindow extends javax.swing.JPanel {
         }
         
         pieChart1 = new PieChart();
-        JLabel header1 = new JLabel("Product Income");
+        JLabel header1 = new JLabel(title);
         header1.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:+1");
         pieChart1.setHeader(header1);

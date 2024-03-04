@@ -26,9 +26,9 @@ public class Charts extends javax.swing.JFrame {
         viewCharts.setLayout(cl);
     }
 
-    public void addPieChart(ArrayList<Double> values, ArrayList<String> labels) {
+    public void addPieChart(ArrayList<Double> values, ArrayList<String> labels, String title) {
         PieWindow p = new PieWindow();
-        p.createPieData(values, labels);
+        p.createPieData(values, labels, title);
         viewCharts.add(p);
     }
 
