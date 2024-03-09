@@ -4,12 +4,14 @@ import Interface.Charts;
 import Interface.Principal;
 import TableSymb.Information;
 import TableSymb.TableSymb;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 
@@ -77,15 +79,15 @@ public class Instructions {
                     table.put(variable, table.get(temp));
 
                 } else {
-                    System.out.println("error -> "+value.getValue());
+                    System.out.println("error -> " + value.getValue());
                 }
             }
-            
+
             if (v.getType() == TypeVariable.CONSOLE) {
                 ArrayList<VariableValue> data = (ArrayList<VariableValue>) v.getValue();
                 consoleSimple(data);
             }
-            
+
             if (v.getType() == TypeVariable.PRINTARRAY) {
                 consoleArray(v);
             }
@@ -190,8 +192,8 @@ public class Instructions {
 
     public void printHistogram(double value, int f, int fa, double fr, String formato) {
         try {
-            String row = String.format(formato, value, f, fa, fr+"%");
-            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), row + "\n", null);
+            String row = String.format(formato, value, f, fa, fr + "%");
+            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), row.replaceAll("\"", "") + "\n", null);
         } catch (BadLocationException ex) {
             Logger.getLogger(Instructions.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -205,9 +207,9 @@ public class Instructions {
             System.out.println(variableValue.getType());
             if (typeBase == TypeVariable.DOUBLE) {
                 if (variableValue.getType() == TypeVariable.AR) {
-//                    ArithmeticExp temp = (ArithmeticExp) variableValue.getValue();
-//                    double res = evaluateArith(temp);
-//                    arrayDouble.add(res);
+                    ArithmeticExp temp = (ArithmeticExp) variableValue.getValue();
+                    double res = evaluateArith(temp);
+                    arrayDouble.add(res);
                 } else if (variableValue.getType() == TypeVariable.ST) {
                     StatisticalExp e = (StatisticalExp) variableValue.getValue();
                     double res = evaluateStats(e);
@@ -240,107 +242,212 @@ public class Instructions {
 
         if (!arrayDouble.isEmpty()) {
             table.put(id, new Information(arrayDouble, "arreglo double"));
+            System.out.println(id + " - " + arrayDouble);
         } else if (!arrayString.isEmpty()) {
-
             table.put(id, new Information(arrayString, "arreglo string"));
         }
 
         return true;
     }
 
+    public ArrayList<Double> addValuesA(ArrayList<VariableValue> array, TypeVariable typeBase) {
+        ArrayList<Double> arrayDouble = new ArrayList<>();
+
+        for (VariableValue variableValue : array) {
+            if (variableValue.getType() == TypeVariable.AR) {
+                ArithmeticExp temp = (ArithmeticExp) variableValue.getValue();
+                double res = evaluateArith(temp);
+                arrayDouble.add(res);
+            } else if (variableValue.getType() == TypeVariable.ST) {
+                StatisticalExp e = (StatisticalExp) variableValue.getValue();
+                double res = evaluateStats(e);
+                arrayDouble.add(res);
+            } else if (variableValue.getType() == TypeVariable.ID) {
+                String tempVal = (String) variableValue.getValue();
+                Information info = (Information) table.get(tempVal);
+                try {
+                    arrayDouble.add((Double) info.getValue());
+                } catch (Exception e) {
+
+                }
+            } else {
+                arrayDouble.add((Double) variableValue.getValue());
+            }
+        }
+        return arrayDouble;
+    }
+
+    public ArrayList<String> addValuesAString(ArrayList<VariableValue> array, TypeVariable typeBase) {
+        ArrayList<String> arrayString = new ArrayList<>();
+
+        for (VariableValue variableValue : array) {
+            if (variableValue.getType() == TypeVariable.ID) {
+                String tempVal = (String) variableValue.getValue();
+                Information info = (Information) table.get(tempVal);
+                try {
+                    arrayString.add((String) info.getValue());
+                } catch (Exception e) {
+
+                }
+            } else {
+                arrayString.add((String) variableValue.getValue());
+            }
+        }
+        return arrayString;
+    }
+
+    public String getString(VariableValue data) {
+        if (data.getType() == TypeVariable.ID) {
+            try {
+                String name = (String) data.getValue();
+                Information info = (Information) table.get(name);
+                Object resp = info.getValue();
+                return ((String) resp).replaceAll("\"", "");
+            } catch (Exception e) {
+                //OptionPane.showMessageDialog(, "El tipo de variable requerida es String", "Error Semántico");
+                System.out.println("Tipo de dato incorrecto");
+                return "";
+            }
+        } else {
+            return (String) data.getValue();
+        }
+    }
+
+    public Double getDoube(VariableValue data) {
+        if (data.getType() == TypeVariable.ID) {
+            try {
+                String name = (String) data.getValue();
+                Information info = (Information) table.get(name);
+                Object resp = info.getValue();
+                return (Double) resp;
+            } catch (Exception e) {
+                //OptionPane.showMessageDialog(, "El tipo de variable requerida es String", "Error Semántico");
+                System.out.println("Tipo de dato incorrecto");
+                return 0.0;
+            }
+        } else {
+            return (Double) data.getValue();
+        }
+    }
+
+    public boolean addStringValuesID(ArrayList<String> values, VariableValue variableValue) {
+        if (variableValue.getType() == TypeVariable.ID) {
+            String name = (String) variableValue.getValue();
+            Information info = (Information) table.get(name);
+            Object resp = info.getValue();
+            values.add(((String) resp).replaceAll("\"", ""));
+        }
+
+        return false;
+    }
+
+    public ArrayList<Double> getArrayListDouble(VariableValue variableValue, TypeVariable t) {
+        ArrayList<Double> values = new ArrayList<>();
+        if (variableValue.getType() == TypeVariable.ID) {
+            String name = (String) variableValue.getValue();
+            Information info = (Information) table.get(name);
+            Object resp = info.getValue();
+            ArrayList<Object> arrayT = (ArrayList<Object>) resp;
+            System.out.println(arrayT);
+            for (Object object : arrayT) {
+                values.add((Double) object);
+            }
+        } else {
+            ArrayList<VariableValue> tempv = (ArrayList<VariableValue>) variableValue.getValue();
+            return (ArrayList<Double>) addValuesA(tempv, t).clone();
+        }
+        return values;
+    }
+
+    public ArrayList<String> getArrayListString(VariableValue variableValue, TypeVariable t) {
+        ArrayList<String> values = new ArrayList<>();
+        if (variableValue.getType() == TypeVariable.ID) {
+            String name = (String) variableValue.getValue();
+            Information info = (Information) table.get(name);
+            Object resp = info.getValue();
+            ArrayList<Object> arrayT = (ArrayList<Object>) resp;
+//            System.out.println(arrayT);
+            for (Object object : arrayT) {
+                values.add((String) object);
+            }
+
+        } else {
+            ArrayList<VariableValue> tempv = (ArrayList<VariableValue>) variableValue.getValue();
+            
+            return (ArrayList<String>) addValuesAString(tempv, t).clone();
+            //System.out.println("v s"+values.size());
+        }
+        return values;
+    }
+
+    public boolean addDoubleValuesID(ArrayList<Double> values, VariableValue variableValue) {
+        if (variableValue.getType() == TypeVariable.ID) {
+            String name = (String) variableValue.getValue();
+            Information info = (Information) table.get(name);
+            Object resp = info.getValue();
+            values.add((Double) resp);
+        }
+
+        return false;
+    }
+
     public void createBarChart(VariableDeclaration base) {
         HashMap<String, Object> values = (HashMap<String, Object>) base.getValue();
 
-        boolean isBar = true;
-
-        for (Map.Entry<String, Object> entry : values.entrySet()) {
-            VariableValue val = (VariableValue) entry.getValue();
-            if (!validateFieldsBar(entry.getKey().toLowerCase(), val)) {
-                isBar = false;
-                continue;
-            }
-
-        }
-        ArrayList<VariableValue> tempx = (ArrayList<VariableValue>) ((VariableValue) values.get("ejex")).getValue();
-        ArrayList<VariableValue> tempy = (ArrayList<VariableValue>) ((VariableValue) values.get("ejey")).getValue();
-        String titulox = (String) ((VariableValue) values.get("titulox")).getValue();
-        String tituloy = (String) ((VariableValue) values.get("tituloy")).getValue();
-
-        String titulo = (String) ((VariableValue) values.get("titulo")).getValue();
+        String titulox = getString((VariableValue) values.get("titulox"));
+        String tituloy = getString((VariableValue) values.get("tituloy"));
+        String titulo = getString((VariableValue) values.get("titulo"));
 
         ArrayList<String> ejex = new ArrayList<>();
-        for (VariableValue variableValue : tempx) {
-            ejex.add(((String) variableValue.getValue()).replaceAll("\"", ""));
-        }
+        ejex = getArrayListString((VariableValue) values.get("ejex"), TypeVariable.STRING);
+
         ArrayList<Double> ejey = new ArrayList<>();
-        for (VariableValue variableValue : tempy) {
-            ejey.add((Double) variableValue.getValue());
-        }
+        ejey = getArrayListDouble((VariableValue) values.get("ejey"), TypeVariable.DOUBLE);
+
         c.addBarChart(titulo.replaceAll("\"", ""), tituloy.replaceAll("\"", ""), titulox.replaceAll("\"", ""), ejey, ejex);
     }
 
     public void createPieChart(VariableDeclaration base) {
         HashMap<String, Object> values = (HashMap<String, Object>) base.getValue();
-        ArrayList<VariableValue> tempvalues = (ArrayList<VariableValue>) ((VariableValue) values.get("values")).getValue();
-        ArrayList<VariableValue> templabels = (ArrayList<VariableValue>) ((VariableValue) values.get("label")).getValue();
-        String titulo = (String) ((VariableValue) values.get("titulo")).getValue();
+
+        String titulo = getString((VariableValue) values.get("titulo"));
 
         ArrayList<String> labels = new ArrayList<>();
-        for (VariableValue variableValue : templabels) {
-            labels.add(((String) variableValue.getValue()).replaceAll("\"", ""));
-        }
-        ArrayList<Double> val = new ArrayList<>();
-        for (VariableValue variableValue : tempvalues) {
-            if (variableValue.getType() == TypeVariable.ID) {
-                String name = (String) variableValue.getValue();
-                Information info = (Information) table.get(name);
-                Object resp = info.getValue();
-                val.add((Double) resp);
-            } else {
-                val.add((Double) variableValue.getValue());
-            }
+        labels = getArrayListString((VariableValue) values.get("label"), TypeVariable.STRING);
 
-        }
+        ArrayList<Double> val = new ArrayList<>();
+        val = getArrayListDouble((VariableValue) values.get("values"), TypeVariable.DOUBLE);
+        //System.out.println(ejey.size());
+        System.out.println("pie->" + val.size() + " .- " + labels.size());
+
         c.addPieChart(val, labels, titulo.replaceAll("\"", ""));
     }
 
     public void createLineChart(VariableDeclaration base) {
         HashMap<String, Object> values = (HashMap<String, Object>) base.getValue();
-        ArrayList<VariableValue> tempx = (ArrayList<VariableValue>) ((VariableValue) values.get("ejex")).getValue();
-        ArrayList<VariableValue> tempy = (ArrayList<VariableValue>) ((VariableValue) values.get("ejey")).getValue();
-        String titulox = (String) ((VariableValue) values.get("titulox")).getValue();
-        String tituloy = (String) ((VariableValue) values.get("tituloy")).getValue();
 
-        String titulo = (String) ((VariableValue) values.get("titulo")).getValue();
+        String titulox = getString((VariableValue) values.get("titulox"));
+        String tituloy = getString((VariableValue) values.get("tituloy"));
+
+        String titulo = getString((VariableValue) values.get("titulo"));
         ArrayList<String> ejex = new ArrayList<>();
-        for (VariableValue variableValue : tempx) {
-            ejex.add(((String) variableValue.getValue()).replaceAll("\"", ""));
-        }
-        ArrayList<Double> ejey = new ArrayList<>();
-        for (VariableValue variableValue : tempy) {
-            ejey.add((Double) variableValue.getValue());
-        }
-        System.out.println(ejey);
+        ejex = getArrayListString((VariableValue) values.get("ejex"), TypeVariable.STRING);
 
+        ArrayList<Double> ejey = new ArrayList<>();
+        ejey = getArrayListDouble((VariableValue) values.get("ejey"), TypeVariable.DOUBLE);
+        System.out.println("line -> "+ ejey.size()+".."+ejex.size());
         c.addLineChart(titulo.replaceAll("\"", ""), tituloy.replaceAll("\"", ""), titulox.replaceAll("\"", ""), ejey, ejex);
     }
 
     public void createHistogram(VariableDeclaration base) {
         HashMap<String, Object> values = (HashMap<String, Object>) base.getValue();
-        ArrayList<VariableValue> tempvalues = (ArrayList<VariableValue>) ((VariableValue) values.get("values")).getValue();
-        String formato = " %-16s %-10s %-10s %-10s ";
+        //ArrayList<VariableValue> tempvalues = (ArrayList<VariableValue>) ((VariableValue) values.get("values")).getValue();
+        String formato = " %-14s %-8s %-8s %-8s ";
         ArrayList<Double> datos = new ArrayList<>();
-        String titulo = (String) ((VariableValue) values.get("titulo")).getValue();
-        for (VariableValue variableValue : tempvalues) {
-            if (variableValue.getType() == TypeVariable.ID) {
-                String name = (String) variableValue.getValue();
-                Information info = (Information) table.get(name);
-                Object resp = info.getValue();
-                datos.add((Double) resp);
-            } else {
-                datos.add((Double) variableValue.getValue());
-            }
-        }
+        datos = getArrayListDouble((VariableValue) values.get("values"), TypeVariable.DOUBLE);
+
+        VariableValue gTitulo = (VariableValue) values.get("titulo");
+        String titulo = getString(gTitulo);
 
         Map<Double, Integer> frecuencia = new LinkedHashMap<>();
         for (double num : datos) {
@@ -383,7 +490,7 @@ public class Instructions {
         double totalPerc = 0;
         String top = String.format(formato, "Valor ", "Fb", "Fa", "Fr");
         try {
-            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), top + "\n", null);
+            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), top.replaceAll("\"", "") + "\n", null);
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "───────────────────────────────────────────────" + "\n", null);
 
         } catch (BadLocationException ex) {
@@ -400,12 +507,12 @@ public class Instructions {
             totalPerc += frecRel;
             printHistogram(valor, frec, frecAcum, frecRel, formato);
         }
-        String bottom = String.format(formato, "Totales", totalFb, totalFa, totalPerc+"%");
+        String bottom = String.format(formato, "Totales", totalFb, totalFa, totalPerc + "%");
         try {
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "───────────────────────────────────────────────" + "\n", null);
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), bottom + "\n", null);
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "───────────────────────────────────────────────" + "\n", null);
-
+             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "\n", null);
         } catch (BadLocationException ex) {
             Logger.getLogger(Instructions.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -480,6 +587,10 @@ public class Instructions {
         VariableValue v2 = (VariableValue) data.getV2();
         String op = data.getOp();
         double operando1, operando2;
+
+        System.out.println("v1 -> " + v1);
+        System.out.println("v2 -> " + v2);
+
         if (v1.getType() == TypeVariable.AR) {
             ArithmeticExp temp = (ArithmeticExp) v1.getValue();
             operando1 = evaluateArith(temp);
@@ -494,6 +605,7 @@ public class Instructions {
         } else {
             operando1 = (double) v1.getValue();
         }
+
         if (v2.getType() == TypeVariable.AR) {
             ArithmeticExp temp = (ArithmeticExp) v2.getValue();
             operando2 = evaluateArith(temp);
