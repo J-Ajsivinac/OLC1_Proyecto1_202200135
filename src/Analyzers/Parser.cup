@@ -138,7 +138,7 @@ TYPE ::=
 
 EXP ::=
 	TK_id:r {: RESULT = new VariableValue(r,TypeVariable.ID); :} |
-	TK_double_v:r {: RESULT = new VariableValue(Double.parseDouble(r),TypeVariable.DOUBLE); 
+	TK_double_v:r {: RESULT = new VariableValue(Double.valueOf(r),TypeVariable.DOUBLE); 
 	//System.out.println("valor d ->"+ r); 
 	:} |
 	TK_string:r {: RESULT = new VariableValue(String.valueOf(r),TypeVariable.STRING); :} |
@@ -156,7 +156,7 @@ VALUES ::=
 
 
 VALUE ::=
-	TK_double_v:r {: RESULT = new VariableValue(Double.parseDouble(r),TypeVariable.DOUBLE); :} |
+	TK_double_v:r {: RESULT = new VariableValue(Double.valueOf(r),TypeVariable.DOUBLE); :} |
 	TK_string:r {: RESULT = new VariableValue(String.valueOf(r),TypeVariable.STRING); :} |
 	TK_id:r {: RESULT =  new VariableValue(r,TypeVariable.ID); :} |
 	ARITHMETHIC_EXP:r {: RESULT =  r; :}|
@@ -204,7 +204,7 @@ VALUESPRINT ::=
 VALUEPRINT ::=
 	TK_id:r {: RESULT = new VariableValue(r,TypeVariable.ID); :} |
 	TK_string:r  {: RESULT = new VariableValue(String.valueOf(r),TypeVariable.STRING); :} |
-	TK_double_v:r {: RESULT = new VariableValue(Double.parseDouble(r),TypeVariable.DOUBLE); :} |
+	TK_double_v:r {: RESULT = new VariableValue(Double.valueOf(r),TypeVariable.DOUBLE); :} |
 	ARITHMETHIC_EXP:r {: RESULT =  r; :} |
 	STATISTICAL_EXP:r {: RESULT = r; :};
 
@@ -212,7 +212,7 @@ GRAPH ::=
 	TYPE_GRAPH:id TK_lparen ATTRIBUTES_GRAPH:att TK_exec TYPE_GRAPH TK_end TK_semicolon TK_rparen {: RESULT = new VariableValue(new VariableDeclaration( id,att), TypeVariable.GRAPH) ; :};
 
 TYPE_GRAPH ::=
-	TK_graphbar:r {: RESULT = TypeVariableG.BARRAS; :} |
+	TK_graphbar:r {: RESULT = TypeVariableG.BARRAS;:} |
 	TK_graphline:r {: RESULT = TypeVariableG.LINEA; :}|
 	TK_graphpie:r {: RESULT = TypeVariableG.PIE; :}|
 	TK_histogram:r {: RESULT = TypeVariableG.HISTOGRAMA; :}|
