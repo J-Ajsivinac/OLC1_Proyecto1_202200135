@@ -20,7 +20,7 @@ import java.util.ArrayList;
 %init{ 
 	yyline = 1; 
 	yychar = 1; 
-        yycolumn = 1;
+    yycolumn = 1;
 %init} 
 
 
@@ -29,10 +29,9 @@ CONTENT = ([^\n\"\\]|\\.)
 ID = (\_)*[a-zA-Z][a-zA-Z0-9\_]*
 ID_ARRAY = "@"{ID}
 STRING = [\"][^\"\n]+[\"]
-DOUBLE = [0-9]+(\.[0-9])*
+DOUBLE = [0-9]+(\.[0-9]+)?
 COMMENT = [!]([^\r\n]*)?
-COMMENTS= [<][!][^!]*[!]+([^<!][^!]*[!]+)*[>]
-
+COMMENTS= [<][!][^!]*[!]+([^/*][^*]*[*]+)*[>]
 
 %{
 	StringBuffer string = new StringBuffer();
@@ -112,7 +111,7 @@ COMMENTS= [<][!][^!]*[!]+([^<!][^!]*[!]+)*[>]
 <YYINITIAL> {STRING} {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_string], yytext(), yyline, yychar)); return symbol(ParserSym.TK_string, yytext());}
 <YYINITIAL> {DOUBLE} {lexemas.add(new token(Analyzers.ParserSym.terminalNames[ParserSym.TK_double_v], yytext(), yyline, yychar)); return symbol(ParserSym.TK_double_v, yytext());}
 
-\n                      {yychar = 1; yycolumn=1;}
+\n                      {yychar = 1;}
 {UNUSED}                {}
 {COMMENT}              {}
 {COMMENTS}              {}
