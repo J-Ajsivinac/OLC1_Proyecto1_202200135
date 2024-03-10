@@ -36,7 +36,6 @@ public class ModelChart {
                 max = v;
             }
         }
-        System.out.println("max value .>" + max);
         return max;
     }
 }
