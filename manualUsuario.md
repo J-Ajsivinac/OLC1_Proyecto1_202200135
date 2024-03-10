@@ -106,6 +106,10 @@ En esta parte derecha se puede agregar el codigo ha analizar, y en la parte izqu
 
 En la parte donde se agrega el codigo, es necesario, agregar una pestaña o bien abrir un archivo, para poder acceder al cuadro de texto donde se escribira el codigo.
 
+<p align="center">
+    <a href="#"><img src="img/code.png"></a>
+</p>
+
 Las instrucciones:
 ```
 console::print = “hola”, numero, 15, “adios” end;
