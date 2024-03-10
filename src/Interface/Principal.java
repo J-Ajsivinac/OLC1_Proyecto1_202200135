@@ -342,7 +342,7 @@ public class Principal extends javax.swing.JFrame {
         paneConsole.setBackground(new java.awt.Color(19, 20, 23));
         paneConsole.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 20, 23)));
         paneConsole.setFont(new java.awt.Font("Cascadia Code PL", 0, 12)); // NOI18N
-        paneConsole.setForeground(new java.awt.Color(181, 191, 218));
+        paneConsole.setForeground(new java.awt.Color(153, 161, 184));
         jScrollPane1.setViewportView(paneConsole);
 
         javax.swing.GroupLayout panelRound2Layout = new javax.swing.GroupLayout(panelRound2);
@@ -485,7 +485,7 @@ public class Principal extends javax.swing.JFrame {
             
             textPane = new JTextPane();
             textPane.setBackground(new Color(19, 20, 23));
-            textPane.setForeground(new Color(68, 108, 227));
+            textPane.setForeground(new Color(181, 191, 218));
             textPane.setFont(new java.awt.Font("Cascadia Code PL", 0, 14));
             JScrollPane scrollPane = new JScrollPane(textPane);
 
@@ -516,7 +516,7 @@ public class Principal extends javax.swing.JFrame {
 
                 // Apply syntax highlighting based on file extension
                 String fileName = selectedFile.getName();
-                JavaSyntaxHighlighter.highlight(textPane, doc);
+                //JavaSyntaxHighlighter.highlight(textPane, doc);
                 
             } catch (IOException | BadLocationException ex) {
                 ex.printStackTrace();
@@ -533,7 +533,7 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         textPane = new JTextPane();
         textPane.setBackground(new Color(19, 20, 23));
-        textPane.setForeground(new Color(68, 108, 227));
+        textPane.setForeground(new Color(181, 191, 218));
         textPane.setFont(new java.awt.Font("Cascadia Code PL", 0, 14));
         JScrollPane scrollPane = new JScrollPane(textPane);
         int tabSize = 16; // Tamaño en píxeles
