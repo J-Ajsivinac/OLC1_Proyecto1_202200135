@@ -181,11 +181,18 @@ public class Instructions {
                 } else if (variableValue.getType() == TypeVariable.DOUBLE) {
                     Double temp2 = (Double) variableValue.getValue();
                     output(temp2);
+                } else if (variableValue.getType() == TypeVariable.ID) {
+                    String tempVal2 = (String) variableValue.getValue();
+                    Information info = (Information) table.get(tempVal2);
+                    if (info.getValue() instanceof String) {
+                        output((String) info.getValue());
+                    } else {
+                        output((Double) info.getValue());
+                    }
                 }
 
             }
         } else if (temp.getType() == TypeVariable.ID) {
-            //System.out.println(table.printArray(temp.getValue()));
             output(printArray(temp.getValue()));
         }
     }
@@ -470,7 +477,6 @@ public class Instructions {
             double frecuenciaRel = ((double) entry.getValue() / totalDatos) * 100;
             frecuenciaRelativa.put(entry.getKey(), frecuenciaRel);
         }
-        
 
         try {
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), " * " + titulo.replaceAll("\"", "") + "\n", null);
@@ -498,11 +504,11 @@ public class Instructions {
             totalFb += frec;
             int frecAcum = frecuenciaAcumuladaMap.get(valor);
             totalFa = frecAcum;
-            double frecRel = Math.round(frecuenciaRelativa.get(valor)*100.0)/100.0;
+            double frecRel = Math.round(frecuenciaRelativa.get(valor) * 100.0) / 100.0;
             totalPerc += frecRel;
             printHistogram(valor, frec, frecAcum, frecRel, formato);
         }
-        totalPerc = Math.round(totalPerc*100.0)/100.0;
+        totalPerc = Math.round(totalPerc * 100.0) / 100.0;
         String bottom = String.format(formato, "Totales", totalFb, totalFa, totalPerc + "%");
         try {
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "───────────────────────────────────────────────" + "\n", null);

@@ -21,7 +21,7 @@ public class Proyecto1 {
         UIManager.put("Component.focusedBorderColor", new Color(53, 56, 65));
         UIManager.put("TabbedPane.selectedBackground", new Color(53, 56, 65));
 
-        Generate g = new Generate();
+//        Generate g = new Generate();
         UIManager.put("defaultFont", new Font("Montserrat", 0, 13));
         Principal p = new Principal();
         p.setVisible(true);
