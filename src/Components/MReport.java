@@ -36,7 +36,7 @@ public class MReport extends javax.swing.JPanel {
 
     public void reporteErrores() {
         try {
-            if (errorL.isEmpty() || errorS.isEmpty()) {
+            if (errorL.isEmpty() && errorS.isEmpty()) {
                 JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
                 JOptionPane.showMessageDialog(framePadre, "No existen errores", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
