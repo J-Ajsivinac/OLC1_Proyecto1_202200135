@@ -13,6 +13,7 @@ import Tools.Instructions;
 import Tools.SetCustom;
 import java.util.HashMap;
 import TableSymb.TableSymb;
+import java_cup.sym;
 
 class Parser;
 
@@ -45,7 +46,7 @@ parser code{:
 :};
 
 terminal String TK_program;
-terminal String TK_var;
+terminal TK_var;
 terminal String TK_colon;
 terminal String TK_double;
 terminal String TK_double_v;
@@ -57,7 +58,7 @@ terminal String TK_lt;
 terminal String TK_gt;
 terminal String TK_string;
 terminal String TK_semicolon;
-terminal String TK_arr;
+terminal TK_arr;
 terminal String TK_comma;
 terminal String TK_lparen;
 terminal String TK_rparen;
@@ -122,13 +123,13 @@ INSTRUCTION ::=
 	GRAPH:r TK_end TK_semicolon {:RESULT = r;:};
 
 DECLARATION ::= 
-	TK_var TK_colon TYPE:tt TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e);
+	TK_var:var TK_colon TYPE:tt TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e);
 																			//System.out.println(e);
-																			RESULT = new VariableValue(new VariableDeclaration(id, e, tt),TypeVariable.DECLARATION);  
+																			RESULT = new VariableValue(new VariableDeclaration(id, e, tt),TypeVariable.DECLARATION, varleft, varright);  
 																			:} |
-	TK_arr TK_colon TYPE:tt TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e); 
+	TK_arr:var TK_colon TYPE:tt TK_colon TK_colon TK_id:id TK_lt TK_minus EXP:e {: //tableSym.put(id, e); 
 																			//System.out.println(e);
-																			RESULT = new VariableValue(new VariableDeclaration(id, e, tt),TypeVariable.DECLARATION);
+																			RESULT = new VariableValue(new VariableDeclaration(id, e, tt),TypeVariable.DECLARATION, varleft, varright);
 																			:};
 
 TYPE ::=

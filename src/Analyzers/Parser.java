@@ -19,6 +19,7 @@ import Tools.Instructions;
 import Tools.SetCustom;
 import java.util.HashMap;
 import TableSymb.TableSymb;
+import java_cup.sym;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -452,6 +453,9 @@ class CUP$Parser$actions {
           case 9: // DECLARATION ::= TK_var TK_colon TYPE TK_colon TK_colon TK_id TK_lt TK_minus EXP 
             {
               VariableValue RESULT =null;
+		int varleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)).left;
+		int varright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)).right;
+		Object var = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-8)).value;
 		int ttleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-6)).left;
 		int ttright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-6)).right;
 		TypeVariable tt = (TypeVariable)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-6)).value;
@@ -463,7 +467,7 @@ class CUP$Parser$actions {
 		VariableValue e = (VariableValue)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		 //tableSym.put(id, e);
 																			//System.out.println(e);
-																			RESULT = new VariableValue(new VariableDeclaration(id, e, tt),TypeVariable.DECLARATION);  
+																			RESULT = new VariableValue(new VariableDeclaration(id, e, tt),TypeVariable.DECLARATION, varleft, varright);  
 																			
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("DECLARATION",8, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -473,6 +477,9 @@ class CUP$Parser$actions {
           case 10: // DECLARATION ::= TK_arr TK_colon TYPE TK_colon TK_colon TK_id TK_lt TK_minus EXP 
             {
               VariableValue RESULT =null;
+		int varleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)).left;
+		int varright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)).right;
+		Object var = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-8)).value;
 		int ttleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-6)).left;
 		int ttright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-6)).right;
 		TypeVariable tt = (TypeVariable)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-6)).value;
@@ -484,7 +491,7 @@ class CUP$Parser$actions {
 		VariableValue e = (VariableValue)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		 //tableSym.put(id, e); 
 																			//System.out.println(e);
-																			RESULT = new VariableValue(new VariableDeclaration(id, e, tt),TypeVariable.DECLARATION);
+																			RESULT = new VariableValue(new VariableDeclaration(id, e, tt),TypeVariable.DECLARATION, varleft, varright);
 																			
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("DECLARATION",8, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
