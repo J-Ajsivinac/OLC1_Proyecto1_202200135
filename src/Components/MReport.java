@@ -38,9 +38,12 @@ public class MReport extends javax.swing.JPanel {
         try {
             if (errorL.isEmpty() || errorS.isEmpty()) {
                 JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
-                JOptionPane.showMessageDialog(framePadre, "No existen errores");
+                JOptionPane.showMessageDialog(framePadre, "No existen errores", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             CreateReports.saveReportTok(CreateReports.ErrorsReport(errorL, errorS), "errores");
+            JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
+            JOptionPane.showMessageDialog(framePadre, "Reporte de Errores, generado exitosamente");
         } catch (IOException ex) {
             Logger.getLogger(MReport.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -50,9 +53,12 @@ public class MReport extends javax.swing.JPanel {
         try {
             if (tableS == null) {
                 JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
-                JOptionPane.showMessageDialog(framePadre, "No existen variables analizadas");
-            } 
+                JOptionPane.showMessageDialog(framePadre, "No existen variables analizadas", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             CreateReports.saveReportTok(CreateReports.symbolReport(tableS), "tabla");
+            JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
+            JOptionPane.showMessageDialog(framePadre, "Reporte de la tabla de Simbolos, generado exitosamente");
         } catch (IOException ex) {
             Logger.getLogger(MReport.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -62,9 +68,12 @@ public class MReport extends javax.swing.JPanel {
         try {
             if (lexemas.isEmpty()) {
                 JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
-                JOptionPane.showMessageDialog(framePadre, "No existen lexemas leidos");
+                JOptionPane.showMessageDialog(framePadre, "No existen lexemas leidos", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             CreateReports.saveReportTok(CreateReports.TokenReport(lexemas), "tokens");
+            JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
+            JOptionPane.showMessageDialog(framePadre, "Reporte de Tokens, generado exitosamente");
         } catch (IOException ex) {
             Logger.getLogger(MReport.class.getName()).log(Level.SEVERE, null, ex);
         }
