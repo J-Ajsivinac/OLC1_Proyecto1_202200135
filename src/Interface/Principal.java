@@ -23,23 +23,32 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.PlainDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.TabSet;
 import javax.swing.text.TabStop;
+import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 public class Principal extends javax.swing.JFrame {
-    
+
     private JFileChooser fileChooser;
     private JTextPane textPane;
     private ArrayList<String> rutes = new ArrayList<>();
@@ -47,9 +56,17 @@ public class Principal extends javax.swing.JFrame {
     public static ArrayList<Errores> errorL = new ArrayList<>();
     public static ArrayList<token> lexemas = new ArrayList<token>();
     public static TableSymb tableS;
-    
+    final StyleContext cont = StyleContext.getDefaultStyleContext();
+    final AttributeSet keyw1 = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(63, 162, 239));//63, 162, 239
+    final AttributeSet keyw2 = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(179, 146, 226));
+    final AttributeSet keyw3 = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(255, 170, 110));
+    final AttributeSet keyw4 = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(136, 222, 100));//new Color(0, 92, 95)
+    final AttributeSet keyw5 = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(107, 115, 124));//new Color(0, 92, 95)
+    final AttributeSet keynumber = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(119, 252, 255));//new Color(0, 92, 95)
+    final AttributeSet attrWhite = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.WHITE);
+
     public Principal() {
-        
+
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -61,21 +78,21 @@ public class Principal extends javax.swing.JFrame {
         FlatSVGIcon SVGAdd = new FlatSVGIcon("img/add1.svg", 24, 24);
         FlatSVGIcon SVGOpen = new FlatSVGIcon("img/open.svg", 24, 24);
         FlatSVGIcon SVGSave = new FlatSVGIcon("img/save.svg", 24, 24);
-        
+
         FlatSVGIcon.ColorFilter whiteF = new FlatSVGIcon.ColorFilter(new Function<Color, Color>() {
             @Override
             public Color apply(Color t) {
                 return new Color(238, 238, 241);
             }
-            
+
         });
-        
+
         FlatSVGIcon.ColorFilter greenF = new FlatSVGIcon.ColorFilter(new Function<Color, Color>() {
             @Override
             public Color apply(Color t) {
                 return new Color(7, 139, 55);
             }
-            
+
         });
         SVGFile.setColorFilter(whiteF);
         SVGHome.setColorFilter(whiteF);
@@ -84,14 +101,14 @@ public class Principal extends javax.swing.JFrame {
         SVGAdd.setColorFilter(whiteF);
         SVGOpen.setColorFilter(whiteF);
         SVGSave.setColorFilter(whiteF);
-        
+
         lblReport.setIcon(SVGFile);
         lblDown2.setIcon(SVGDown);
         btnPlay.setIcon(SVGPlay);
         btnNew.setIcon(SVGAdd);
         btnOpen.setIcon(SVGOpen);
         btnSave.setIcon(SVGSave);
-        
+
         fileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos DataForge (*.df)", "df");
         fileChooser.setFileFilter(filter);
@@ -99,28 +116,28 @@ public class Principal extends javax.swing.JFrame {
         paneConsole.setContentType("text/html;charset=UTF-8");
         paneConsole.setEditorKit(new HTMLEditorKit());
     }
-    
+
     public void pressReport() {
         GlassPanePopup.showPopup(new MReport(), new DefaultOption() {
             @Override
             public float opacity() {
                 return 0;
             }
-            
+
             @Override
             public String getLayout(Component parent, float animate) {
                 return "pos 0.98al " + 0.15f + "al";
             }
         });
     }
-    
+
     private JTextPane getTextPaneAt(int index) {
         JScrollPane scrollPane = (JScrollPane) tabbedPane.getComponentAt(index);
         return (JTextPane) scrollPane.getViewport().getView();
     }
-    
+
     public void analyze() {
-        
+
         try {
             int selectedIndex = tabbedPane.getSelectedIndex();
             JTextPane textPaneTemp = getTextPaneAt(selectedIndex);
@@ -129,42 +146,44 @@ public class Principal extends javax.swing.JFrame {
             // System.out.println(text);
             Parser sintax = new Parser(scan);
             sintax.parse();
-            sintax.getInstructions();
-            Symbol token = null;
             lexemas = scan.getLexemas();
             errorS = sintax.getErroresSintacticos();
             errorL = scan.getErroresL();
+            
+            if (!errorL.isEmpty() && !errorS.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El archivo analizado tiene errores");
+                return;
+            }
+            
+            String filename = rutes.get(selectedIndex);
+            paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "EJECUTANDO : " + filename + "\n\n", null);
+            
+            sintax.getInstructions();
             tableS = sintax.getTable();
 
-            // Symbol symbol = scan.next_token();
-            // while (symbol.sym != ParserSym.EOF) {
-            // System.out.println("Token: " + symbol.sym + ", Value: " + symbol.value+" col=
-            // "+symbol.left +" fila= "+symbol.toString());
-            // symbol = scan.next_token();
-            // }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
-    
+
     private void saveCurrentTabContentAs() {
         int selectedIndex = tabbedPane.getSelectedIndex();
         if (selectedIndex != -1) {
             JTextPane textPane = getTextPaneAt(selectedIndex);
             String content = textPane.getText();
-            
+
             JFileChooser fileChooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("Data Forge", "*.df");
             fileChooser.setFileFilter(filter);
             int returnVal = fileChooser.showSaveDialog(this);
-            
+
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
-                
+
                 if (!selectedFile.getName().toLowerCase().endsWith(".df")) {
                     selectedFile = new File(selectedFile.getParentFile(), selectedFile.getName() + ".df");
                 }
-                
+
                 try {
                     FileWriter fileWriter = new FileWriter(selectedFile);
                     fileWriter.write(content);
@@ -176,18 +195,18 @@ public class Principal extends javax.swing.JFrame {
             }
         }
     }
-    
+
     private void saveCurrentTabContent() {
         int selectedIndex = tabbedPane.getSelectedIndex();
         if (selectedIndex != -1 && tabbedPane.getTabCount() > 0 && rutes.size() > 0) {
             // System.out.println(tabbedPane.getTitleAt(selectedIndex));
             String filename = rutes.get(selectedIndex);
-            
+
             if (filename == null) {
                 saveCurrentTabContentAs();
                 return;
             }
-            
+
             JTextPane textPane = (JTextPane) (((JScrollPane) tabbedPane.getComponentAt(selectedIndex)).getViewport())
                     .getComponent(0);
             if (filename.contains("\\") || filename.contains("/")) {
@@ -206,7 +225,7 @@ public class Principal extends javax.swing.JFrame {
                         } else {
                             rutes.add(selectedIndex, f.getAbsolutePath());
                         }
-                        
+
                     } catch (Exception ex) {
                         System.out.println("File not found");
                     }
@@ -217,7 +236,7 @@ public class Principal extends javax.swing.JFrame {
             saveCurrentTabContentAs();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -482,11 +501,77 @@ public class Principal extends javax.swing.JFrame {
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            
+
             textPane = new JTextPane();
             textPane.setBackground(new Color(19, 20, 23));
             textPane.setForeground(new Color(181, 191, 218));
             textPane.setFont(new java.awt.Font("Cascadia Code PL", 0, 14));
+            textPane.setDocument(new DefaultStyledDocument() {
+                @Override
+                public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
+                    super.insertString(offset, str, a);
+
+                    String text = getText(0, getLength());
+
+                    // Patrones para cada tipo de palabra clave
+                    String[] patterns = {
+                        "[!]([^\\r\\n]*)?",
+                        "[<][!][^!]*[!]+([^/*][^*]*[*]+)*[>]",
+                        "\\b[0-9]+(\\.[0-9]+)?\\b",
+                        "\\b(?i)(var|arr|=|<|>|-|graphbar|graphline|histogram|graphpie)\\b",
+                        "\\b(?i)(double|char|column|print|exec|program|end|console)\\b",
+                        "\\b(?i)(titulo|titulox|tituloy|ejex|ejey|label|values|sum|mul|res|div|mod|media|mediana|moda|varianza|max|min)\\b",
+                        "(?i)[\\\"][^\\\"\\n]+[\\\"]",
+                        "//[^\\r\\n]*" // Patrón para comentarios
+                    };
+
+                    // Atributos para cada tipo de palabra clave
+                    AttributeSet[] attributes = {keyw5, keyw5, keynumber, keyw1, keyw2, keyw3, keyw4};
+
+                    // Resetea los atributos a blanco
+                    setCharacterAttributes(0, text.length(), attrWhite, false);
+
+                    // Aplica los atributos correspondientes a cada patrón
+                    for (int i = 0; i < patterns.length; i++) {
+                        Matcher matcher = Pattern.compile(patterns[i]).matcher(text);
+                        while (matcher.find()) {
+                            setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), attributes[i], false);
+                        }
+                    }
+                }
+
+                @Override
+                public void remove(int offs, int len) throws BadLocationException {
+                    super.remove(offs, len);
+                    String text = getText(0, getLength());
+
+                    // Patrones para cada tipo de palabra clave
+                    String[] patterns = {
+                        "[!]([^\\r\\n]*)?",
+                        "[<][!][^!]*[!]+([^/*][^*]*[*]+)*[>]",
+                        "\\b[0-9]+(\\.[0-9]+)?\\b",
+                        "\\b(?i)(var|arr|=|<|>|-|graphbar|graphline|histogram|graphpie)\\b",
+                        "\\b(?i)(double|char|column|print|exec|program|end|console)\\b",
+                        "\\b(?i)(titulo|titulox|tituloy|ejex|ejey|label|values|sum|mul|res|div|mod|media|mediana|moda|varianza|max|min)\\b",
+                        "(?i)[\\\"][^\\\"\\n]+[\\\"]",
+                        "//[^\\r\\n]*" // Patrón para comentarios
+                    };
+
+                    // Atributos para cada tipo de palabra clave
+                    AttributeSet[] attributes = {keyw5, keyw5, keynumber, keyw1, keyw2, keyw3, keyw4};
+
+                    // Resetea los atributos a blanco
+                    setCharacterAttributes(0, text.length(), attrWhite, false);
+
+                    // Aplica los atributos correspondientes a cada patrón
+                    for (int i = 0; i < patterns.length; i++) {
+                        Matcher matcher = Pattern.compile(patterns[i]).matcher(text);
+                        while (matcher.find()) {
+                            setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), attributes[i], false);
+                        }
+                    }
+                }
+            });
             JScrollPane scrollPane = new JScrollPane(textPane);
 
             // Crear un ButtonTabComponent para la nueva pestaña
@@ -496,7 +581,7 @@ public class Principal extends javax.swing.JFrame {
             tabbedPane.addTab(selectedFile.getName(), scrollPane);
             int index = tabbedPane.indexOfComponent(scrollPane);
             tabbedPane.setTabComponentAt(index, tabComponent);
-            
+
             if (index >= rutes.size()) {
                 for (int i = rutes.size(); i < index; i++) {
                     rutes.add(null);
@@ -517,12 +602,31 @@ public class Principal extends javax.swing.JFrame {
                 // Apply syntax highlighting based on file extension
                 String fileName = selectedFile.getName();
                 //JavaSyntaxHighlighter.highlight(textPane, doc);
-                
+
             } catch (IOException | BadLocationException ex) {
                 ex.printStackTrace();
             }
         }
     }// GEN-LAST:event_btnOpenActionPerformed
+
+    private int findLastNonWordChar(String text, int index) {
+        while (--index >= 0) {
+            if (String.valueOf(text.charAt(index)).matches("\\W")) {
+                break;
+            }
+        }
+        return index;
+    }
+
+    private int findFirstNonWordChar(String text, int index) {
+        while (index < text.length()) {
+            if (String.valueOf(text.charAt(index)).matches("\\W")) {
+                break;
+            }
+            index++;
+        }
+        return index;
+    }
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
@@ -536,29 +640,89 @@ public class Principal extends javax.swing.JFrame {
         textPane.setForeground(new Color(181, 191, 218));
         textPane.setFont(new java.awt.Font("Cascadia Code PL", 0, 14));
         JScrollPane scrollPane = new JScrollPane(textPane);
-        int tabSize = 16; // Tamaño en píxeles
+        int tabSize = 16;
 
-        // Crear una instancia de TabStop con el tamaño deseado
-        TabStop tabStop = new TabStop(tabSize);
+        textPane.setContentType("text/plain; charset=UTF-8");
+        textPane.setDocument(new DefaultStyledDocument() {
+            @Override
+            public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
+                super.insertString(offset, str, a);
 
-        // Crear una instancia de TabSet con la TabStop personalizada
-        TabSet tabSet = new TabSet(new TabStop[]{tabStop});
+                String text = getText(0, getLength());
 
-        // Obtener el StyledDocument del JTextPane
-        StyledDocument doc = textPane.getStyledDocument();
+                // Patrones para cada tipo de palabra clave
+                String[] patterns = {
+                    "[!]([^\\r\\n]*)?",
+                    "[<][!][^!]*[!]+([^/*][^*]*[*]+)*[>]",
+                    "\\b[0-9]+(\\.[0-9]+)?\\b",
+                    "\\b(?i)(var|arr|=|<|>|-|graphbar|graphline|histogram|graphpie)\\b",
+                    "\\b(?i)(double|char|column|print|exec|program|end|console)\\b",
+                    "\\b(?i)(titulo|titulox|tituloy|ejex|ejey|label|values|sum|mul|res|div|mod|media|mediana|moda|varianza|max|min)\\b",
+                    "(?i)[\\\"][^\\\"\\n]+[\\\"]",
+                    "//[^\\r\\n]*" // Patrón para comentarios
+                };
 
-        // Obtener el atributo de tabulación del documento
+                // Atributos para cada tipo de palabra clave
+                AttributeSet[] attributes = {keyw5, keyw5, keynumber, keyw1, keyw2, keyw3, keyw4};
+
+                // Resetea los atributos a blanco
+                setCharacterAttributes(0, text.length(), attrWhite, false);
+
+                // Aplica los atributos correspondientes a cada patrón
+                for (int i = 0; i < patterns.length; i++) {
+                    Matcher matcher = Pattern.compile(patterns[i]).matcher(text);
+                    while (matcher.find()) {
+                        setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), attributes[i], false);
+                    }
+                }
+            }
+
+            @Override
+            public void remove(int offs, int len) throws BadLocationException {
+                super.remove(offs, len);
+                String text = getText(0, getLength());
+
+                // Patrones para cada tipo de palabra clave
+                String[] patterns = {
+                    "[!]([^\\r\\n]*)?",
+                    "[<][!][^!]*[!]+([^/*][^*]*[*]+)*[>]",
+                    "\\b[0-9]+(\\.[0-9]+)?\\b",
+                    "\\b(?i)(var|arr|=|<|>|-|graphbar|graphline|histogram|graphpie)\\b",
+                    "\\b(?i)(double|char|column|print|exec|program|end|console)\\b",
+                    "\\b(?i)(titulo|titulox|tituloy|ejex|ejey|label|values|sum|mul|res|div|mod|media|mediana|moda|varianza|max|min)\\b",
+                    "(?i)[\\\"][^\\\"\\n]+[\\\"]",
+                    "//[^\\r\\n]*" // Patrón para comentarios
+                };
+
+                // Atributos para cada tipo de palabra clave
+                AttributeSet[] attributes = {keyw5, keyw5, keynumber, keyw1, keyw2, keyw3, keyw4};
+
+                // Resetea los atributos a blanco
+                setCharacterAttributes(0, text.length(), attrWhite, false);
+
+                // Aplica los atributos correspondientes a cada patrón
+                for (int i = 0; i < patterns.length; i++) {
+                    Matcher matcher = Pattern.compile(patterns[i]).matcher(text);
+                    while (matcher.find()) {
+                        setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), attributes[i], false);
+                    }
+                }
+            }
+        });
+
         AttributeSet attr = SimpleAttributeSet.EMPTY;
         MutableAttributeSet paraAttributes = new SimpleAttributeSet(attr);
-        StyleConstants.setTabSet(paraAttributes, tabSet);
 
         // Aplicar el nuevo atributo de tabulación al documento
-        doc.setParagraphAttributes(0, doc.getLength(), paraAttributes, false);
+        //themeCustom.setParagraphAttributes(0, themeCustom.getLength(), paraAttributes, false);
         String untitledFileName = "Untitled";
         ButtonTabComponent tabComponent = new ButtonTabComponent(tabbedPane);
         tabbedPane.addTab(untitledFileName, scrollPane);
         int index = tabbedPane.indexOfComponent(scrollPane);
         tabbedPane.setTabComponentAt(index, tabComponent);
+        JTextPane newTextPane = (JTextPane) (((JScrollPane) tabbedPane.getComponentAt(index)).getViewport()).getComponent(0);
+        //BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
+        StyledDocument doc = newTextPane.getStyledDocument();
     }// GEN-LAST:event_btnNewActionPerformed
 
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnPlayActionPerformed

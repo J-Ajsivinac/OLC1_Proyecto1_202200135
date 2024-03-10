@@ -1,15 +1,10 @@
 package proyecto;
 
 import Analyzers.Generate;
-//import Components.test;
 import Interface.Principal;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Color;
 import java.awt.Font;
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import java.util.logging.Level;
@@ -26,12 +21,10 @@ public class Proyecto1 {
         UIManager.put("Component.focusedBorderColor", new Color(53, 56, 65));
         UIManager.put("TabbedPane.selectedBackground", new Color(53, 56, 65));
 
-        //Generate g = new Generate();
+        Generate g = new Generate();
         UIManager.put("defaultFont", new Font("Montserrat", 0, 13));
         Principal p = new Principal();
         p.setVisible(true);
-//test t = new test();
-//t.setVisible(true);
     }
 
 }

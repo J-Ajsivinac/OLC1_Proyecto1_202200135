@@ -23,6 +23,8 @@ public class VariableValue {
     public VariableValue(Object value, TypeVariableG type_) {
         this.value = value;
         this.typeG = type_;
+        this.row = 0;
+        this.col= 0;
     }
 
     public Object getValue() {

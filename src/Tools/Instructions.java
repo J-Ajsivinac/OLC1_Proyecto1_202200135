@@ -54,25 +54,25 @@ public class Instructions {
 
                 if (value.getType() == TypeVariable.STRING) {
                     String temp = (String) value.getValue();
-                    table.put(variable, new Information(temp, "variable String"));
+                    table.put(variable, new Information(temp.replaceAll("\"", ""), "variable String", v.getRow(), v.getCol()));
 
                 } else if (value.getType() == TypeVariable.DOUBLE) {
                     Double temp = (Double) value.getValue();
-                    table.put(variable, new Information(temp, "variable Double"));
+                    table.put(variable, new Information(temp, "variable Double", v.getRow(), v.getCol()));
 
                 } else if (value.getType() == TypeVariable.AR) {
                     ArithmeticExp temp = (ArithmeticExp) value.getValue();
                     double res = evaluateArith(temp);
-                    table.put(variable, new Information(res, "variable Double"));
+                    table.put(variable, new Information(res, "variable Double", v.getRow(), v.getCol()));
 
                 } else if (value.getType() == TypeVariable.ARRAY) {
                     ArrayList<VariableValue> temp = (ArrayList<VariableValue>) value.getValue();
-                    addValuesArray(temp, aux.getTypeMain(), variable);
+                    addValuesArray(temp, aux.getTypeMain(), variable, v.getRow(), v.getCol());
 
                 } else if (value.getType() == TypeVariable.ST) {
                     StatisticalExp e = (StatisticalExp) value.getValue();
                     double res = evaluateStats(e);
-                    table.put(variable, new Information(res, "Variable Double"));
+                    table.put(variable, new Information(res, "Variable Double", v.getRow(), v.getCol()));
 
                 } else if (value.getType() == TypeVariable.ID) {
                     String temp = (String) value.getValue();
@@ -199,12 +199,11 @@ public class Instructions {
         }
     }
 
-    public boolean addValuesArray(ArrayList<VariableValue> array, TypeVariable typeBase, String id) {
+    public boolean addValuesArray(ArrayList<VariableValue> array, TypeVariable typeBase, String id, int row, int col) {
         ArrayList<Double> arrayDouble = new ArrayList<>();
         ArrayList<String> arrayString = new ArrayList<>();
 
         for (VariableValue variableValue : array) {
-            System.out.println(variableValue.getType());
             if (typeBase == TypeVariable.DOUBLE) {
                 if (variableValue.getType() == TypeVariable.AR) {
                     ArithmeticExp temp = (ArithmeticExp) variableValue.getValue();
@@ -230,21 +229,19 @@ public class Instructions {
                     String tempVal = (String) variableValue.getValue();
                     Information info = (Information) table.get(tempVal);
                     try {
-                        arrayString.add((String) info.getValue());
+                        arrayString.add(((String) info.getValue()).replaceAll("\"", ""));
                     } catch (Exception e) {
                         return false;
                     }
                 } else {
-                    arrayString.add((String) variableValue.getValue());
+                    arrayString.add(((String) variableValue.getValue()).replaceAll("\"", ""));
                 }
             }
         }
-
         if (!arrayDouble.isEmpty()) {
-            table.put(id, new Information(arrayDouble, "arreglo double"));
-            System.out.println(id + " - " + arrayDouble);
+            table.put(id, new Information(arrayDouble, "arreglo double", row, col));
         } else if (!arrayString.isEmpty()) {
-            table.put(id, new Information(arrayString, "arreglo string"));
+            table.put(id, new Information(arrayString, "arreglo string", row, col));
         }
 
         return true;
@@ -285,12 +282,12 @@ public class Instructions {
                 String tempVal = (String) variableValue.getValue();
                 Information info = (Information) table.get(tempVal);
                 try {
-                    arrayString.add((String) info.getValue());
+                    arrayString.add(((String) info.getValue()).replaceAll("\"", ""));
                 } catch (Exception e) {
 
                 }
             } else {
-                arrayString.add((String) variableValue.getValue());
+                arrayString.add(((String) variableValue.getValue()).replaceAll("\"", ""));
             }
         }
         return arrayString;
@@ -348,7 +345,6 @@ public class Instructions {
             Information info = (Information) table.get(name);
             Object resp = info.getValue();
             ArrayList<Object> arrayT = (ArrayList<Object>) resp;
-            System.out.println(arrayT);
             for (Object object : arrayT) {
                 values.add((Double) object);
             }
@@ -373,7 +369,7 @@ public class Instructions {
 
         } else {
             ArrayList<VariableValue> tempv = (ArrayList<VariableValue>) variableValue.getValue();
-            
+
             return (ArrayList<String>) addValuesAString(tempv, t).clone();
             //System.out.println("v s"+values.size());
         }
@@ -418,8 +414,6 @@ public class Instructions {
         ArrayList<Double> val = new ArrayList<>();
         val = getArrayListDouble((VariableValue) values.get("values"), TypeVariable.DOUBLE);
         //System.out.println(ejey.size());
-        System.out.println("pie->" + val.size() + " .- " + labels.size());
-
         c.addPieChart(val, labels, titulo.replaceAll("\"", ""));
     }
 
@@ -435,7 +429,6 @@ public class Instructions {
 
         ArrayList<Double> ejey = new ArrayList<>();
         ejey = getArrayListDouble((VariableValue) values.get("ejey"), TypeVariable.DOUBLE);
-        System.out.println("line -> "+ ejey.size()+".."+ejex.size());
         c.addLineChart(titulo.replaceAll("\"", ""), tituloy.replaceAll("\"", ""), titulox.replaceAll("\"", ""), ejey, ejex);
     }
 
@@ -473,9 +466,11 @@ public class Instructions {
         LinkedHashMap<Double, Double> frecuenciaRelativa = new LinkedHashMap<>();
         int totalDatos = datos.size();
         for (Map.Entry<Double, Integer> entry : frecuencia.entrySet()) {
-            double frecuenciaRel = Math.round(((double) entry.getValue() / totalDatos) * 100);
+            //resultado = Math.round(resultado * 100.0) / 100.0;
+            double frecuenciaRel = ((double) entry.getValue() / totalDatos) * 100;
             frecuenciaRelativa.put(entry.getKey(), frecuenciaRel);
         }
+        
 
         try {
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), " * " + titulo.replaceAll("\"", "") + "\n", null);
@@ -503,16 +498,17 @@ public class Instructions {
             totalFb += frec;
             int frecAcum = frecuenciaAcumuladaMap.get(valor);
             totalFa = frecAcum;
-            double frecRel = frecuenciaRelativa.get(valor);
+            double frecRel = Math.round(frecuenciaRelativa.get(valor)*100.0)/100.0;
             totalPerc += frecRel;
             printHistogram(valor, frec, frecAcum, frecRel, formato);
         }
+        totalPerc = Math.round(totalPerc*100.0)/100.0;
         String bottom = String.format(formato, "Totales", totalFb, totalFa, totalPerc + "%");
         try {
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "───────────────────────────────────────────────" + "\n", null);
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), bottom + "\n", null);
             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "───────────────────────────────────────────────" + "\n", null);
-             Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "\n", null);
+            Principal.paneConsole.getDocument().insertString(Principal.paneConsole.getDocument().getLength(), "\n", null);
         } catch (BadLocationException ex) {
             Logger.getLogger(Instructions.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -588,9 +584,6 @@ public class Instructions {
         String op = data.getOp();
         double operando1, operando2;
 
-        System.out.println("v1 -> " + v1);
-        System.out.println("v2 -> " + v2);
-
         if (v1.getType() == TypeVariable.AR) {
             ArithmeticExp temp = (ArithmeticExp) v1.getValue();
             operando1 = evaluateArith(temp);
@@ -641,7 +634,7 @@ public class Instructions {
             default:
                 resultado = 0;
         }
-        resultado = Math.round(resultado * 100.0) / 100.0;;
+        resultado = Math.round(resultado * 100.0) / 100.0;
         return resultado;
     }
 
@@ -702,7 +695,7 @@ public class Instructions {
             default:
                 throw new AssertionError();
         }
-        resultado = Math.round(resultado * 100.0) / 100.0;;
+        resultado = Math.round(resultado * 100.0) / 100.0;
         return resultado;
     }
 
