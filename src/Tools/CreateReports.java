@@ -1,18 +1,11 @@
 package Tools;
 
-import Analyzers.Scanner;
 import Analyzers.token;
 import Errores.Errores;
-import TableSymb.Information;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java_cup.runtime.Symbol;
 
 public class CreateReports {
 
@@ -214,8 +207,10 @@ public class CreateReports {
                 + "                    <thead class=\"\">\n"
                 + "                        <tr class=\"text-left px-6 py-4 border-b border-b-[#434343]\">\n"
                 + "                            <th class=\"px-6 py-4\">No </th>\n"
-                + "                            <th class=\"px-6 py-4\">Descripción</th>\n"
-                + "                            <th class=\"px-6 py-4\">Línea</th>\n"
+                + "                            <th class=\"px-6 py-4\">Nombre </th>\n"
+                + "                            <th class=\"px-6 py-4\">Tipo</th>\n"
+                + "                            <th class=\"px-6 py-4\">Valor</th>\n"
+                + "                            <th class=\"px-6 py-4\">Fila</th>\n"
                 + "                            <th class=\"px-6 py-4\">Columna</th>\n"
                 + "                        </tr>\n"
                 + "                    </thead>";

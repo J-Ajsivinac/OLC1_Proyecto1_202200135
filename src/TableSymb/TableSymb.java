@@ -55,6 +55,8 @@ public class TableSymb {
                 report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + entry.getKey() + "</td>\n";
                 report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + info.getType_() + "</td>\n";
                 report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + array + "</td>\n";
+                report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + info.getLine() + "</td>\n";
+                report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + info.getColumn() + "</td>\n";
                 report += "</tr class=\"border-b last:border-b-0 border-b-[#434343] text-[#9ca3af]\">\n";
                 
             } else {
@@ -63,7 +65,8 @@ public class TableSymb {
                 report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + entry.getKey() + "</td>\n";
                 report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + info.getType_() + "</td>\n";
                 report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + resp + "</td>\n";
-
+                report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + info.getLine() + "</td>\n";
+                report += "\n\t\t\t\t<td class=\"px-6 py-5\">" + info.getColumn() + "</td>\n";
                 report += "</tr>\n";
             }
         }
