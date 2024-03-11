@@ -189,6 +189,14 @@ public class Instructions {
                     } else {
                         output((Double) info.getValue());
                     }
+                } else if (variableValue.getType() == TypeVariable.AR) {
+                    ArithmeticExp arit = (ArithmeticExp) variableValue.getValue();
+                    double res = evaluateArith(arit);
+                    output(res);
+                } else if (variableValue.getType() == TypeVariable.ST) {
+                    StatisticalExp e = (StatisticalExp) variableValue.getValue();
+                    double res = evaluateStats(e);
+                    output(res);
                 }
 
             }
@@ -308,8 +316,7 @@ public class Instructions {
                 Object resp = info.getValue();
                 return ((String) resp).replaceAll("\"", "");
             } catch (Exception e) {
-                //OptionPane.showMessageDialog(, "El tipo de variable requerida es String", "Error Semántico");
-                System.out.println("Tipo de dato incorrecto");
+                JOptionPane.showMessageDialog(Interface.Principal.jPanel1, "Tipo de variable requerida String", "Error Algebraico", JOptionPane.ERROR_MESSAGE);
                 return "";
             }
         } else {
@@ -325,8 +332,7 @@ public class Instructions {
                 Object resp = info.getValue();
                 return (Double) resp;
             } catch (Exception e) {
-                //OptionPane.showMessageDialog(, "El tipo de variable requerida es String", "Error Semántico");
-                System.out.println("Tipo de dato incorrecto");
+                JOptionPane.showMessageDialog(Interface.Principal.jPanel1, "Tipo de variable requerido Double", "Error Algebraico", JOptionPane.ERROR_MESSAGE);
                 return 0.0;
             }
         } else {
@@ -623,7 +629,12 @@ public class Instructions {
 
         switch (op) {
             case "/":
-                resultado = operando1 / operando2;
+                if (operando2 == 0) {
+                    resultado = 0;
+                    JOptionPane.showMessageDialog(Interface.Principal.jPanel1, "No se puede efectuar la división por 0", "Error Algebraico", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    resultado = operando1 / operando2;
+                }
                 break;
             case "*":
                 resultado = operando1 * operando2;
@@ -679,27 +690,28 @@ public class Instructions {
 
     public double operate(ArrayList<Double> list, String op) {
         double resultado = 0.0f;
+        op = op.toLowerCase();
         switch (op) {
-            case "Media":
+            case "media":
                 resultado = Statistics.Mean(list);
                 break;
-            case "Mediana":
+            case "mediana":
                 resultado = Statistics.Median(list);
                 break;
-            case "Moda":
+            case "moda":
                 resultado = Statistics.Mode(list);
                 break;
-            case "Varianza":
+            case "varianza":
                 resultado = Statistics.Variance(list);
                 break;
-            case "Max":
+            case "max":
                 resultado = Statistics.Maximum(list);
                 break;
-            case "Min":
+            case "min":
                 resultado = Statistics.Minimum(list);
                 break;
             default:
-                throw new AssertionError();
+                JOptionPane.showMessageDialog(Interface.Principal.jPanel1, "Operación Estadistica erronea", "Error", JOptionPane.ERROR_MESSAGE);
         }
         resultado = Math.round(resultado * 100.0) / 100.0;
         return resultado;
